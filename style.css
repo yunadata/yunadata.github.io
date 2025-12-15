@@ -248,7 +248,11 @@ h1 {
 
 .highlight {
     position: relative;
-    display: inline-block;
+	display: inline;
+	background: linear-gradient(135deg, #FFC4D6, #CCD5FF);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .highlight::after {
