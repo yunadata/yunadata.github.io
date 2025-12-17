@@ -639,3 +639,50 @@ footer {
         height: 250px;
     }
 }
+
+
+
+
+
+
+
+
+
+
+/* certificates */
+.cert-card {
+    margin-top: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+}
+
+.cert-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.cert-icon {
+    font-size: 2.5rem;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    /* Clip the background to the text (icon) shape */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    /* Ensure it displays correctly */
+    display: inline-block;
+}
+
+/* Mobile fix: Stack the button on small screens */
+@media (max-width: 600px) {
+    .cert-card {
+        flex-direction: column;
+        text-align: center;
+    }
+    .cert-content {
+        flex-direction: column;
+    }
+}
