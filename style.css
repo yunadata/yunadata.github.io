@@ -738,3 +738,29 @@ footer {
         grid-template-columns: repeat(3, 1fr);
     }
 }
+
+
+
+
+
+/* --- Project Images Styling --- */
+.project-image {
+    width: 100%;
+    height: 200px; /* Keeps images uniform height */
+    object-fit: cover; /* Ensures image covers the area without stretching */
+    object-position: top center; /* Focuses on the top of the webpage screenshot */
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: transform 0.5s ease; /* Smooth hover transition */
+}
+
+/* Hover Effect: Zoom in slightly instead of rotating */
+.project-card:hover .project-image {
+    transform: scale(1.03);
+}
+
+/* Optional: Adjust card padding slightly to accommodate images better */
+.project-card {
+    padding-top: 1.5rem; 
+}
