@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-KH2HGFPW');</script>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crystal Guard | Yuna An Vu</title>
+    <meta name="description" content="A browser-based Tower Defense game built with HTML5 Canvas and JavaScript.">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KH2HGFPW"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+    <div class="bg-decoration blob-1"></div>
+    <div class="bg-decoration blob-2"></div>
+    <div class="bg-decoration blob-3"></div>
+
+    <nav>
+        <div class="nav-container">
+            <div class="logo" onclick="window.location.href='../index.html'">YunaData.</div>
+            <a href="../index.html" class="btn-small">← Back to Portfolio</a>
+        </div>
+    </nav>
+
+    <main>
+        <div id="game-wrapper">
+            <div class="canvas-container">
+                <canvas id="gameCanvas" width="800" height="600"></canvas>
+                
+                <div id="overlay">
+                    <h1 id="overlay-title">CRYSTAL GUARD</h1>
+                    <p id="overlay-desc">Defend the Magic Crystal from the endless horde.<br>Place towers, upgrade defenses, and survive.</p>
+                    
+                    <div id="leaderboard-display" class="hidden">
+                        <h3>TOP DEFENDERS 🏆</h3>
+                        <div id="leaderboard-list">Loading scores...</div>
+                    </div>
+
+                    <div id="submit-score-container" class="hidden">
+                        <p class="final-score-text">Final Score: <span id="final-score">0</span></p>
+                        <input type="text" id="player-name" placeholder="Enter Hero Name" maxlength="15">
+                        <button class="btn-game action" onclick="submitScore()">Submit Score</button>
+                    </div>
+
+                    <button class="btn-game start" onclick="startGame()" id="start-btn">START GAME</button>
+                </div>
+            </div>
+            
+            <div id="ui-sidebar">
+                <h2>Defense Control</h2>
+                
+                <div class="stats-grid">
+                    <div class="stat-box"><span>Wave</span> <span id="wave-display">1</span></div>
+                    <div class="stat-box"><span>Score</span> <span id="score-display">0</span></div>
+                    <div class="stat-box gold"><span>Gold</span> <span id="gold-display">100</span></div>
+                    <div class="stat-box lives"><span>Crystal</span> <span id="lives-display">20</span></div>
+                </div>
+
+                <hr>
+                <div class="section-title">Build Towers</div>
+                
+                <div class="tower-select">
+                    <div class="tower-btn active" onclick="selectTowerType('archer')" id="btn-archer">
+                        <div class="t-name">Archer</div>
+                        <div class="t-cost">50g</div>
+                        <div class="t-info">Fast, Single</div>
+                    </div>
+                    <div class="tower-btn" onclick="selectTowerType('mage')" id="btn-mage">
+                        <div class="t-name">Mage</div>
+                        <div class="t-cost">100g</div>
+                        <div class="t-info">Slows Enemy</div>
+                    </div>
+                    <div class="tower-btn" onclick="selectTowerType('cannon')" id="btn-cannon">
+                        <div class="t-name">Cannon</div>
+                        <div class="t-cost">150g</div>
+                        <div class="t-info">Area Dmg</div>
+                    </div>
+                    <div class="tower-btn" onclick="selectTowerType('support')" id="btn-support">
+                        <div class="t-name">Support</div>
+                        <div class="t-cost">200g</div>
+                        <div class="t-info">Buffs Range</div>
+                    </div>
+                </div>
+
+                <div id="upgrade-panel">
+                    <div class="section-title">Selected Tower</div>
+                    <button class="btn-game upgrade" onclick="upgradeSelectedTower()">
+                        Upgrade (<span id="upgrade-cost">0</span>g)
+                    </button>
+                    <button class="btn-game sell" onclick="sellSelectedTower()">
+                        Sell (75%)
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>Made with 💖 by Yuna An Vu.</p>
+    </footer>
+
+    <script src="game.js"></script>
+</body>
+</html>
