@@ -1,6 +1,6 @@
 /**
  * CRYSTAL GUARD - GAME ENGINE
- * Portfolio Version: Visual Overhaul
+ * Portfolio Version: Pastel & Glassmorphism Update
  */
 
 const canvas = document.getElementById('gameCanvas');
@@ -10,23 +10,37 @@ const ctx = canvas.getContext('2d');
 const DREAMLO_PRIVATE = "-QMdaM9NQUuOpn6cCl9WjAH6v9CVOy9ka-pRpFcjM8TA";
 const DREAMLO_PUBLIC  = "69457d098f40bbcf805ee9ba";
 
-// --- THEME COLORS (Matches Portfolio) ---
+// --- THEME COLORS ---
 const COLORS = {
-    primary: '#FFC4D6',   // Pink
-    secondary: '#CCD5FF', // Periwinkle
-    accent: '#FFE5B4',    // Peach
-    dark: '#4A4A4A',      // Dark Text
-    grass: '#7bed9f',     // Soft Green
-    path: '#ffffff',      // White Road
-    pathBorder: '#dfe6e9',
-    enemy: '#2d3436',     // Dark Charcoal
-    enemyBoss: '#6c5ce7'  // Purple
+    // Brand Colors
+    primary: '#FFC4D6',   // Soft Pink
+    secondary: '#CCD5FF', // Soft Blue
+    accent: '#FFE5B4',    // Soft Gold
+    text: '#4A4A4A',
+    
+    // Environment
+    grassLight: '#eefcf5', // Very pale mint
+    grassDark: '#d5f5e3',  // Checkerboard pattern
+    path: '#fff8e1',       // Creamy path
+    pathBorder: '#FFE5B4', // Accent border
+    
+    // Game Objects
+    enemy: '#636e72',      
+    enemyBoss: '#f1c40f',  // Updated to Gold directly
+    uiSelected: 'rgba(255, 196, 214, 0.4)',
+    uiRange: 'rgba(204, 213, 255, 0.3)'
 };
 
 // --- GAME CONSTANTS ---
 const TILE_SIZE = 40;
 const COLS = 20;
 const ROWS = 15;
+
+// --- PRE-RENDERED BACKGROUND ---
+const bgCanvas = document.createElement('canvas');
+bgCanvas.width = 800;
+bgCanvas.height = 600;
+const bgCtx = bgCanvas.getContext('2d');
 
 // --- GAME STATE ---
 let gameLoopId;
@@ -52,14 +66,14 @@ let gameState = {
 const path = [
     {x: 0, y: 2}, {x: 5, y: 2}, {x: 5, y: 8}, 
     {x: 12, y: 8}, {x: 12, y: 4}, {x: 18, y: 4}, {x: 18, y: 10}, 
-    {x: 8, y: 10}, {x: 8, y: 13}, {x: 19, y: 13} // Fixed coord
+    {x: 8, y: 10}, {x: 8, y: 13}, {x: 19, y: 13} 
 ];
 
-// Tower Definitions (Using Portfolio Colors)
+// Tower Definitions
 const TOWER_TYPES = {
     archer: { name: 'Archer', cost: 50, range: 3.5, damage: 15, cooldown: 30, color: COLORS.primary, type: 'single' },
     mage:   { name: 'Mage', cost: 100, range: 4, damage: 5, cooldown: 45, color: COLORS.secondary, type: 'slow' },
-    cannon: { name: 'Cannon', cost: 150, range: 4.5, damage: 30, cooldown: 90, color: '#636e72', type: 'aoe' },
+    cannon: { name: 'Cannon', cost: 150, range: 4.5, damage: 30, cooldown: 90, color: '#95a5a6', type: 'aoe' },
     support:{ name: 'Support', cost: 200, range: 3, damage: 0, cooldown: 0, color: COLORS.accent, type: 'buff' }
 };
 
@@ -86,7 +100,7 @@ class Enemy {
         if(wave % 5 === 0) { 
             this.maxHp *= 3;
             this.hp = this.maxHp;
-            this.radius = 16;
+            this.radius = 16; // Slightly smaller radius to fit tile better
             this.speed *= 0.7;
             this.isBoss = true;
             this.color = COLORS.enemyBoss; 
@@ -123,63 +137,86 @@ class Enemy {
     }
 
     draw() {
-        // Wobble Animation
-        let wobble = Math.sin((frameCount + this.wobbleOffset) * 0.2) * 3;
+        let wobble = Math.sin((frameCount + this.wobbleOffset) * 0.15) * 4;
         
         ctx.save();
         ctx.translate(this.x, this.y + wobble);
 
-        // Body (Cute Blob Shape)
-        ctx.fillStyle = this.color;
+        // Soft Shadow
+        ctx.fillStyle = 'rgba(0,0,0,0.1)';
         ctx.beginPath();
-        ctx.arc(0, 0, this.radius, Math.PI, 0); // Top half circle
-        // Wavy bottom
-        ctx.bezierCurveTo(this.radius, this.radius, -this.radius, this.radius, -this.radius, 0);
+        ctx.ellipse(0, 16 - wobble, 12, 4, 0, 0, Math.PI*2);
         ctx.fill();
 
-        // Eyes (White)
-        ctx.fillStyle = 'white';
-        ctx.beginPath();
-        ctx.arc(-4, -2, 4, 0, Math.PI*2);
-        ctx.arc(4, -2, 4, 0, Math.PI*2);
-        ctx.fill();
-
-        // Pupils (Black) look at crystal
-        ctx.fillStyle = 'black';
-        ctx.beginPath();
-        ctx.arc(-4 + (this.speed/2), -2, 1.5, 0, Math.PI*2);
-        ctx.arc(4 + (this.speed/2), -2, 1.5, 0, Math.PI*2);
-        ctx.fill();
-
-        // Crown for Boss
-        if(this.isBoss) {
-            ctx.fillStyle = '#f1c40f'; // Gold
+        // --- DRAW BODY ---
+        if (this.isBoss) {
+            // FIX: Clean Pentagon Logic
+            ctx.fillStyle = this.color; // Gold
             ctx.beginPath();
-            ctx.moveTo(-8, -this.radius);
-            ctx.lineTo(-4, -this.radius - 8);
-            ctx.lineTo(0, -this.radius - 4);
-            ctx.lineTo(4, -this.radius - 8);
-            ctx.lineTo(8, -this.radius);
+            let sides = 5;
+            let size = this.radius + 2;
+            for (let i = 0; i < sides; i++) {
+                // Calculate angle for pentagon vertices
+                let angle = (i * 2 * Math.PI / sides) - (Math.PI / 2);
+                let bx = Math.cos(angle) * size;
+                let by = Math.sin(angle) * size;
+                if(i === 0) ctx.moveTo(bx, by);
+                else ctx.lineTo(bx, by);
+            }
+            ctx.closePath();
+            ctx.fill();
+            
+            // Nice Orange Border
+            ctx.strokeStyle = '#e67e22'; 
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+        } else {
+            // Standard Enemy: Circles
+            ctx.fillStyle = this.color;
+            ctx.beginPath();
+            ctx.arc(0, 0, this.radius, 0, Math.PI*2);
             ctx.fill();
         }
 
-        // Slowed Ice Effect
+        // Eyes (Cute style)
+        ctx.fillStyle = 'white';
+        ctx.beginPath();
+        ctx.arc(-5, -2, 4, 0, Math.PI*2);
+        ctx.arc(5, -2, 4, 0, Math.PI*2);
+        ctx.fill();
+
+        ctx.fillStyle = '#333';
+        ctx.beginPath();
+        ctx.arc(-5 + (this.speed/2), -2, 1.5, 0, Math.PI*2);
+        ctx.arc(5 + (this.speed/2), -2, 1.5, 0, Math.PI*2);
+        ctx.fill();
+
+        // Ice Effect Overlay
         if(this.slowed > 0) {
-            ctx.fillStyle = 'rgba(116, 185, 255, 0.5)';
+            ctx.fillStyle = 'rgba(204, 213, 255, 0.6)';
             ctx.beginPath();
-            ctx.arc(0, 5, this.radius, 0, Math.PI*2);
+            ctx.arc(0, 0, this.radius + 2, 0, Math.PI*2);
             ctx.fill();
         }
 
         ctx.restore();
 
-        // Health bar
+        // Minimalist HP Bar
         if(this.hp < this.maxHp) {
             let hpW = 24;
-            ctx.fillStyle = 'rgba(0,0,0,0.5)';
-            ctx.fillRect(this.x - hpW/2, this.y - 25, hpW, 4);
-            ctx.fillStyle = '#00b894';
-            ctx.fillRect(this.x - hpW/2, this.y - 25, hpW * (this.hp / this.maxHp), 4);
+            let hpPct = this.hp / this.maxHp;
+            
+            ctx.fillStyle = 'rgba(0,0,0,0.2)';
+            ctx.beginPath();
+            ctx.roundRect(this.x - hpW/2, this.y - 28, hpW, 4, 2);
+            ctx.fill();
+            
+            // Color based on HP
+            ctx.fillStyle = hpPct > 0.5 ? '#2ecc71' : '#e74c3c';
+            ctx.beginPath();
+            ctx.roundRect(this.x - hpW/2, this.y - 28, hpW * hpPct, 4, 2);
+            ctx.fill();
         }
     }
 
@@ -218,7 +255,7 @@ class Tower {
         this.cooldown = 0;
         this.color = def.color;
         this.buffed = false;
-        this.angle = 0; // For rotation
+        this.angle = 0;
     }
 
     upgrade() {
@@ -235,7 +272,7 @@ class Tower {
 
     update() {
         if (this.typeKey === 'support') {
-            this.angle += 0.05; // Radar rotation
+            this.angle += 0.02;
             gameState.towers.forEach(t => {
                 if(t !== this && Math.hypot(t.x - this.x, t.y - this.y) <= this.range) {
                     t.buffed = true;
@@ -247,9 +284,6 @@ class Tower {
         if (this.cooldown > 0) this.cooldown--;
 
         let target = null;
-        let minDist = Infinity;
-        
-        // Find Target
         for (let e of gameState.enemies) {
             let d = Math.hypot(e.x - this.x, e.y - this.y);
             let effectiveRange = this.buffed ? this.range * 1.2 : this.range;
@@ -260,15 +294,12 @@ class Tower {
         }
 
         if (target) {
-            // Rotate towards target
             this.angle = Math.atan2(target.y - this.y, target.x - this.x);
-            
             if (this.cooldown <= 0) {
                 this.shoot(target);
                 this.cooldown = this.buffed ? this.cooldownMax * 0.8 : this.cooldownMax;
             }
         }
-        
         this.buffed = false; 
     }
 
@@ -289,106 +320,125 @@ class Tower {
         ctx.save();
         ctx.translate(this.x, this.y);
 
-        // 1. Draw Base (Same for all)
-        ctx.fillStyle = '#b2bec3'; // Light stone grey
-        ctx.fillRect(-16, -16, 32, 32);
-        
-        // Border for base
-        ctx.strokeStyle = '#636e72';
-        ctx.lineWidth = 1;
-        ctx.strokeRect(-16, -16, 32, 32);
+        // --- 1. BASE PLATFORM (Shared) ---
+        // Soft Shadow
+        ctx.fillStyle = 'rgba(0,0,0,0.1)';
+        ctx.beginPath();
+        ctx.ellipse(0, 14, 16, 6, 0, 0, Math.PI*2);
+        ctx.fill();
 
-        // Buff Indicator
+        // White Pillar Base
+        ctx.fillStyle = '#fff';
+        ctx.beginPath();
+        ctx.roundRect(-14, -14, 28, 28, 5);
+        ctx.fill();
+        
+        // Colored Top Surface
+        ctx.fillStyle = this.color;
+        ctx.globalAlpha = 0.2;
+        ctx.beginPath();
+        ctx.roundRect(-12, -12, 24, 24, 4);
+        ctx.fill();
+        ctx.globalAlpha = 1.0;
+
+        // Buff Glow Effect
         if(this.buffed) {
             ctx.shadowBlur = 10;
             ctx.shadowColor = COLORS.accent;
             ctx.strokeStyle = COLORS.accent;
             ctx.lineWidth = 2;
-            ctx.strokeRect(-18, -18, 36, 36);
+            ctx.strokeRect(-14, -14, 28, 28);
             ctx.shadowBlur = 0;
         }
 
-        // 2. Draw Specific Tower Art
+        // --- 2. SPECIFIC TOWER ART ---
+        
         if (this.typeKey === 'archer') {
-            // Turret Base
             ctx.rotate(this.angle);
-            ctx.fillStyle = this.color; // Pink
+            // Modern Turret Design
+            ctx.fillStyle = this.color;
             ctx.beginPath();
-            ctx.arc(0, 0, 12, 0, Math.PI*2);
+            ctx.arc(0, 0, 10, 0, Math.PI*2);
             ctx.fill();
-            // Crossbow / Arrow
-            ctx.fillStyle = '#fff';
-            ctx.fillRect(0, -2, 16, 4); // Barrel
-            ctx.strokeStyle = '#555';
-            ctx.lineWidth = 2;
+            
+            // Cannon/Bow Barrel
+            ctx.fillStyle = '#666';
+            ctx.fillRect(0, -3, 16, 6);
+            
+            // Highlight
+            ctx.fillStyle = 'rgba(255,255,255,0.5)';
             ctx.beginPath();
-            ctx.moveTo(5, -10);
-            ctx.lineTo(5, 10); // Bow string
-            ctx.stroke();
+            ctx.arc(3, -3, 3, 0, Math.PI*2);
+            ctx.fill();
 
         } else if (this.typeKey === 'mage') {
-            // Pedestal
-            ctx.fillStyle = '#555';
-            ctx.fillRect(-6, -6, 12, 12);
-            // Floating Crystal
-            let float = Math.sin(frameCount * 0.1) * 3;
-            ctx.fillStyle = this.color; // Periwinkle
+            // Floating Rune Stone
+            let float = Math.sin(frameCount * 0.05) * 3;
+            
+            // Glow
+            ctx.shadowBlur = 15;
+            ctx.shadowColor = this.color;
+            
+            ctx.fillStyle = this.color;
             ctx.beginPath();
-            ctx.moveTo(0, -10 + float);
+            ctx.moveTo(0, -12 + float);
             ctx.lineTo(8, 0 + float);
-            ctx.lineTo(0, 10 + float);
+            ctx.lineTo(0, 12 + float);
             ctx.lineTo(-8, 0 + float);
             ctx.fill();
-            // Glow
-            ctx.shadowBlur = 10;
-            ctx.shadowColor = this.color;
-            ctx.fill();
+            
             ctx.shadowBlur = 0;
+            
+            // Inner Light
+            ctx.fillStyle = '#fff';
+            ctx.beginPath();
+            ctx.arc(0, float, 3, 0, Math.PI*2);
+            ctx.fill();
 
         } else if (this.typeKey === 'cannon') {
-            // Rotating heavy barrel
             ctx.rotate(this.angle);
-            ctx.fillStyle = '#2d3436';
-            ctx.fillRect(-8, -8, 24, 16); // Barrel
-            ctx.fillStyle = this.color; // Dark Grey stripe
-            ctx.fillRect(-5, -6, 6, 12); 
+            // Heavy Box Design
+            ctx.fillStyle = '#555';
+            ctx.fillRect(-10, -10, 20, 20);
+            
+            // Barrel
+            ctx.fillStyle = '#333';
+            ctx.beginPath();
+            ctx.arc(0, 0, 8, 0, Math.PI*2);
+            ctx.fill();
+            ctx.fillRect(0, -6, 18, 12);
+            
+            // Accent Stripe
+            ctx.fillStyle = COLORS.accent;
+            ctx.fillRect(8, -6, 4, 12);
 
         } else if (this.typeKey === 'support') {
-            // Radar Dish
+            // Radar Dish style
             ctx.rotate(this.angle);
-            ctx.fillStyle = this.color; // Peach
-            ctx.beginPath();
-            ctx.arc(0, 0, 6, 0, Math.PI*2); // Center
-            ctx.fill();
             
             ctx.strokeStyle = this.color;
             ctx.lineWidth = 3;
             ctx.beginPath();
-            ctx.arc(0, 0, 12, -0.5, 0.5); // Dish curve
+            ctx.arc(0, 0, 10, -0.5, 3.6); 
             ctx.stroke();
             
-            // Pulse wave
-            let pulse = (frameCount % 40) / 2;
-            ctx.strokeStyle = 'rgba(255, 229, 180, 0.5)';
+            // Center Pulse
+            let pulse = (frameCount % 60) / 2;
+            ctx.strokeStyle = `rgba(255, 229, 180, ${1 - pulse/30})`;
             ctx.beginPath();
-            ctx.arc(5, 0, 12 + pulse, -0.5, 0.5);
+            ctx.arc(0, 0, pulse, 0, Math.PI*2);
             ctx.stroke();
         }
 
-        // 3. Level Dots
         ctx.restore();
-        ctx.fillStyle = 'white';
-        ctx.strokeStyle = 'black';
-        ctx.lineWidth = 1;
+        
+        // --- 3. LEVEL INDICATORS (Modern Dots) ---
+        let startX = this.x - ((this.level-1) * 6) / 2;
         for(let i=0; i<this.level; i++) {
-            let dx = this.x - 8 + (i*5);
-            let dy = this.y - 12;
-            if (this.typeKey === 'mage') dy -= 8; // Move up for mage
-            
+            ctx.fillStyle = COLORS.accent;
             ctx.beginPath();
-            ctx.arc(dx, dy, 2, 0, Math.PI*2);
+            ctx.arc(startX + (i*8), this.y - 20, 2, 0, Math.PI*2);
             ctx.fill();
-            ctx.stroke();
         }
     }
 }
@@ -403,7 +453,7 @@ class Projectile {
         this.color = color;
         this.speed = 8;
         this.active = true;
-        this.angle = Math.atan2(target.y - y, target.x - x);
+        this.tail = [];
     }
 
     update() {
@@ -411,6 +461,10 @@ class Projectile {
             this.active = false;
             return;
         }
+
+        // Add tail position
+        this.tail.push({x: this.x, y: this.y});
+        if(this.tail.length > 5) this.tail.shift();
 
         let dx = this.target.x - this.x;
         let dy = this.target.y - this.y;
@@ -421,15 +475,19 @@ class Projectile {
         } else {
             this.x += (dx/dist) * this.speed;
             this.y += (dy/dist) * this.speed;
-            this.angle = Math.atan2(dy, dx);
         }
     }
 
     hit() {
         this.active = false;
-        
         if(this.type === 'aoe') {
-            createParticles(this.x, this.y, 'orange', 8);
+            createParticles(this.x, this.y, '#555', 8);
+            // AOE Shockwave
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, 40, 0, Math.PI*2);
+            ctx.fillStyle = 'rgba(255,200,200,0.5)';
+            ctx.fill();
+
             gameState.enemies.forEach(e => {
                 if(Math.hypot(e.x - this.x, e.y - this.y) < 60) {
                     e.takeDamage(this.damage);
@@ -439,34 +497,30 @@ class Projectile {
             this.target.takeDamage(this.damage);
             if(this.type === 'slow') {
                 this.target.slowed = 60;
+                createParticles(this.x, this.y, COLORS.secondary, 4);
             }
         }
     }
 
     draw() {
+        // Draw Tail
+        ctx.beginPath();
+        ctx.moveTo(this.x, this.y);
+        for(let p of this.tail) ctx.lineTo(p.x, p.y);
+        ctx.strokeStyle = this.color;
+        ctx.lineWidth = 2;
+        ctx.globalAlpha = 0.5;
+        ctx.stroke();
+        ctx.globalAlpha = 1.0;
+
+        // Draw Head
         ctx.fillStyle = this.color;
-        
-        if(this.type === 'single') {
-            // Arrow
-            ctx.save();
-            ctx.translate(this.x, this.y);
-            ctx.rotate(this.angle);
-            ctx.fillRect(-5, -1, 10, 2);
-            ctx.restore();
-        } else if (this.type === 'aoe') {
-            // Cannonball
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, 4, 0, Math.PI*2);
-            ctx.fill();
-        } else {
-            // Magic Bolt
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, 3, 0, Math.PI*2);
-            ctx.shadowBlur = 5;
-            ctx.shadowColor = this.color;
-            ctx.fill();
-            ctx.shadowBlur = 0;
-        }
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = this.color;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, 4, 0, Math.PI*2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
     }
 }
 
@@ -475,20 +529,21 @@ class Particle {
         this.x = x;
         this.y = y;
         this.color = color;
-        this.vx = (Math.random() - 0.5) * 4;
-        this.vy = (Math.random() - 0.5) * 4;
-        this.life = 20;
+        this.angle = Math.random() * Math.PI * 2;
+        this.speed = Math.random() * 2 + 1;
+        this.life = 1.0;
+        this.decay = Math.random() * 0.05 + 0.02;
     }
     update() {
-        this.x += this.vx;
-        this.y += this.vy;
-        this.life--;
+        this.x += Math.cos(this.angle) * this.speed;
+        this.y += Math.sin(this.angle) * this.speed;
+        this.life -= this.decay;
     }
     draw() {
         ctx.fillStyle = this.color;
-        ctx.globalAlpha = this.life / 20;
+        ctx.globalAlpha = Math.max(0, this.life);
         ctx.beginPath();
-        ctx.arc(this.x, this.y, 2, 0, Math.PI*2);
+        ctx.arc(this.x, this.y, 2.5, 0, Math.PI*2);
         ctx.fill();
         ctx.globalAlpha = 1;
     }
@@ -496,6 +551,126 @@ class Particle {
 
 function createParticles(x, y, color, count) {
     for(let i=0; i<count; i++) gameState.particles.push(new Particle(x, y, color));
+}
+
+// --- GRAPHICS ENGINE ---
+
+function isPath(c, r) {
+    for(let i=0; i<path.length-1; i++) {
+        let p1 = path[i];
+        let p2 = path[i+1];
+        let minX = Math.min(p1.x, p2.x);
+        let maxX = Math.max(p1.x, p2.x);
+        let minY = Math.min(p1.y, p2.y);
+        let maxY = Math.max(p1.y, p2.y);
+        if (c >= minX && c <= maxX && r >= minY && r <= maxY) return true;
+    }
+    return false;
+}
+
+function initBackground() {
+    // 1. Base Layer (Checkered Lawn)
+    bgCtx.fillStyle = COLORS.grassLight;
+    bgCtx.fillRect(0, 0, bgCanvas.width, bgCanvas.height);
+    
+    bgCtx.fillStyle = COLORS.grassDark;
+    for(let y=0; y<ROWS; y++) {
+        for(let x=0; x<COLS; x++) {
+            if((x+y)%2 === 0) {
+                bgCtx.fillRect(x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
+            }
+        }
+    }
+
+    // 2. Draw Path (Smooth, connected look)
+    for (let r = 0; r < ROWS; r++) {
+        for (let c = 0; c < COLS; c++) {
+            if (isPath(c, r)) {
+                let x = c * TILE_SIZE;
+                let y = r * TILE_SIZE;
+                
+                bgCtx.fillStyle = COLORS.path;
+                bgCtx.fillRect(x, y, TILE_SIZE, TILE_SIZE);
+                
+                // Add "Road dots"
+                bgCtx.fillStyle = COLORS.pathBorder;
+                bgCtx.beginPath();
+                bgCtx.arc(x + TILE_SIZE/2, y + TILE_SIZE/2, 2, 0, Math.PI*2);
+                bgCtx.fill();
+            } else {
+                // Decor: Random flowers
+                if(Math.random() > 0.95) {
+                    let fx = c * TILE_SIZE + Math.random() * 30;
+                    let fy = r * TILE_SIZE + Math.random() * 30;
+                    bgCtx.fillStyle = Math.random() > 0.5 ? COLORS.primary : COLORS.secondary;
+                    bgCtx.beginPath();
+                    bgCtx.arc(fx, fy, 3, 0, Math.PI*2);
+                    bgCtx.fill();
+                }
+            }
+        }
+    }
+
+    // --- WATERMARK (MOVED TO LEFT) ---
+    bgCtx.save();
+    bgCtx.font = "bold 14px Quicksand, sans-serif";
+    bgCtx.textAlign = "left"; // CHANGED FROM RIGHT
+    bgCtx.fillStyle = "rgba(0, 0, 0, 0.1)"; 
+    bgCtx.fillText("yunadata.github.io", 15, bgCanvas.height - 15); // X changed to 15
+    bgCtx.restore();
+}
+
+function drawCrystal(x, y) {
+    let hover = 6 * Math.sin(frameCount * 0.05);
+    let cy = y + hover;
+
+    ctx.save();
+    ctx.translate(x, cy);
+    
+    // Pulse Aura
+    let pulse = 25 + 5 * Math.sin(frameCount * 0.1);
+    ctx.shadowBlur = pulse;
+    ctx.shadowColor = COLORS.secondary;
+    
+    // Main Gem
+    ctx.fillStyle = COLORS.secondary; 
+    ctx.beginPath();
+    ctx.moveTo(0, -25); 
+    ctx.lineTo(15, 0);  
+    ctx.lineTo(0, 25);  
+    ctx.lineTo(-15, 0); 
+    ctx.closePath();
+    ctx.fill();
+    
+    // Facet
+    ctx.fillStyle = "rgba(255,255,255,0.4)";
+    ctx.beginPath();
+    ctx.moveTo(0, -25);
+    ctx.lineTo(6, -5);
+    ctx.lineTo(0, 0);
+    ctx.lineTo(-6, -5);
+    ctx.closePath();
+    ctx.fill();
+
+    ctx.restore();
+
+    // Health Bar underneath
+    let hpPct = gameState.lives / gameState.maxLives;
+    if (hpPct < 0) hpPct = 0;
+    
+    let barW = 40;
+    ctx.fillStyle = "rgba(0,0,0,0.1)";
+    ctx.beginPath();
+    ctx.roundRect(x - barW/2, y + 35, barW, 6, 3);
+    ctx.fill();
+
+    ctx.fillStyle = hpPct > 0.3 ? COLORS.secondary : COLORS.primary;
+    ctx.shadowBlur = 5;
+    ctx.shadowColor = ctx.fillStyle;
+    ctx.beginPath();
+    ctx.roundRect(x - barW/2, y + 35, barW * hpPct, 6, 3);
+    ctx.fill();
+    ctx.shadowBlur = 0;
 }
 
 // --- MAIN LOOP ---
@@ -524,26 +699,24 @@ function startGame() {
     document.getElementById('start-btn').classList.add('hidden');
     updateUI();
     
-    // GTM Event
     window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-        'event': 'game_start'
-    });
+    window.dataLayer.push({ 'event': 'game_start' });
     
     if(gameLoopId) cancelAnimationFrame(gameLoopId);
+    
+    initBackground();
+    
     gameLoop();
 }
 
 function gameLoop() {
     if(gameState.gameOver) return;
 
-    // Clear Canvas
-    ctx.fillStyle = COLORS.grass; // Use soft green background
-    ctx.fillRect(0,0, canvas.width, canvas.height);
+    ctx.drawImage(bgCanvas, 0, 0);
 
-    drawMap();
+    let end = path[path.length-1];
+    drawCrystal(end.x*TILE_SIZE + TILE_SIZE/2, end.y*TILE_SIZE + TILE_SIZE/2);
 
-    // Spawn Logic
     if(gameState.enemiesToSpawn > 0) {
         gameState.spawnTimer++;
         if(gameState.spawnTimer > 40) { 
@@ -560,10 +733,8 @@ function gameLoop() {
         window.dataLayer.push({'event': 'wave_complete', 'wave_number': gameState.wave - 1});
     }
 
-    // Updates & Drawing
     gameState.towers.forEach(t => { t.update(); t.draw(); });
 
-    // Draw enemies sorted by Y so lower ones appear in front of higher ones (pseudo-3D)
     gameState.enemies.sort((a,b) => a.y - b.y);
     for(let i = gameState.enemies.length - 1; i >= 0; i--) {
         let e = gameState.enemies[i];
@@ -592,107 +763,13 @@ function gameLoop() {
     gameLoopId = requestAnimationFrame(gameLoop);
 }
 
-// --- VISUALS ---
-
-function drawCrystal(x, y) {
-    let hover = 5 * Math.sin(frameCount * 0.05);
-    let cy = y + hover;
-    
-    // Shadow
-    ctx.fillStyle = "rgba(0,0,0,0.1)";
-    ctx.beginPath();
-    ctx.ellipse(x, y + 20, 15 - hover*0.5, 5, 0, 0, Math.PI*2);
-    ctx.fill();
-
-    ctx.save();
-    ctx.translate(x, cy);
-    
-    ctx.shadowBlur = 20 + 5 * Math.sin(frameCount * 0.1);
-    ctx.shadowColor = "#00d2d3";
-    
-    // Crystal Body
-    ctx.fillStyle = "#2980b9"; 
-    ctx.beginPath();
-    ctx.moveTo(0, -25); 
-    ctx.lineTo(15, 0);  
-    ctx.lineTo(0, 25);  
-    ctx.lineTo(-15, 0); 
-    ctx.closePath();
-    ctx.fill();
-    
-    ctx.fillStyle = "#3498db";
-    ctx.beginPath();
-    ctx.moveTo(0, -25);
-    ctx.lineTo(0, 25);
-    ctx.lineTo(-15, 0);
-    ctx.closePath();
-    ctx.fill();
-
-    ctx.fillStyle = "rgba(255,255,255,0.4)";
-    ctx.beginPath();
-    ctx.moveTo(0, -25);
-    ctx.lineTo(5, -5);
-    ctx.lineTo(0, 0);
-    ctx.lineTo(-5, -5);
-    ctx.closePath();
-    ctx.fill();
-
-    ctx.restore();
-
-    // Health Bar
-    let hpPct = gameState.lives / gameState.maxLives;
-    if (hpPct < 0) hpPct = 0;
-    
-    ctx.fillStyle = "rgba(0,0,0,0.5)";
-    ctx.fillRect(x - 20, y - 45, 40, 6);
-    
-    ctx.fillStyle = hpPct > 0.3 ? "#00d2d3" : "#e74c3c";
-    ctx.fillRect(x - 20, y - 45, 40 * hpPct, 6);
-    
-    ctx.strokeStyle = "white";
-    ctx.lineWidth = 1;
-    ctx.strokeRect(x - 20, y - 45, 40, 6);
-}
-
-function drawMap() {
-    // Fill Path
-    ctx.fillStyle = COLORS.path;
-    
-    let currentX = path[0].x;
-    let currentY = path[0].y;
-    ctx.fillRect(currentX*TILE_SIZE, currentY*TILE_SIZE, TILE_SIZE, TILE_SIZE);
-
-    for(let i=0; i<path.length-1; i++) {
-        let p1 = path[i];
-        let p2 = path[i+1];
-        let dx = Math.sign(p2.x - p1.x);
-        let dy = Math.sign(p2.y - p1.y);
-        let cx = p1.x;
-        let cy = p1.y;
-
-        while(cx !== p2.x || cy !== p2.y) {
-            ctx.fillRect(cx*TILE_SIZE, cy*TILE_SIZE, TILE_SIZE, TILE_SIZE);
-            cx += dx;
-            cy += dy;
-        }
-        ctx.fillRect(p2.x*TILE_SIZE, p2.y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
-    }
-    
-    // Draw Path Border (Visual Polish)
-    // This is a simple trick: redraw the path slightly larger underneath? 
-    // Actually, let's keep it simple for performance. 
-    // Just drawing the Crystal at the end.
-    
-    let end = path[path.length-1];
-    drawCrystal(end.x*TILE_SIZE + TILE_SIZE/2, end.y*TILE_SIZE + TILE_SIZE/2);
-}
+// --- INPUT & UI ---
 
 let mouseX = 0, mouseY = 0;
 canvas.addEventListener('mousemove', (e) => {
     let rect = canvas.getBoundingClientRect();
     let scaleX = canvas.width / rect.width;
     let scaleY = canvas.height / rect.height;
-    
     mouseX = (e.clientX - rect.left) * scaleX;
     mouseY = (e.clientY - rect.top) * scaleY;
 });
@@ -703,11 +780,14 @@ function drawPlacementPreview() {
 
     if(gameState.selectedTower) {
         let t = gameState.selectedTower;
-        ctx.strokeStyle = 'white';
-        ctx.lineWidth = 2;
+        
+        // Highlight Selection
+        ctx.strokeStyle = '#fff';
+        ctx.lineWidth = 3;
         ctx.strokeRect(t.c * TILE_SIZE, t.r * TILE_SIZE, TILE_SIZE, TILE_SIZE);
         
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+        // Range Circle
+        ctx.fillStyle = COLORS.uiRange;
         ctx.beginPath();
         let range = t.buffed ? t.range * 1.2 : t.range;
         ctx.arc(t.x, t.y, range, 0, Math.PI*2);
@@ -720,35 +800,27 @@ function drawPlacementPreview() {
     let onPath = isPath(c, r);
     let hasTower = gameState.towers.some(t => t.c === c && t.r === r);
 
-    // Using Theme Colors for Preview
     if(!onPath && !hasTower) {
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        ctx.fillRect(c*TILE_SIZE, r*TILE_SIZE, TILE_SIZE, TILE_SIZE);
+        // Valid Spot
+        ctx.fillStyle = COLORS.uiSelected;
+        ctx.fillRect(c*TILE_SIZE + 2, r*TILE_SIZE + 2, TILE_SIZE - 4, TILE_SIZE - 4);
         
+        // Range Preview
         let range = TOWER_TYPES[gameState.buildType].range * TILE_SIZE;
         ctx.beginPath();
-        let tColor = TOWER_TYPES[gameState.buildType].color;
-        ctx.strokeStyle = tColor;
-        ctx.lineWidth = 2;
+        ctx.strokeStyle = TOWER_TYPES[gameState.buildType].color;
+        ctx.globalAlpha = 0.5;
+        ctx.setLineDash([10, 5]); 
+        ctx.lineWidth = 1;
         ctx.arc(c*TILE_SIZE + TILE_SIZE/2, r*TILE_SIZE + TILE_SIZE/2, range, 0, Math.PI*2);
         ctx.stroke();
+        ctx.setLineDash([]); 
+        ctx.globalAlpha = 1.0;
     } else {
+        // Invalid Spot
         ctx.fillStyle = 'rgba(231, 76, 60, 0.3)';
         ctx.fillRect(c*TILE_SIZE, r*TILE_SIZE, TILE_SIZE, TILE_SIZE);
     }
-}
-
-function isPath(c, r) {
-    for(let i=0; i<path.length-1; i++) {
-        let p1 = path[i];
-        let p2 = path[i+1];
-        let minX = Math.min(p1.x, p2.x);
-        let maxX = Math.max(p1.x, p2.x);
-        let minY = Math.min(p1.y, p2.y);
-        let maxY = Math.max(p1.y, p2.y);
-        if (c >= minX && c <= maxX && r >= minY && r <= maxY) return true;
-    }
-    return false;
 }
 
 canvas.addEventListener('mousedown', (e) => {
@@ -777,8 +849,6 @@ canvas.addEventListener('mousedown', (e) => {
         }
     }
 });
-
-// --- UI & DATA LOGIC ---
 
 function selectTowerType(type) {
     gameState.buildType = type;
@@ -830,8 +900,8 @@ function sellSelectedTower() {
 function endGame() {
     gameState.gameOver = true;
     document.getElementById('overlay').classList.remove('hidden');
-    document.getElementById('overlay-title').innerText = "DEFEAT";
-    document.getElementById('overlay-desc').innerText = "The Crystal has shattered.";
+    document.getElementById('overlay-title').innerText = "DEFENSE BREACHED";
+    document.getElementById('overlay-desc').innerText = "The Crystal has faded.";
     document.getElementById('start-btn').innerText = "TRY AGAIN";
     document.getElementById('start-btn').classList.remove('hidden');
     
@@ -861,7 +931,6 @@ function submitScore() {
         throw new Error('Network response was not ok.');
     })
     .then(data => {
-        console.log("Submit Response:", data);
         alert("Score Uploaded!");
         document.getElementById('submit-score-container').classList.add('hidden');
         fetchLeaderboard();
@@ -885,7 +954,6 @@ function fetchLeaderboard() {
     fetch(proxyURL)
     .then(res => res.json())
     .then(data => {
-        console.log("Leaderboard Raw Data:", data);
         if (!data.contents) throw new Error("No content from proxy");
         const dreamloData = JSON.parse(data.contents);
 
@@ -915,7 +983,8 @@ function fetchLeaderboard() {
     });
 }
 
-// Initial Map Draw
-ctx.fillStyle = COLORS.grass;
-ctx.fillRect(0,0, canvas.width, canvas.height);
-drawMap();
+// Initial Render
+initBackground();
+ctx.drawImage(bgCanvas, 0, 0);
+let end = path[path.length-1];
+drawCrystal(end.x*TILE_SIZE + TILE_SIZE/2, end.y*TILE_SIZE + TILE_SIZE/2);
