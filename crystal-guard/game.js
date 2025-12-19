@@ -150,49 +150,77 @@ class Enemy {
 
         // --- DRAW BODY ---
         if (this.isBoss) {
-            // FIX: Clean Pentagon Logic
-            ctx.fillStyle = this.color; // Gold
-            ctx.beginPath();
-            let sides = 5;
-            let size = this.radius + 2;
-            for (let i = 0; i < sides; i++) {
-                // Calculate angle for pentagon vertices
-                let angle = (i * 2 * Math.PI / sides) - (Math.PI / 2);
-                let bx = Math.cos(angle) * size;
-                let by = Math.sin(angle) * size;
-                if(i === 0) ctx.moveTo(bx, by);
-                else ctx.lineTo(bx, by);
-            }
-            ctx.closePath();
-            ctx.fill();
+            // --- 1. IRIDESCENT BUBBLE ---
             
-            // Nice Orange Border
-            ctx.strokeStyle = '#e67e22'; 
-            ctx.lineWidth = 2;
+            // Create Gradient (White center -> Blue -> Pink edge)
+            let grad = ctx.createRadialGradient(-4, -4, 2, 0, 0, this.radius);
+            grad.addColorStop(0, 'rgba(255, 255, 255, 0.9)');    // Highlight
+            grad.addColorStop(0.3, 'rgba(204, 213, 255, 0.6)');  // Soft Blue
+            grad.addColorStop(0.7, 'rgba(255, 196, 214, 0.6)');  // Soft Pink
+            grad.addColorStop(1, 'rgba(100, 200, 255, 0.4)');    // Cyan Rim
+
+            ctx.fillStyle = grad;
+            ctx.beginPath();
+            ctx.arc(0, 0, this.radius, 0, Math.PI*2);
+            ctx.fill();
+
+            // Glass Border
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+
+            // Specular Shine (Reflection)
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+            ctx.beginPath();
+            ctx.ellipse(-6, -6, 4, 2, Math.PI / 4, 0, Math.PI * 2);
+            ctx.fill();
+
+            // --- 2. GOLD CROWN ---
+            ctx.fillStyle = '#f1c40f'; // Gold
+            ctx.strokeStyle = '#c27c0e'; // Darker Gold Outline
+            ctx.lineWidth = 1;
+            ctx.lineJoin = 'round';
+
+            // Crown Geometry (sits on top of the bubble)
+            let cy = -this.radius + 2; // Y position relative to center
+            let cw = 14; // Half width
+            let ch = 10; // Height
+
+            ctx.beginPath();
+            ctx.moveTo(-cw, cy);             // Bottom Left
+            ctx.lineTo(-cw, cy - ch);        // Left Tip
+            ctx.lineTo(-cw/2, cy - ch/2);    // Left Valley
+            ctx.lineTo(0, cy - ch - 3);      // Center Tip (Tallest)
+            ctx.lineTo(cw/2, cy - ch/2);     // Right Valley
+            ctx.lineTo(cw, cy - ch);         // Right Tip
+            ctx.lineTo(cw, cy);              // Bottom Right
+            ctx.closePath();
+            
+            ctx.fill();
             ctx.stroke();
 
         } else {
-            // Standard Enemy: Circles
+            // --- STANDARD ENEMY ---
             ctx.fillStyle = this.color;
             ctx.beginPath();
             ctx.arc(0, 0, this.radius, 0, Math.PI*2);
             ctx.fill();
+
+            // Eyes (Cute style)
+            ctx.fillStyle = 'white';
+            ctx.beginPath();
+            ctx.arc(-5, -2, 4, 0, Math.PI*2);
+            ctx.arc(5, -2, 4, 0, Math.PI*2);
+            ctx.fill();
+
+            ctx.fillStyle = '#333';
+            ctx.beginPath();
+            ctx.arc(-5 + (this.speed/2), -2, 1.5, 0, Math.PI*2);
+            ctx.arc(5 + (this.speed/2), -2, 1.5, 0, Math.PI*2);
+            ctx.fill();
         }
 
-        // Eyes (Cute style)
-        ctx.fillStyle = 'white';
-        ctx.beginPath();
-        ctx.arc(-5, -2, 4, 0, Math.PI*2);
-        ctx.arc(5, -2, 4, 0, Math.PI*2);
-        ctx.fill();
-
-        ctx.fillStyle = '#333';
-        ctx.beginPath();
-        ctx.arc(-5 + (this.speed/2), -2, 1.5, 0, Math.PI*2);
-        ctx.arc(5 + (this.speed/2), -2, 1.5, 0, Math.PI*2);
-        ctx.fill();
-
-        // Ice Effect Overlay
+        // Ice Effect Overlay (Shared for both)
         if(this.slowed > 0) {
             ctx.fillStyle = 'rgba(204, 213, 255, 0.6)';
             ctx.beginPath();
@@ -209,13 +237,13 @@ class Enemy {
             
             ctx.fillStyle = 'rgba(0,0,0,0.2)';
             ctx.beginPath();
-            ctx.roundRect(this.x - hpW/2, this.y - 28, hpW, 4, 2);
+            ctx.roundRect(this.x - hpW/2, this.y - 32, hpW, 4, 2);
             ctx.fill();
             
             // Color based on HP
             ctx.fillStyle = hpPct > 0.5 ? '#2ecc71' : '#e74c3c';
             ctx.beginPath();
-            ctx.roundRect(this.x - hpW/2, this.y - 28, hpW * hpPct, 4, 2);
+            ctx.roundRect(this.x - hpW/2, this.y - 32, hpW * hpPct, 4, 2);
             ctx.fill();
         }
     }
