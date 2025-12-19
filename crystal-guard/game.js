@@ -39,7 +39,8 @@ let gameState = {
 const path = [
     {x: 0, y: 2}, {x: 5, y: 2}, {x: 5, y: 8}, 
     {x: 12, y: 8}, {x: 12, y: 4}, {x: 18, y: 4}, {x: 18, y: 10}, 
-    {x: 8, y: 10}, {x: 8, y: 13}, {x: 20, y: 13}
+    {x: 8, y: 10}, {x: 8, y: 13}, 
+    {x: 19, y: 13} // <--- CHANGED from 20 to 19
 ];
 
 // Tower Definitions
