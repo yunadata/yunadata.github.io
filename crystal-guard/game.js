@@ -642,19 +642,39 @@ function endGame() {
     fetchLeaderboard();
 }
 
+/**
+ * FIXED FETCH LOGIC:
+ * Uses a Proxy (allorigins.win) to solve:
+ * 1. Mixed Content (HTTPS page fetching HTTP Dreamlo)
+ * 2. CORS (Dreamlo server rejecting browser fetch)
+ */
+
 function submitScore() {
     const name = document.getElementById('player-name').value;
     if(!name) return alert("Please enter a name!");
     
-    const url = `https://dreamlo.com/lb/${DREAMLO_PRIVATE}/add-pipe/${encodeURIComponent(name)}/${gameState.score}`;
+    // Construct Dreamlo URL
+    const dreamloURL = `http://dreamlo.com/lb/${DREAMLO_PRIVATE}/add-pipe/${encodeURIComponent(name)}/${gameState.score}`;
+    
+    // Wrap in Proxy
+    const proxyURL = `https://api.allorigins.win/get?url=${encodeURIComponent(dreamloURL)}`;
 
-    fetch(url)
+    fetch(proxyURL)
     .then(response => {
+        if (response.ok) return response.json();
+        throw new Error('Network response was not ok.');
+    })
+    .then(data => {
         alert("Score Uploaded!");
         document.getElementById('submit-score-container').classList.add('hidden');
         fetchLeaderboard();
     })
-    .catch(err => console.error("Error submitting score:", err));
+    .catch(err => {
+        console.error("Error submitting score:", err);
+        // Fallback: If proxy fails, try direct fetch (might work on some browsers)
+        // But likely we just alert the user.
+        alert("Could not connect to leaderboard. Check internet?");
+    });
 }
 
 function fetchLeaderboard() {
@@ -664,20 +684,32 @@ function fetchLeaderboard() {
     container.classList.remove('hidden');
     list.innerHTML = "Fetching global scores...";
 
-    const url = `https://dreamlo.com/lb/${DREAMLO_PUBLIC}/json`;
+    // Construct Dreamlo URL (JSON endpoint)
+    const dreamloURL = `http://dreamlo.com/lb/${DREAMLO_PUBLIC}/json`;
+    
+    // Wrap in Proxy
+    const proxyURL = `https://api.allorigins.win/get?url=${encodeURIComponent(dreamloURL)}`;
 
-    fetch(url)
-    .then(res => res.json())
+    fetch(proxyURL)
+    .then(res => res.json()) // Parse Proxy JSON
     .then(data => {
+        // The actual Dreamlo data is inside data.contents (as a string)
+        if(!data.contents) throw new Error("No content from proxy");
+        
+        const dreamloData = JSON.parse(data.contents);
+        
         let html = "";
         let scores = [];
 
-        if (data.dreamlo.leaderboard === null) {
+        if (dreamloData.dreamlo.leaderboard === null) {
             html = "<div style='text-align:center'>No scores yet!</div>";
         } else {
-            let entries = data.dreamlo.leaderboard.entry;
+            let entries = dreamloData.dreamlo.leaderboard.entry;
             scores = Array.isArray(entries) ? entries : [entries];
             
+            // Sort just in case Dreamlo didn't
+            scores.sort((a,b) => parseInt(b.score) - parseInt(a.score));
+
             scores.slice(0, 10).forEach(entry => {
                 html += `
                 <div class="score-entry">
@@ -690,7 +722,7 @@ function fetchLeaderboard() {
     })
     .catch(err => {
         list.innerHTML = "Error loading leaderboard.";
-        console.error(err);
+        console.error("Leaderboard Error:", err);
     });
 }
 
