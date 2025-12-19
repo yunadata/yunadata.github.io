@@ -21,6 +21,7 @@ let frameCount = 0;
 let gameState = {
     gold: 150,
     lives: 20,
+    maxLives: 20, // Added for health bar calculation
     score: 0,
     wave: 1,
     enemies: [],
@@ -355,6 +356,7 @@ function startGame() {
     gameState = {
         gold: 150,
         lives: 20,
+        maxLives: 20,
         score: 0,
         wave: 1,
         enemies: [],
@@ -442,13 +444,83 @@ function gameLoop() {
     gameLoopId = requestAnimationFrame(gameLoop);
 }
 
-// --- RENDER HELPERS ---
+// --- VISUALS ---
+
+// New function to draw the Fancy Crystal
+function drawCrystal(x, y) {
+    // 1. Floating Animation (Sine wave)
+    let hover = 5 * Math.sin(frameCount * 0.05);
+    let cy = y + hover;
+    
+    // 2. Shadow on the ground (Scales with hover to look 3D)
+    ctx.fillStyle = "rgba(0,0,0,0.3)";
+    ctx.beginPath();
+    // Ellipse shadow
+    ctx.ellipse(x, y + 20, 15 - hover*0.5, 5, 0, 0, Math.PI*2);
+    ctx.fill();
+
+    // 3. Draw Crystal
+    ctx.save();
+    ctx.translate(x, cy);
+    
+    // Glow Effect
+    ctx.shadowBlur = 20 + 5 * Math.sin(frameCount * 0.1);
+    ctx.shadowColor = "#00d2d3"; // Cyan glow
+    
+    // Main Body (Darker Blue)
+    ctx.fillStyle = "#2980b9"; 
+    ctx.beginPath();
+    ctx.moveTo(0, -25); // Top Point
+    ctx.lineTo(15, 0);  // Right Mid
+    ctx.lineTo(0, 25);  // Bottom Point
+    ctx.lineTo(-15, 0); // Left Mid
+    ctx.closePath();
+    ctx.fill();
+    
+    // Left Facet (Lighter Blue)
+    ctx.fillStyle = "#3498db";
+    ctx.beginPath();
+    ctx.moveTo(0, -25);
+    ctx.lineTo(0, 25);
+    ctx.lineTo(-15, 0);
+    ctx.closePath();
+    ctx.fill();
+
+    // Top Right Highlight (Whiteish)
+    ctx.fillStyle = "rgba(255,255,255,0.4)";
+    ctx.beginPath();
+    ctx.moveTo(0, -25);
+    ctx.lineTo(5, -5);
+    ctx.lineTo(0, 0);
+    ctx.lineTo(-5, -5);
+    ctx.closePath();
+    ctx.fill();
+
+    ctx.restore();
+
+    // 4. Crystal Health Bar
+    let hpPct = gameState.lives / gameState.maxLives;
+    if (hpPct < 0) hpPct = 0;
+    
+    // Background bar
+    ctx.fillStyle = "rgba(0,0,0,0.5)";
+    ctx.fillRect(x - 20, y - 45, 40, 6);
+    
+    // Health bar
+    ctx.fillStyle = hpPct > 0.3 ? "#00d2d3" : "#e74c3c"; // Cyan usually, Red if low
+    ctx.fillRect(x - 20, y - 45, 40 * hpPct, 6);
+    
+    // Border
+    ctx.strokeStyle = "rgba(255,255,255,0.5)";
+    ctx.lineWidth = 1;
+    ctx.strokeRect(x - 20, y - 45, 40, 6);
+}
 
 function drawMap() {
     // Path
     ctx.fillStyle = '#95a5a6';
     
-    // Simple block path drawing
+    // Draw tiles
     let currentX = path[0].x;
     let currentY = path[0].y;
     ctx.fillRect(currentX*TILE_SIZE, currentY*TILE_SIZE, TILE_SIZE, TILE_SIZE);
@@ -469,22 +541,14 @@ function drawMap() {
         ctx.fillRect(p2.x*TILE_SIZE, p2.y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
     }
 
-    // Crystal
+    // DRAW THE CRYSTAL (Replaces the old blue circle)
     let end = path[path.length-1];
-    ctx.fillStyle = '#3498db';
-    ctx.beginPath();
-    ctx.arc(end.x*TILE_SIZE + TILE_SIZE/2, end.y*TILE_SIZE + TILE_SIZE/2, 15, 0, Math.PI*2);
-    ctx.fill();
-    ctx.shadowBlur = 20;
-    ctx.shadowColor = "cyan";
-    ctx.stroke();
-    ctx.shadowBlur = 0;
+    drawCrystal(end.x*TILE_SIZE + TILE_SIZE/2, end.y*TILE_SIZE + TILE_SIZE/2);
 }
 
 let mouseX = 0, mouseY = 0;
 canvas.addEventListener('mousemove', (e) => {
     let rect = canvas.getBoundingClientRect();
-    // Adjust for canvas scaling in CSS
     let scaleX = canvas.width / rect.width;
     let scaleY = canvas.height / rect.height;
     
