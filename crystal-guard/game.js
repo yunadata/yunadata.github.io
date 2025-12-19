@@ -1,6 +1,6 @@
 /**
  * CRYSTAL GUARD - GAME ENGINE
- * Portfolio Version for Yuna An Vu
+ * Portfolio Version: Visual Overhaul
  */
 
 const canvas = document.getElementById('gameCanvas');
@@ -9,6 +9,19 @@ const ctx = canvas.getContext('2d');
 // --- LEADERBOARD CONFIG ---
 const DREAMLO_PRIVATE = "-QMdaM9NQUuOpn6cCl9WjAH6v9CVOy9ka-pRpFcjM8TA";
 const DREAMLO_PUBLIC  = "69457d098f40bbcf805ee9ba";
+
+// --- THEME COLORS (Matches Portfolio) ---
+const COLORS = {
+    primary: '#FFC4D6',   // Pink
+    secondary: '#CCD5FF', // Periwinkle
+    accent: '#FFE5B4',    // Peach
+    dark: '#4A4A4A',      // Dark Text
+    grass: '#7bed9f',     // Soft Green
+    path: '#ffffff',      // White Road
+    pathBorder: '#dfe6e9',
+    enemy: '#2d3436',     // Dark Charcoal
+    enemyBoss: '#6c5ce7'  // Purple
+};
 
 // --- GAME CONSTANTS ---
 const TILE_SIZE = 40;
@@ -21,7 +34,7 @@ let frameCount = 0;
 let gameState = {
     gold: 150,
     lives: 20,
-    maxLives: 20, // Added for health bar calculation
+    maxLives: 20,
     score: 0,
     wave: 1,
     enemies: [],
@@ -35,20 +48,19 @@ let gameState = {
     buildType: 'archer' 
 };
 
-// Map Path (Waypoints in Grid Coordinates)
+// Map Path
 const path = [
     {x: 0, y: 2}, {x: 5, y: 2}, {x: 5, y: 8}, 
     {x: 12, y: 8}, {x: 12, y: 4}, {x: 18, y: 4}, {x: 18, y: 10}, 
-    {x: 8, y: 10}, {x: 8, y: 13}, 
-    {x: 19, y: 13} // <--- CHANGED from 20 to 19
+    {x: 8, y: 10}, {x: 8, y: 13}, {x: 19, y: 13} // Fixed coord
 ];
 
-// Tower Definitions
+// Tower Definitions (Using Portfolio Colors)
 const TOWER_TYPES = {
-    archer: { name: 'Archer', cost: 50, range: 3.5, damage: 15, cooldown: 30, color: '#f39c12', type: 'single' },
-    mage:   { name: 'Mage', cost: 100, range: 4, damage: 5, cooldown: 45, color: '#3498db', type: 'slow' },
-    cannon: { name: 'Cannon', cost: 150, range: 4.5, damage: 30, cooldown: 90, color: '#2c3e50', type: 'aoe' },
-    support:{ name: 'Support', cost: 200, range: 3, damage: 0, cooldown: 0, color: '#ecf0f1', type: 'buff' }
+    archer: { name: 'Archer', cost: 50, range: 3.5, damage: 15, cooldown: 30, color: COLORS.primary, type: 'single' },
+    mage:   { name: 'Mage', cost: 100, range: 4, damage: 5, cooldown: 45, color: COLORS.secondary, type: 'slow' },
+    cannon: { name: 'Cannon', cost: 150, range: 4.5, damage: 30, cooldown: 90, color: '#636e72', type: 'aoe' },
+    support:{ name: 'Support', cost: 200, range: 3, damage: 0, cooldown: 0, color: COLORS.accent, type: 'buff' }
 };
 
 // --- CLASSES ---
@@ -59,24 +71,25 @@ class Enemy {
         this.x = path[0].x * TILE_SIZE; 
         this.y = path[0].y * TILE_SIZE + (TILE_SIZE/2);
         
-        // Difficulty Scaling
         let difficultyMult = Math.pow(1.15, wave - 1);
         
         this.maxHp = 20 * difficultyMult;
         this.hp = this.maxHp;
         this.speed = 1.5 + (wave * 0.05);
         this.radius = 12;
-        this.color = '#c0392b';
+        this.isBoss = false;
+        this.color = COLORS.enemy;
         this.slowed = 0; 
         this.value = 5 + Math.floor(wave * 0.5);
+        this.wobbleOffset = Math.random() * 10;
 
-        // Boss Logic
         if(wave % 5 === 0) { 
             this.maxHp *= 3;
             this.hp = this.maxHp;
-            this.radius = 18;
+            this.radius = 16;
             this.speed *= 0.7;
-            this.color = '#8e44ad'; 
+            this.isBoss = true;
+            this.color = COLORS.enemyBoss; 
         }
     }
 
@@ -110,23 +123,63 @@ class Enemy {
     }
 
     draw() {
+        // Wobble Animation
+        let wobble = Math.sin((frameCount + this.wobbleOffset) * 0.2) * 3;
+        
+        ctx.save();
+        ctx.translate(this.x, this.y + wobble);
+
+        // Body (Cute Blob Shape)
         ctx.fillStyle = this.color;
         ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.arc(0, 0, this.radius, Math.PI, 0); // Top half circle
+        // Wavy bottom
+        ctx.bezierCurveTo(this.radius, this.radius, -this.radius, this.radius, -this.radius, 0);
         ctx.fill();
+
+        // Eyes (White)
+        ctx.fillStyle = 'white';
+        ctx.beginPath();
+        ctx.arc(-4, -2, 4, 0, Math.PI*2);
+        ctx.arc(4, -2, 4, 0, Math.PI*2);
+        ctx.fill();
+
+        // Pupils (Black) look at crystal
+        ctx.fillStyle = 'black';
+        ctx.beginPath();
+        ctx.arc(-4 + (this.speed/2), -2, 1.5, 0, Math.PI*2);
+        ctx.arc(4 + (this.speed/2), -2, 1.5, 0, Math.PI*2);
+        ctx.fill();
+
+        // Crown for Boss
+        if(this.isBoss) {
+            ctx.fillStyle = '#f1c40f'; // Gold
+            ctx.beginPath();
+            ctx.moveTo(-8, -this.radius);
+            ctx.lineTo(-4, -this.radius - 8);
+            ctx.lineTo(0, -this.radius - 4);
+            ctx.lineTo(4, -this.radius - 8);
+            ctx.lineTo(8, -this.radius);
+            ctx.fill();
+        }
+
+        // Slowed Ice Effect
+        if(this.slowed > 0) {
+            ctx.fillStyle = 'rgba(116, 185, 255, 0.5)';
+            ctx.beginPath();
+            ctx.arc(0, 5, this.radius, 0, Math.PI*2);
+            ctx.fill();
+        }
+
+        ctx.restore();
 
         // Health bar
         if(this.hp < this.maxHp) {
-            ctx.fillStyle = 'red';
-            ctx.fillRect(this.x - 10, this.y - 20, 20, 4);
-            ctx.fillStyle = '#2ecc71';
-            ctx.fillRect(this.x - 10, this.y - 20, 20 * (this.hp / this.maxHp), 4);
-        }
-        
-        if(this.slowed > 0) {
-            ctx.strokeStyle = '#3498db';
-            ctx.lineWidth = 2;
-            ctx.stroke();
+            let hpW = 24;
+            ctx.fillStyle = 'rgba(0,0,0,0.5)';
+            ctx.fillRect(this.x - hpW/2, this.y - 25, hpW, 4);
+            ctx.fillStyle = '#00b894';
+            ctx.fillRect(this.x - hpW/2, this.y - 25, hpW * (this.hp / this.maxHp), 4);
         }
     }
 
@@ -165,6 +218,7 @@ class Tower {
         this.cooldown = 0;
         this.color = def.color;
         this.buffed = false;
+        this.angle = 0; // For rotation
     }
 
     upgrade() {
@@ -172,27 +226,16 @@ class Tower {
         this.damage *= 1.3;
         this.range *= 1.1;
         this.cooldownMax *= 0.9;
-        
-        // Track Upgrade Event in GA4
         window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push({
-            'event': 'tower_upgrade',
-            'tower_type': this.typeKey,
-            'tower_level': this.level
-        });
+        window.dataLayer.push({'event': 'tower_upgrade', 'tower_type': this.typeKey});
     }
 
-    getSellValue() {
-        let totalCost = TOWER_TYPES[this.typeKey].cost;
-        return Math.floor(totalCost * 0.75);
-    }
-
-    getUpgradeCost() {
-        return Math.floor(TOWER_TYPES[this.typeKey].cost * 0.8 * this.level);
-    }
+    getSellValue() { return Math.floor(TOWER_TYPES[this.typeKey].cost * 0.75); }
+    getUpgradeCost() { return Math.floor(TOWER_TYPES[this.typeKey].cost * 0.8 * this.level); }
 
     update() {
         if (this.typeKey === 'support') {
+            this.angle += 0.05; // Radar rotation
             gameState.towers.forEach(t => {
                 if(t !== this && Math.hypot(t.x - this.x, t.y - this.y) <= this.range) {
                     t.buffed = true;
@@ -203,20 +246,24 @@ class Tower {
 
         if (this.cooldown > 0) this.cooldown--;
 
-        if (this.cooldown <= 0) {
-            let target = null;
-            // Target enemy furthest along path
-            for (let e of gameState.enemies) {
-                let d = Math.hypot(e.x - this.x, e.y - this.y);
-                let effectiveRange = this.buffed ? this.range * 1.2 : this.range;
-                
-                if (d <= effectiveRange) {
-                    target = e; 
-                    break; 
-                }
+        let target = null;
+        let minDist = Infinity;
+        
+        // Find Target
+        for (let e of gameState.enemies) {
+            let d = Math.hypot(e.x - this.x, e.y - this.y);
+            let effectiveRange = this.buffed ? this.range * 1.2 : this.range;
+            if (d <= effectiveRange) {
+                target = e; 
+                break; 
             }
+        }
 
-            if (target) {
+        if (target) {
+            // Rotate towards target
+            this.angle = Math.atan2(target.y - this.y, target.x - this.x);
+            
+            if (this.cooldown <= 0) {
                 this.shoot(target);
                 this.cooldown = this.buffed ? this.cooldownMax * 0.8 : this.cooldownMax;
             }
@@ -239,32 +286,109 @@ class Tower {
     }
 
     draw() {
-        ctx.fillStyle = '#7f8c8d';
-        ctx.fillRect(this.c * TILE_SIZE + 2, this.r * TILE_SIZE + 2, TILE_SIZE - 4, TILE_SIZE - 4);
-        
-        ctx.fillStyle = this.color;
-        if(this.buffed) ctx.strokeStyle = 'white';
-        
-        ctx.beginPath();
-        if (this.typeKey === 'archer') {
-            ctx.arc(this.x, this.y, 10, 0, Math.PI*2);
-        } else if (this.typeKey === 'cannon') {
-            ctx.fillRect(this.x - 12, this.y - 12, 24, 24);
-        } else if (this.typeKey === 'mage') {
-            ctx.moveTo(this.x, this.y - 15);
-            ctx.lineTo(this.x + 12, this.y + 10);
-            ctx.lineTo(this.x - 12, this.y + 10);
-        } else {
-            ctx.arc(this.x, this.y, 8, 0, Math.PI*2);
-            ctx.strokeRect(this.x - 5, this.y - 15, 10, 30);
-            ctx.strokeRect(this.x - 15, this.y - 5, 30, 10);
-        }
-        ctx.fill();
-        if(this.buffed) ctx.stroke();
+        ctx.save();
+        ctx.translate(this.x, this.y);
 
+        // 1. Draw Base (Same for all)
+        ctx.fillStyle = '#b2bec3'; // Light stone grey
+        ctx.fillRect(-16, -16, 32, 32);
+        
+        // Border for base
+        ctx.strokeStyle = '#636e72';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(-16, -16, 32, 32);
+
+        // Buff Indicator
+        if(this.buffed) {
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = COLORS.accent;
+            ctx.strokeStyle = COLORS.accent;
+            ctx.lineWidth = 2;
+            ctx.strokeRect(-18, -18, 36, 36);
+            ctx.shadowBlur = 0;
+        }
+
+        // 2. Draw Specific Tower Art
+        if (this.typeKey === 'archer') {
+            // Turret Base
+            ctx.rotate(this.angle);
+            ctx.fillStyle = this.color; // Pink
+            ctx.beginPath();
+            ctx.arc(0, 0, 12, 0, Math.PI*2);
+            ctx.fill();
+            // Crossbow / Arrow
+            ctx.fillStyle = '#fff';
+            ctx.fillRect(0, -2, 16, 4); // Barrel
+            ctx.strokeStyle = '#555';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(5, -10);
+            ctx.lineTo(5, 10); // Bow string
+            ctx.stroke();
+
+        } else if (this.typeKey === 'mage') {
+            // Pedestal
+            ctx.fillStyle = '#555';
+            ctx.fillRect(-6, -6, 12, 12);
+            // Floating Crystal
+            let float = Math.sin(frameCount * 0.1) * 3;
+            ctx.fillStyle = this.color; // Periwinkle
+            ctx.beginPath();
+            ctx.moveTo(0, -10 + float);
+            ctx.lineTo(8, 0 + float);
+            ctx.lineTo(0, 10 + float);
+            ctx.lineTo(-8, 0 + float);
+            ctx.fill();
+            // Glow
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = this.color;
+            ctx.fill();
+            ctx.shadowBlur = 0;
+
+        } else if (this.typeKey === 'cannon') {
+            // Rotating heavy barrel
+            ctx.rotate(this.angle);
+            ctx.fillStyle = '#2d3436';
+            ctx.fillRect(-8, -8, 24, 16); // Barrel
+            ctx.fillStyle = this.color; // Dark Grey stripe
+            ctx.fillRect(-5, -6, 6, 12); 
+
+        } else if (this.typeKey === 'support') {
+            // Radar Dish
+            ctx.rotate(this.angle);
+            ctx.fillStyle = this.color; // Peach
+            ctx.beginPath();
+            ctx.arc(0, 0, 6, 0, Math.PI*2); // Center
+            ctx.fill();
+            
+            ctx.strokeStyle = this.color;
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.arc(0, 0, 12, -0.5, 0.5); // Dish curve
+            ctx.stroke();
+            
+            // Pulse wave
+            let pulse = (frameCount % 40) / 2;
+            ctx.strokeStyle = 'rgba(255, 229, 180, 0.5)';
+            ctx.beginPath();
+            ctx.arc(5, 0, 12 + pulse, -0.5, 0.5);
+            ctx.stroke();
+        }
+
+        // 3. Level Dots
+        ctx.restore();
         ctx.fillStyle = 'white';
+        ctx.strokeStyle = 'black';
+        ctx.lineWidth = 1;
         for(let i=0; i<this.level; i++) {
-            ctx.fillRect(this.x - 8 + (i*4), this.y - 12, 2, 2);
+            let dx = this.x - 8 + (i*5);
+            let dy = this.y - 12;
+            if (this.typeKey === 'mage') dy -= 8; // Move up for mage
+            
+            ctx.beginPath();
+            ctx.arc(dx, dy, 2, 0, Math.PI*2);
+            ctx.fill();
+            ctx.stroke();
         }
     }
 }
@@ -279,6 +403,7 @@ class Projectile {
         this.color = color;
         this.speed = 8;
         this.active = true;
+        this.angle = Math.atan2(target.y - y, target.x - x);
     }
 
     update() {
@@ -296,6 +421,7 @@ class Projectile {
         } else {
             this.x += (dx/dist) * this.speed;
             this.y += (dy/dist) * this.speed;
+            this.angle = Math.atan2(dy, dx);
         }
     }
 
@@ -319,9 +445,28 @@ class Projectile {
 
     draw() {
         ctx.fillStyle = this.color;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, 4, 0, Math.PI*2);
-        ctx.fill();
+        
+        if(this.type === 'single') {
+            // Arrow
+            ctx.save();
+            ctx.translate(this.x, this.y);
+            ctx.rotate(this.angle);
+            ctx.fillRect(-5, -1, 10, 2);
+            ctx.restore();
+        } else if (this.type === 'aoe') {
+            // Cannonball
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, 4, 0, Math.PI*2);
+            ctx.fill();
+        } else {
+            // Magic Bolt
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, 3, 0, Math.PI*2);
+            ctx.shadowBlur = 5;
+            ctx.shadowColor = this.color;
+            ctx.fill();
+            ctx.shadowBlur = 0;
+        }
     }
 }
 
@@ -342,7 +487,9 @@ class Particle {
     draw() {
         ctx.fillStyle = this.color;
         ctx.globalAlpha = this.life / 20;
-        ctx.fillRect(this.x, this.y, 3, 3);
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, 2, 0, Math.PI*2);
+        ctx.fill();
         ctx.globalAlpha = 1;
     }
 }
@@ -390,7 +537,10 @@ function startGame() {
 function gameLoop() {
     if(gameState.gameOver) return;
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // Clear Canvas
+    ctx.fillStyle = COLORS.grass; // Use soft green background
+    ctx.fillRect(0,0, canvas.width, canvas.height);
+
     drawMap();
 
     // Spawn Logic
@@ -406,18 +556,15 @@ function gameLoop() {
         gameState.enemiesToSpawn = 5 + Math.floor(gameState.wave * 1.5);
         gameState.spawnTimer = -120; 
         updateUI();
-        
-        // GTM Wave Complete
         window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push({
-            'event': 'wave_complete',
-            'wave_number': gameState.wave - 1
-        });
+        window.dataLayer.push({'event': 'wave_complete', 'wave_number': gameState.wave - 1});
     }
 
-    // Updates
+    // Updates & Drawing
     gameState.towers.forEach(t => { t.update(); t.draw(); });
 
+    // Draw enemies sorted by Y so lower ones appear in front of higher ones (pseudo-3D)
+    gameState.enemies.sort((a,b) => a.y - b.y);
     for(let i = gameState.enemies.length - 1; i >= 0; i--) {
         let e = gameState.enemies[i];
         e.update();
@@ -447,38 +594,32 @@ function gameLoop() {
 
 // --- VISUALS ---
 
-// New function to draw the Fancy Crystal
 function drawCrystal(x, y) {
-    // 1. Floating Animation (Sine wave)
     let hover = 5 * Math.sin(frameCount * 0.05);
     let cy = y + hover;
     
-    // 2. Shadow on the ground (Scales with hover to look 3D)
-    ctx.fillStyle = "rgba(0,0,0,0.3)";
+    // Shadow
+    ctx.fillStyle = "rgba(0,0,0,0.1)";
     ctx.beginPath();
-    // Ellipse shadow
     ctx.ellipse(x, y + 20, 15 - hover*0.5, 5, 0, 0, Math.PI*2);
     ctx.fill();
 
-    // 3. Draw Crystal
     ctx.save();
     ctx.translate(x, cy);
     
-    // Glow Effect
     ctx.shadowBlur = 20 + 5 * Math.sin(frameCount * 0.1);
-    ctx.shadowColor = "#00d2d3"; // Cyan glow
+    ctx.shadowColor = "#00d2d3";
     
-    // Main Body (Darker Blue)
+    // Crystal Body
     ctx.fillStyle = "#2980b9"; 
     ctx.beginPath();
-    ctx.moveTo(0, -25); // Top Point
-    ctx.lineTo(15, 0);  // Right Mid
-    ctx.lineTo(0, 25);  // Bottom Point
-    ctx.lineTo(-15, 0); // Left Mid
+    ctx.moveTo(0, -25); 
+    ctx.lineTo(15, 0);  
+    ctx.lineTo(0, 25);  
+    ctx.lineTo(-15, 0); 
     ctx.closePath();
     ctx.fill();
     
-    // Left Facet (Lighter Blue)
     ctx.fillStyle = "#3498db";
     ctx.beginPath();
     ctx.moveTo(0, -25);
@@ -487,7 +628,6 @@ function drawCrystal(x, y) {
     ctx.closePath();
     ctx.fill();
 
-    // Top Right Highlight (Whiteish)
     ctx.fillStyle = "rgba(255,255,255,0.4)";
     ctx.beginPath();
     ctx.moveTo(0, -25);
@@ -499,29 +639,25 @@ function drawCrystal(x, y) {
 
     ctx.restore();
 
-    // 4. Crystal Health Bar
+    // Health Bar
     let hpPct = gameState.lives / gameState.maxLives;
     if (hpPct < 0) hpPct = 0;
     
-    // Background bar
     ctx.fillStyle = "rgba(0,0,0,0.5)";
     ctx.fillRect(x - 20, y - 45, 40, 6);
     
-    // Health bar
-    ctx.fillStyle = hpPct > 0.3 ? "#00d2d3" : "#e74c3c"; // Cyan usually, Red if low
+    ctx.fillStyle = hpPct > 0.3 ? "#00d2d3" : "#e74c3c";
     ctx.fillRect(x - 20, y - 45, 40 * hpPct, 6);
     
-    // Border
-    ctx.strokeStyle = "rgba(255,255,255,0.5)";
+    ctx.strokeStyle = "white";
     ctx.lineWidth = 1;
     ctx.strokeRect(x - 20, y - 45, 40, 6);
 }
 
 function drawMap() {
-    // Path
-    ctx.fillStyle = '#95a5a6';
+    // Fill Path
+    ctx.fillStyle = COLORS.path;
     
-    // Draw tiles
     let currentX = path[0].x;
     let currentY = path[0].y;
     ctx.fillRect(currentX*TILE_SIZE, currentY*TILE_SIZE, TILE_SIZE, TILE_SIZE);
@@ -541,8 +677,12 @@ function drawMap() {
         }
         ctx.fillRect(p2.x*TILE_SIZE, p2.y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
     }
-
-    // DRAW THE CRYSTAL (Replaces the old blue circle)
+    
+    // Draw Path Border (Visual Polish)
+    // This is a simple trick: redraw the path slightly larger underneath? 
+    // Actually, let's keep it simple for performance. 
+    // Just drawing the Crystal at the end.
+    
     let end = path[path.length-1];
     drawCrystal(end.x*TILE_SIZE + TILE_SIZE/2, end.y*TILE_SIZE + TILE_SIZE/2);
 }
@@ -580,13 +720,16 @@ function drawPlacementPreview() {
     let onPath = isPath(c, r);
     let hasTower = gameState.towers.some(t => t.c === c && t.r === r);
 
+    // Using Theme Colors for Preview
     if(!onPath && !hasTower) {
-        ctx.fillStyle = 'rgba(241, 196, 15, 0.3)';
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
         ctx.fillRect(c*TILE_SIZE, r*TILE_SIZE, TILE_SIZE, TILE_SIZE);
         
         let range = TOWER_TYPES[gameState.buildType].range * TILE_SIZE;
         ctx.beginPath();
-        ctx.strokeStyle = 'rgba(241, 196, 15, 0.5)';
+        let tColor = TOWER_TYPES[gameState.buildType].color;
+        ctx.strokeStyle = tColor;
+        ctx.lineWidth = 2;
         ctx.arc(c*TILE_SIZE + TILE_SIZE/2, r*TILE_SIZE + TILE_SIZE/2, range, 0, Math.PI*2);
         ctx.stroke();
     } else {
@@ -695,7 +838,6 @@ function endGame() {
     document.getElementById('submit-score-container').classList.remove('hidden');
     document.getElementById('final-score').innerText = gameState.score;
     
-    // GTM Game End
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
         'event': 'game_complete',
@@ -703,23 +845,14 @@ function endGame() {
         'game_wave': gameState.wave
     });
 
-    // Fetch scores immediately so user sees what to beat
     fetchLeaderboard();
 }
-
-/**
- * FIXED LEADERBOARD LOGIC (AllOrigins + Cache Busting)
- */
 
 function submitScore() {
     const name = document.getElementById('player-name').value;
     if(!name) return alert("Please enter a name!");
     
-    // 1. Construct Dreamlo URL
-    // We do NOT add cache busting here because it is a write operation
     const dreamloURL = `http://dreamlo.com/lb/${DREAMLO_PRIVATE}/add-pipe/${encodeURIComponent(name)}/${gameState.score}`;
-    
-    // 2. Wrap in Proxy (AllOrigins)
     const proxyURL = `https://api.allorigins.win/get?url=${encodeURIComponent(dreamloURL)}`;
 
     fetch(proxyURL)
@@ -731,7 +864,6 @@ function submitScore() {
         console.log("Submit Response:", data);
         alert("Score Uploaded!");
         document.getElementById('submit-score-container').classList.add('hidden');
-        // Refresh list immediately
         fetchLeaderboard();
     })
     .catch(err => {
@@ -747,37 +879,24 @@ function fetchLeaderboard() {
     container.classList.remove('hidden');
     list.innerHTML = "Fetching global scores...";
 
-    // 1. Construct Dreamlo URL (JSON)
-    // CRITICAL: Add '?t=' + timestamp to force a new request (bypass cache)
     const dreamloURL = `http://dreamlo.com/lb/${DREAMLO_PUBLIC}/json?t=${Date.now()}`;
-    
-    // 2. Wrap in Proxy
     const proxyURL = `https://api.allorigins.win/get?url=${encodeURIComponent(dreamloURL)}`;
 
     fetch(proxyURL)
     .then(res => res.json())
     .then(data => {
         console.log("Leaderboard Raw Data:", data);
-
-        // AllOrigins returns the actual body inside 'contents'
         if (!data.contents) throw new Error("No content from proxy");
-
-        // Parse the inner JSON string
         const dreamloData = JSON.parse(data.contents);
 
         let html = "";
         let scores = [];
 
-        // Check if Dreamlo returned valid data
         if (!dreamloData.dreamlo || !dreamloData.dreamlo.leaderboard) {
             html = "<div style='text-align:center'>No scores yet!</div>";
         } else {
             let entries = dreamloData.dreamlo.leaderboard.entry;
-            
-            // Normalize to array (Dreamlo returns object if only 1 entry)
             scores = Array.isArray(entries) ? entries : [entries];
-            
-            // Sort High -> Low
             scores.sort((a,b) => parseInt(b.score) - parseInt(a.score));
 
             scores.slice(0, 10).forEach(entry => {
@@ -797,4 +916,6 @@ function fetchLeaderboard() {
 }
 
 // Initial Map Draw
+ctx.fillStyle = COLORS.grass;
+ctx.fillRect(0,0, canvas.width, canvas.height);
 drawMap();
