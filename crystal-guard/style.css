@@ -92,8 +92,9 @@ main {
     padding: 20px;
     border-radius: 20px;
     backdrop-filter: blur(10px);
-    flex-wrap: wrap; /* Wraps on mobile */
+    flex-wrap: wrap; 
     justify-content: center;
+    align-items: flex-start; /* <--- THIS FIXES THE BLACK BAR */
 }
 
 /* --- Canvas Area --- */
@@ -102,7 +103,7 @@ main {
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    background: #000;
+    background: #27ae60; /* Changed from #000 to match grass */
 }
 
 canvas {
