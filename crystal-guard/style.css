@@ -103,11 +103,11 @@ main {
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    background: #27ae60; /* Changed from #000 to match grass */
+    background: #e3f2fd; /* UPDATED: Matches new soft blue/green tone */
 }
 
 canvas {
-    background-color: #27ae60; /* Base Grass Color */
+    background-color: #e3f2fd; /* UPDATED */
     display: block;
     max-width: 100%;
     height: auto;
@@ -391,22 +391,30 @@ main {
 
 
 
-/* --- COOKIE BANNER FIX --- */
-/* This forces the GTM banner content to stay centered and constrained */
-#cookie-law-info-bar, 
-#cookie-law-info-again,
-.cli-bar-container {
-    max-width: 1200px !important;
-    margin: 0 auto !important;
-    left: 0 !important;
-    right: 0 !important;
-    box-sizing: border-box !important;
-}
 
-/* Ensure the background stretches full width, but content stays middle */
+
+
+/* --- COMPACT COOKIE BANNER FIX --- */
 #cookie-law-info-bar {
+    /* Stop full width stretching */
+    width: auto !important;
+    max-width: 900px !important; /* Limits how far apart text and buttons can be */
+    
+    /* Center it and float it nicely */
     left: 50% !important;
     transform: translateX(-50%) !important;
-    width: 100% !important;
-    border-radius: 20px 20px 0 0; /* Optional: rounds the top corners nicely */
+    bottom: 20px !important; /* Adds a small gap from bottom of screen */
+    border-radius: 12px !important; /* Rounds the corners */
+    box-shadow: 0 5px 25px rgba(0,0,0,0.1) !important;
+    
+    /* Ensure internal spacing is tight */
+    padding: 15px 30px !important;
+}
+
+/* On mobile, let it be full width again so it fits */
+@media (max-width: 768px) {
+    #cookie-law-info-bar {
+        width: 95% !important;
+        bottom: 10px !important;
+    }
 }
