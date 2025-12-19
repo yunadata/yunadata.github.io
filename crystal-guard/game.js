@@ -7,7 +7,6 @@ const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
 // --- LEADERBOARD CONFIG ---
-// Using the keys provided in your prompt
 const DREAMLO_PRIVATE = "-QMdaM9NQUuOpn6cCl9WjAH6v9CVOy9ka-pRpFcjM8TA";
 const DREAMLO_PUBLIC  = "69457d098f40bbcf805ee9ba";
 
@@ -644,34 +643,35 @@ function endGame() {
 }
 
 /**
- * FIXED PROXY: corsproxy.io
- * This transparently pipes the JSON from Dreamlo without wrapping it.
+ * FIXED LEADERBOARD LOGIC (AllOrigins + Cache Busting)
  */
 
 function submitScore() {
     const name = document.getElementById('player-name').value;
     if(!name) return alert("Please enter a name!");
     
-    // Direct Dreamlo URL (HTTP)
+    // 1. Construct Dreamlo URL
+    // We do NOT add cache busting here because it is a write operation
     const dreamloURL = `http://dreamlo.com/lb/${DREAMLO_PRIVATE}/add-pipe/${encodeURIComponent(name)}/${gameState.score}`;
     
-    // Secure Proxy
-    const proxyURL = `https://corsproxy.io/?${encodeURIComponent(dreamloURL)}`;
+    // 2. Wrap in Proxy (AllOrigins)
+    const proxyURL = `https://api.allorigins.win/get?url=${encodeURIComponent(dreamloURL)}`;
 
     fetch(proxyURL)
     .then(response => {
-        if (response.ok) {
-            // No need to parse response for "add-pipe"
-            alert("Score Uploaded!");
-            document.getElementById('submit-score-container').classList.add('hidden');
-            fetchLeaderboard();
-        } else {
-            throw new Error('Proxy Network response was not ok.');
-        }
+        if (response.ok) return response.json();
+        throw new Error('Network response was not ok.');
+    })
+    .then(data => {
+        console.log("Submit Response:", data);
+        alert("Score Uploaded!");
+        document.getElementById('submit-score-container').classList.add('hidden');
+        // Refresh list immediately
+        fetchLeaderboard();
     })
     .catch(err => {
         console.error("Submit Error:", err);
-        alert("Connection failed. Check console for details.");
+        alert("Connection failed. Check console.");
     });
 }
 
@@ -682,24 +682,37 @@ function fetchLeaderboard() {
     container.classList.remove('hidden');
     list.innerHTML = "Fetching global scores...";
 
-    const dreamloURL = `http://dreamlo.com/lb/${DREAMLO_PUBLIC}/json`;
-    const proxyURL = `https://corsproxy.io/?${encodeURIComponent(dreamloURL)}`;
+    // 1. Construct Dreamlo URL (JSON)
+    // CRITICAL: Add '?t=' + timestamp to force a new request (bypass cache)
+    const dreamloURL = `http://dreamlo.com/lb/${DREAMLO_PUBLIC}/json?t=${Date.now()}`;
+    
+    // 2. Wrap in Proxy
+    const proxyURL = `https://api.allorigins.win/get?url=${encodeURIComponent(dreamloURL)}`;
 
     fetch(proxyURL)
     .then(res => res.json())
     .then(data => {
+        console.log("Leaderboard Raw Data:", data);
+
+        // AllOrigins returns the actual body inside 'contents'
+        if (!data.contents) throw new Error("No content from proxy");
+
+        // Parse the inner JSON string
+        const dreamloData = JSON.parse(data.contents);
+
         let html = "";
         let scores = [];
 
-        // Dreamlo logic: "leaderboard" is null if empty
-        if (!data.dreamlo.leaderboard) {
+        // Check if Dreamlo returned valid data
+        if (!dreamloData.dreamlo || !dreamloData.dreamlo.leaderboard) {
             html = "<div style='text-align:center'>No scores yet!</div>";
         } else {
-            // "entry" can be an object (1 score) or array (multiple)
-            let entries = data.dreamlo.leaderboard.entry;
+            let entries = dreamloData.dreamlo.leaderboard.entry;
+            
+            // Normalize to array (Dreamlo returns object if only 1 entry)
             scores = Array.isArray(entries) ? entries : [entries];
             
-            // Dreamlo sorts by default, but we can ensure sort
+            // Sort High -> Low
             scores.sort((a,b) => parseInt(b.score) - parseInt(a.score));
 
             scores.slice(0, 10).forEach(entry => {
