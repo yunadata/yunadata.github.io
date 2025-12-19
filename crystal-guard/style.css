@@ -384,3 +384,29 @@ main {
         grid-template-columns: 1fr;
     }
 }
+
+
+
+
+
+
+
+/* --- COOKIE BANNER FIX --- */
+/* This forces the GTM banner content to stay centered and constrained */
+#cookie-law-info-bar, 
+#cookie-law-info-again,
+.cli-bar-container {
+    max-width: 1200px !important;
+    margin: 0 auto !important;
+    left: 0 !important;
+    right: 0 !important;
+    box-sizing: border-box !important;
+}
+
+/* Ensure the background stretches full width, but content stays middle */
+#cookie-law-info-bar {
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 100% !important;
+    border-radius: 20px 20px 0 0; /* Optional: rounds the top corners nicely */
+}
