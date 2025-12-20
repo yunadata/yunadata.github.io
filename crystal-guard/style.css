@@ -426,54 +426,66 @@ main {
 
 
 
-
-/* --- MOBILE FIXES --- */
+/* --- MOBILE FIXES (CORRECTED) --- */
 @media (max-width: 900px) {
-    /* 1. DISABLE THE TRAP */
+    /* 1. Reset the Game Wrapper to use full width */
     #game-wrapper {
-        /* This releases the overlay so it can go full screen */
-        backdrop-filter: none !important; 
-        transform: none !important;
-        
-        /* Optional: Remove wrapper padding to give the game more space */
-        padding: 0;
+        padding: 0 !important;       /* Remove padding so it touches screen edges */
+        width: 100% !important;      /* Force full width */
+        max-width: 100vw;            /* Prevent any overflow */
+        border-radius: 0;            /* Remove corners on mobile for cleaner look */
+        background: transparent;     /* Optional: Remove background box on mobile */
         box-shadow: none;
-        background: transparent;
-        border: none;
+        backdrop-filter: none;       /* Disable filter to prevent positioning bugs */
     }
 
-    /* 2. Full Screen Overlay */
+    /* 2. Ensure the container holds the overlay correctly */
+    .canvas-container {
+        width: 100%;                 /* Fill the phone width */
+        margin: 0;
+        border-radius: 0;            /* Square edges for mobile */
+        position: relative;          /* Critical: Be the anchor for the overlay */
+        overflow: hidden;            /* Keep everything contained */
+    }
+
+    /* 3. The Overlay - Strictly confined to the game box */
     #overlay {
-        position: fixed !important;
+        position: absolute !important; /* Stay inside the game area (under header) */
         top: 0;
         left: 0;
-        width: 100%;  /* Use 100% instead of 100vw to avoid scrollbar glitches */
-        height: 100%;
-        z-index: 9999; /* Sit on top of everything, including the header */
+        width: 100%;                 /* Match the canvas width exactly */
+        height: 100%;                /* Match the canvas height exactly */
+        z-index: 10;
         
-        /* Center content properly */
+        /* Layout fixes */
         display: flex;
         flex-direction: column;
-        justify-content: center; 
+        justify-content: center;
         align-items: center;
-        
-        /* Ensure background is dark enough to hide the page behind it */
-        background: rgba(26, 26, 46, 0.98);
-        padding: 20px;
+        padding: 15px;               /* Inner spacing for text */
     }
 
-    /* 3. Adjust Text Sizes for Mobile */
-    #overlay h1 { font-size: 2rem; margin-top: 10px; }
-    #overlay p { font-size: 0.9rem; max-width: 300px; }
+    /* 4. Shrink text/inputs to fit the smaller box */
+    #overlay h1 { font-size: 1.8rem; margin-bottom: 5px; }
+    #overlay p { font-size: 0.85rem; line-height: 1.3; margin-bottom: 15px; }
     
-    /* 4. Make Inputs & Buttons Bigger for Touch */
-    #player-name { width: 100%; padding: 12px; font-size: 16px; } /* 16px prevents zoom on iPhone */
-    .btn-game.start { width: 100%; padding: 15px; font-size: 1.1rem; }
+    #player-name {
+        width: 80%;
+        font-size: 16px; /* Prevents iPhone zoom */
+        margin-bottom: 10px;
+    }
     
-    /* 5. Scrollable Leaderboard */
+    .btn-game.start {
+        width: 70%;
+        padding: 12px;
+        font-size: 1rem;
+    }
+
+    /* Hide the leaderboard on tiny screens if it takes too much space */
     #leaderboard-display {
-        width: 100%;
-        max-height: 25vh; /* Limit height so start button is always visible */
+        max-height: 20vh;
         overflow-y: auto;
+        width: 90%;
+        margin-bottom: 10px;
     }
 }
