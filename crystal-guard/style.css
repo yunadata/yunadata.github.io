@@ -426,66 +426,76 @@ main {
 
 
 
-/* --- MOBILE FIXES (CORRECTED) --- */
+/* --- MOBILE FIXES (FINAL) --- */
 @media (max-width: 900px) {
-    /* 1. Reset the Game Wrapper to use full width */
+    /* 1. Reset the wrapper to prevent the "Shift Right" bug */
     #game-wrapper {
-        padding: 0 !important;       /* Remove padding so it touches screen edges */
-        width: 100% !important;      /* Force full width */
-        max-width: 100vw;            /* Prevent any overflow */
-        border-radius: 0;            /* Remove corners on mobile for cleaner look */
-        background: transparent;     /* Optional: Remove background box on mobile */
-        box-shadow: none;
-        backdrop-filter: none;       /* Disable filter to prevent positioning bugs */
-    }
-
-    /* 2. Ensure the container holds the overlay correctly */
-    .canvas-container {
-        width: 100%;                 /* Fill the phone width */
-        margin: 0;
-        border-radius: 0;            /* Square edges for mobile */
-        position: relative;          /* Critical: Be the anchor for the overlay */
-        overflow: hidden;            /* Keep everything contained */
-    }
-
-    /* 3. The Overlay - Strictly confined to the game box */
-    #overlay {
-        position: absolute !important; /* Stay inside the game area (under header) */
-        top: 0;
-        left: 0;
-        width: 100%;                 /* Match the canvas width exactly */
-        height: 100%;                /* Match the canvas height exactly */
-        z-index: 10;
+        padding: 0 !important;
+        width: 100% !important;
+        border: none !important;
+        box-shadow: none !important;
+        background: transparent !important;
         
-        /* Layout fixes */
+        /* CRITICAL: This stops the overlay from shifting off-screen */
+        transform: none !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+    }
+
+    /* 2. The Overlay - Breaks out of the canvas box */
+    #overlay {
+        position: fixed !important;  /* Locks it to the screen, not the game box */
+        top: 80px;                   /* Starts BELOW your header (adjust if needed) */
+        left: 0;
+        width: 100vw;                /* Full screen width */
+        bottom: 0;                   /* Stretches to the very bottom */
+        height: auto;                /* Allows it to be tall */
+        
+        z-index: 9999;               /* Sits on top of the game */
+        background: rgba(26, 26, 46, 0.98); /* Dark background */
+        
+        /* Flex centering */
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: center;     /* Centers content vertically */
         align-items: center;
-        padding: 15px;               /* Inner spacing for text */
+        padding: 20px;
     }
 
-    /* 4. Shrink text/inputs to fit the smaller box */
-    #overlay h1 { font-size: 1.8rem; margin-bottom: 5px; }
-    #overlay p { font-size: 0.85rem; line-height: 1.3; margin-bottom: 15px; }
-    
+    /* 3. Make the content fit nicely */
+    #overlay h1 {
+        font-size: 1.8rem;
+        margin-top: 0;
+        margin-bottom: 10px;
+        color: var(--primary);
+    }
+
+    #overlay p {
+        font-size: 0.9rem;
+        max-width: 90%;
+        margin-bottom: 15px;
+    }
+
+    /* 4. Scrollable Leaderboard for small screens */
+    #leaderboard-display {
+        width: 90%;
+        max-height: 25vh; /* Limits height so it doesn't push buttons off screen */
+        overflow-y: auto;
+        margin-bottom: 15px;
+        background: rgba(255,255,255,0.05);
+        border-radius: 8px;
+    }
+
+    /* 5. Input & Button Sizing */
     #player-name {
         width: 80%;
-        font-size: 16px; /* Prevents iPhone zoom */
-        margin-bottom: 10px;
-    }
-    
-    .btn-game.start {
-        width: 70%;
+        font-size: 16px; /* Prevents iPhone zooming on tap */
         padding: 12px;
-        font-size: 1rem;
     }
 
-    /* Hide the leaderboard on tiny screens if it takes too much space */
-    #leaderboard-display {
-        max-height: 20vh;
-        overflow-y: auto;
-        width: 90%;
-        margin-bottom: 10px;
+    .btn-game {
+        width: 80% !important;
+        padding: 14px !important;
+        margin-top: 8px;
     }
 }
