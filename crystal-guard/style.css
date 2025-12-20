@@ -418,3 +418,66 @@ main {
         bottom: 10px !important;
     }
 }
+
+
+
+
+
+
+
+
+
+/* --- MOBILE FIXES FOR START/END SCREEN --- */
+@media (max-width: 768px) {
+    /* 1. Break the overlay out of the canvas box */
+    #overlay {
+        position: fixed; /* Covers the whole screen, not just the canvas */
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 9999; /* Ensure it's on top of everything */
+        padding: 20px;
+        background: rgba(26, 26, 46, 0.95); /* Slightly darker for readability */
+    }
+
+    /* 2. Resize big text so it doesn't dominate the screen */
+    #overlay h1 {
+        font-size: 2rem; /* Reduced from 3rem */
+        margin-top: 10px;
+    }
+
+    #overlay p {
+        font-size: 0.9rem;
+        margin-bottom: 15px;
+    }
+
+    /* 3. Make the leaderboard scrollable so it fits */
+    #leaderboard-display {
+        width: 100%;
+        max-width: 100%; /* Use full width of phone */
+        max-height: 30vh; /* Limit height so buttons are visible */
+        overflow-y: auto; /* Add scrollbar if list is long */
+        margin-bottom: 15px;
+    }
+
+    /* 4. Ensure buttons and inputs are easily tappable */
+    #submit-score-container {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    #player-name {
+        width: 80%; /* Wider input for mobile typing */
+        padding: 12px;
+    }
+
+    .btn-game.start, .btn-game.action {
+        width: 80%; /* Wider buttons for touch targets */
+        padding: 15px;
+        font-size: 1.1rem;
+    }
+}
