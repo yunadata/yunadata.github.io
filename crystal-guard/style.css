@@ -427,57 +427,53 @@ main {
 
 
 
-/* --- MOBILE FIXES FOR START/END SCREEN --- */
-@media (max-width: 768px) {
-    /* 1. Break the overlay out of the canvas box */
+/* --- MOBILE FIXES --- */
+@media (max-width: 900px) {
+    /* 1. DISABLE THE TRAP */
+    #game-wrapper {
+        /* This releases the overlay so it can go full screen */
+        backdrop-filter: none !important; 
+        transform: none !important;
+        
+        /* Optional: Remove wrapper padding to give the game more space */
+        padding: 0;
+        box-shadow: none;
+        background: transparent;
+        border: none;
+    }
+
+    /* 2. Full Screen Overlay */
     #overlay {
-        position: fixed; /* Covers the whole screen, not just the canvas */
+        position: fixed !important;
         top: 0;
         left: 0;
-        width: 100vw;
-        height: 100vh;
-        z-index: 9999; /* Ensure it's on top of everything */
-        padding: 20px;
-        background: rgba(26, 26, 46, 0.95); /* Slightly darker for readability */
-    }
-
-    /* 2. Resize big text so it doesn't dominate the screen */
-    #overlay h1 {
-        font-size: 2rem; /* Reduced from 3rem */
-        margin-top: 10px;
-    }
-
-    #overlay p {
-        font-size: 0.9rem;
-        margin-bottom: 15px;
-    }
-
-    /* 3. Make the leaderboard scrollable so it fits */
-    #leaderboard-display {
-        width: 100%;
-        max-width: 100%; /* Use full width of phone */
-        max-height: 30vh; /* Limit height so buttons are visible */
-        overflow-y: auto; /* Add scrollbar if list is long */
-        margin-bottom: 15px;
-    }
-
-    /* 4. Ensure buttons and inputs are easily tappable */
-    #submit-score-container {
-        width: 100%;
+        width: 100%;  /* Use 100% instead of 100vw to avoid scrollbar glitches */
+        height: 100%;
+        z-index: 9999; /* Sit on top of everything, including the header */
+        
+        /* Center content properly */
         display: flex;
         flex-direction: column;
+        justify-content: center; 
         align-items: center;
-        gap: 10px;
+        
+        /* Ensure background is dark enough to hide the page behind it */
+        background: rgba(26, 26, 46, 0.98);
+        padding: 20px;
     }
 
-    #player-name {
-        width: 80%; /* Wider input for mobile typing */
-        padding: 12px;
-    }
-
-    .btn-game.start, .btn-game.action {
-        width: 80%; /* Wider buttons for touch targets */
-        padding: 15px;
-        font-size: 1.1rem;
+    /* 3. Adjust Text Sizes for Mobile */
+    #overlay h1 { font-size: 2rem; margin-top: 10px; }
+    #overlay p { font-size: 0.9rem; max-width: 300px; }
+    
+    /* 4. Make Inputs & Buttons Bigger for Touch */
+    #player-name { width: 100%; padding: 12px; font-size: 16px; } /* 16px prevents zoom on iPhone */
+    .btn-game.start { width: 100%; padding: 15px; font-size: 1.1rem; }
+    
+    /* 5. Scrollable Leaderboard */
+    #leaderboard-display {
+        width: 100%;
+        max-height: 25vh; /* Limit height so start button is always visible */
+        overflow-y: auto;
     }
 }
