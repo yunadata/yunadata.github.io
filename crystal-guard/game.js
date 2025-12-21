@@ -701,6 +701,7 @@ function startGame() {
     };
     
     document.getElementById('overlay').classList.add('hidden');
+	document.getElementById('overlay').classList.remove('mode-game-over');
     document.getElementById('submit-score-container').classList.add('hidden');
     document.getElementById('leaderboard-display').classList.add('hidden');
     document.getElementById('start-btn').classList.add('hidden');
@@ -902,6 +903,7 @@ function sellSelectedTower() {
 function endGame() {
     gameState.gameOver = true;
     document.getElementById('overlay').classList.remove('hidden');
+	document.getElementById('overlay').classList.add('mode-game-over');
     document.getElementById('overlay-title').innerText = "DEFENSE BREACHED";
     document.getElementById('overlay-desc').innerText = "The Crystal has faded.";
     document.getElementById('start-btn').innerText = "TRY AGAIN";
