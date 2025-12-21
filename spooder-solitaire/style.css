@@ -51,20 +51,29 @@ nav {
 
 /* --- Game Layout --- */
 main {
-    display: flex; justify-content: center;
-    padding: 10px; height: calc(100vh - 70px);
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    align-items: center;    /* Center them horizontally */
+    padding: 20px;
+    min-height: calc(100vh - 70px); /* Allow page to grow */
+    gap: 40px; /* Add space between Game and How to Play */
 }
 
 .game-container {
-    width: 100%; max-width: 1200px;
+    width: 100%; 
+    max-width: 1200px;
+    height: 85vh; /* Force the game to take up 85% of the viewport height */
+    min-height: 600px; /* Prevent it from getting too small on tiny screens */
     background: rgba(255,255,255,0.5);
     border-radius: 20px;
     box-shadow: var(--shadow);
-    display: flex; flex-direction: column;
+    display: flex; 
+    flex-direction: column;
     overflow: hidden;
     backdrop-filter: blur(5px);
     border: 1px solid rgba(255,255,255,0.8);
     position: relative;
+    flex-shrink: 0; /* Prevent the game from shrinking if screen is small */
 }
 
 /* Header */
@@ -259,4 +268,110 @@ input { padding: 10px; border: 1px solid #ddd; border-radius: 20px; font-family:
     .game-header { flex-direction: column; gap: 10px; align-items: flex-start; }
     .header-right { width: 100%; justify-content: space-between; }
     .game-title { font-size: 1.2rem; }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* --- How to Play Section --- */
+#how-to-play {
+    width: 100%;
+    max-width: 1200px; /* Matches game container width */
+    margin-top: 30px;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: var(--shadow);
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.6);
+}
+
+#how-to-play h2 {
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+    color: var(--text-color);
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+}
+
+.instructions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.instruction-card {
+    background: rgba(255, 255, 255, 0.8);
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    transition: transform 0.3s;
+    border: 1px solid rgba(255,255,255,0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.instruction-card:hover {
+    transform: translateY(-5px);
+    background: white;
+}
+
+.instruction-card .icon {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    color: var(--secondary); /* Pastel Blue icon */
+    background: rgba(204, 213, 255, 0.2);
+    padding: 15px;
+    border-radius: 50%;
+}
+
+.instruction-card h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: var(--text-color);
+}
+
+.instruction-card p {
+    font-size: 0.95rem;
+    color: #666;
+    line-height: 1.6;
+}
+
+/* Specific styling for the scoring list */
+.scoring-list {
+    list-style: none;
+    width: 100%;
+    text-align: left;
+    padding-left: 20px;
+}
+
+.scoring-list li {
+    padding: 5px 0;
+    border-bottom: 1px dashed #eee;
+    display: flex;
+    justify-content: space-between;
+}
+.scoring-list li:last-child { border-bottom: none; }
+
+
+
+footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 0.9rem;
+    color: var(--text-color);
+    width: 100%;
+    margin-top: 20px; /* specific breathing room from the bottom of the page */
 }
