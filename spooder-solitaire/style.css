@@ -384,7 +384,7 @@ footer {
 
 /* --- UPDATED: Leaderboard Colors (Pastel Goth Theme) --- */
 .score-row:nth-child(1) { 
-    color: #FFD97D; /* Pastel Honey Gold */
+    color: #CCCCFF; /* Pastel Periwinkle */
     font-weight: 800; 
     text-shadow: 1px 1px 0px rgba(0,0,0,0.1);
 } 
@@ -413,4 +413,13 @@ footer {
     color: white;
     transform: translateY(-3px);
     box-shadow: 0 5px 15px rgba(204, 213, 255, 0.4);
+}
+
+
+
+/* --- Input Focus State --- */
+input:focus {
+    outline: none; /* Removes the ugly default blue border */
+    border: 2px solid var(--primary); /* Changes border to Pastel Pink */
+    box-shadow: 0 0 10px rgba(255, 196, 214, 0.5); /* Adds a soft pink glow */
 }
