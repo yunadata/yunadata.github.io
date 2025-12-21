@@ -223,29 +223,64 @@
 
         .card:hover .card-img { transform: scale(1.05); }
 
-        .card-body {
-            padding: 35px;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            background: var(--bg-surface);
-        }
+		/* --- UPPDATERAD CARD DESIGN (Ikon bredvid rubrik) --- */
 
-        .card-icon {
-            color: var(--accent-color);
-            font-size: 1.6rem;
-            margin-bottom: 20px;
-            background: rgba(255, 107, 107, 0.1);
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-        }
+		.card-body {
+			padding: 35px;
+			flex-grow: 1;
+			background: var(--bg-surface);
+			
+			/* Vi byter till Grid för att enkelt lägga saker bredvid varandra */
+			display: grid;
+			grid-template-columns: auto 1fr; /* Kolumn 1: Ikonens bredd, Kolumn 2: Resten */
+			align-items: center; /* Centrera ikonen och rubriken vertikalt mot varandra */
+			column-gap: 20px;    /* Avståndet mellan ikonen och rubriken */
+			row-gap: 15px;       /* Avståndet ner till brödtexten */
+		}
 
-        .card h3 { font-size: 1.6rem; margin-bottom: 12px; color: #1a1a1a; }
-        .card p { color: var(--text-muted); font-size: 1rem; line-height: 1.7; }
+		.card-icon {
+			color: var(--accent-color);
+			font-size: 1.6rem;
+			background: rgba(255, 107, 107, 0.1);
+			width: 50px;
+			height: 50px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			border-radius: 50%;
+			
+			/* Viktigt: Vi tar bort den gamla marginalen neråt */
+			margin-bottom: 0; 
+			
+			/* Placera i första kolumnen, första raden */
+			grid-column: 1;
+			grid-row: 1;
+		}
+
+		.card h3 { 
+			font-size: 1.5rem; 
+			color: #1a1a1a;
+			
+			/* Ta bort gamla marginalen */
+			margin-bottom: 0;
+			
+			/* Placera i andra kolumnen, första raden */
+			grid-column: 2;
+			grid-row: 1;
+			text-align: left;
+			line-height: 1.2; /* Tajtar till radavståndet lite om rubriken blir två rader */
+		}
+
+		.card p { 
+			color: var(--text-muted); 
+			font-size: 1rem; 
+			line-height: 1.7;
+			
+			/* Låt texten spänna över hela bredden (båda kolumnerna) under rubriken */
+			grid-column: 1 / -1; 
+			grid-row: 2;
+			text-align: left;
+		}
 
         /* --- KONTAKT --- */
         .contact-container {
