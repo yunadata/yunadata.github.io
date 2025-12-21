@@ -321,7 +321,13 @@
 
         /* --- RESPONSIV DESIGN (MOBIL) --- */
         @media (max-width: 900px) {
-            .hero-content h1 { font-size: 3rem; } /* Mindre text på mobil */
+            #hero {
+				/* "scroll" gör att bilden inte låses, vilket ofta ger en bättre, 
+				   mindre inzoomad "cover"-effekt på mobiler. */
+				background-attachment: scroll; 
+				height: 90vh; */ 
+			}
+			.hero-content h1 { font-size: 3rem; } /* Mindre text på mobil */
             .contact-container { grid-template-columns: 1fr; padding: 30px; }
             
             .mobile-toggle { display: block; }
