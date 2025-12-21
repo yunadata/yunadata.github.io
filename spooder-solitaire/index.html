@@ -13,7 +13,7 @@
     <title>Spooder Solitaire | Pastel Goth Card Game</title>
     <meta name="description" content="Play Spooder Solitaire, a cute pastel-goth twist on the classic Spider Solitaire. Feature global leaderboards and multiple difficulty modes.">
     <link rel="canonical" href="https://yunadata.github.io/spooder-solitaire/">
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/favicon.ico">
 
     <meta property="og:type" content="website">
     <meta property="og:title" content="Spooder Solitaire">
@@ -132,12 +132,45 @@
             </div>
 
         </div>
+		
+		
+		<section id="how-to-play">
+			<h2>🕸️ How to Play 🕸️</h2>
+			<div class="instructions-grid">
+				<div class="instruction-card">
+					<i class="fas fa-hand-sparkles icon"></i>
+					<h3>The Goal</h3>
+					<p>Arrange cards in descending order from <strong>King to Ace</strong>. When a full run of the <strong>same suit</strong> is built (e.g., ♠️K to ♠️A), it clears from the board!</p>
+				</div>
+				
+				<div class="instruction-card">
+					<i class="fas fa-ghost icon"></i>
+					<h3>Moving Cards</h3>
+					<p>You can stack any lower card on a higher one (e.g., 6 on 7). <br><strong>But beware!</strong> You can only drag <em>groups</em> of cards if they match suits.</p>
+				</div>
+
+				<div class="instruction-card">
+					<i class="fas fa-gem icon"></i>
+					<h3>Scoring</h3>
+					<ul class="scoring-list">
+						<li><strong>Start:</strong> 500 Points</li>
+						<li><strong>Clear Suit:</strong> <span style="color:#00b894">+100</span> (Shiny!)</li>
+						<li><strong>Move:</strong> <span style="color:#e74c3c">-1</span> (Think fast)</li>
+						<li><strong>Undo:</strong> <span style="color:#e74c3c">-10</span> (Magic has a price)</li>
+					</ul>
+				</div>
+			</div>
+		</section>
+
+
     </main>
 
-    <footer>
-        <p>Made with 🕸️ and 💖 by Yuna An Vu.</p>
-        <p>&copy; 2025 | Spooder Solitaire</p>
-    </footer>
+	<footer>
+		<p>Made with 🕸️ and 💖 by Yuna An Vu.</p>
+		<p>
+			&copy; 2025 | <a href="https://yunadata.github.io/privacy-policy.html" style="font-weight: 600; text-decoration: none; color: inherit;">Privacy Policy</a>
+		</p>
+	</footer>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
