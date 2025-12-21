@@ -327,6 +327,15 @@
 				background-attachment: scroll; 
 				height: 90vh; */ 
 			}
+			
+			/* Fix för knappen så texten får plats på en rad */
+			.btn-glow {
+				white-space: nowrap; /* Tvingar texten att stanna på en rad */
+				padding: 18px 25px;  /* Minskar sidmarginalerna (var 50px) */
+				font-size: 0.9rem;   /* Krymper texten marginellt för säkerhets skull */
+				width: auto;         /* Låter bredden anpassa sig efter texten */
+			}
+			
 			.hero-content h1 { font-size: 3rem; } /* Mindre text på mobil */
             .contact-container { grid-template-columns: 1fr; padding: 30px; }
             
