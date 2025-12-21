@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-KH2HGFPW');</script>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <title>Spooder Solitaire | Pastel Goth Card Game</title>
+    <meta name="description" content="Play Spooder Solitaire, a cute pastel-goth twist on the classic Spider Solitaire. Feature global leaderboards and multiple difficulty modes.">
+    <link rel="canonical" href="https://yunadata.github.io/spooder-solitaire/">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Spooder Solitaire">
+    <meta property="og:description" content="A cute pastel-goth solitaire game with global leaderboards.">
+
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KH2HGFPW"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+    <div class="bg-decoration blob-1"></div>
+    <div class="bg-decoration blob-2"></div>
+    <div class="bg-decoration blob-3"></div>
+
+    <nav>
+        <div class="nav-container">
+            <div class="logo" onclick="window.location.href='../index.html'">YunaData.</div>
+            <a href="../index.html" class="btn-small">← Back to Portfolio</a>
+        </div>
+    </nav>
+
+    <main>
+        <div class="game-container">
+            
+            <div class="game-header">
+                <div class="header-left">
+                    <h1 class="game-title"><i class="fas fa-spider"></i> Spooder Solitaire</h1>
+                    <div class="stats-bar">
+                        <div class="stat"><span class="label">Score:</span> <span id="score">500</span></div>
+                        <div class="stat"><span class="label">Moves:</span> <span id="moves">0</span></div>
+                        <div class="stat"><span class="label">Time:</span> <span id="timer">00:00</span></div>
+                    </div>
+                </div>
+                
+                <div class="header-right">
+                    <button class="btn-game undo" id="btn-undo" title="Undo Move (-10 pts)"><i class="fas fa-undo"></i></button>
+                    <button class="btn-game restart" onclick="showStartScreen()"><i class="fas fa-redo"></i> New Game</button>
+                    <button class="btn-game leaderboard-btn" onclick="toggleLeaderboardModal()"><i class="fas fa-trophy"></i></button>
+                </div>
+            </div>
+
+            <div id="game-board">
+                <div class="top-row">
+                    <div id="stock-container" class="stock-pile">
+                        </div>
+                    <div id="foundations" class="foundations-row">
+                        </div>
+                </div>
+                
+                <div id="tableau" class="tableau-grid">
+                    </div>
+            </div>
+
+            <div id="start-overlay" class="overlay">
+                <div class="overlay-content">
+                    <h1>Select Difficulty</h1>
+                    <p>Choose your fate, tiny spider.</p>
+                    <div class="difficulty-options">
+                        <button class="diff-btn" onclick="startGame(1)">
+                            <div class="diff-icon">♠️</div>
+                            <h3>Easy</h3>
+                            <p>1 Suit (Spades)</p>
+                        </button>
+                        <button class="diff-btn" onclick="startGame(2)">
+                            <div class="diff-icon">♠️♥️</div>
+                            <h3>Medium</h3>
+                            <p>2 Suits</p>
+                        </button>
+                        <button class="diff-btn" onclick="startGame(4)">
+                            <div class="diff-icon">♠️♥️♣️♦️</div>
+                            <h3>Hard</h3>
+                            <p>4 Suits</p>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="win-overlay" class="overlay hidden">
+                <div class="overlay-content">
+                    <h1>🕸️ Victory! 🕸️</h1>
+                    <p>You have cleared the webs!</p>
+                    <div class="final-stats">
+                        <p>Score: <span id="final-score">0</span></p>
+                        <p>Time: <span id="final-time">00:00</span></p>
+                    </div>
+                    
+                    <div class="input-group">
+                        <input type="text" id="player-name" placeholder="Enter Name" maxlength="15">
+                        <button class="btn-game action" onclick="submitScore()">Save Score</button>
+                    </div>
+                    <button class="btn-text" onclick="showStartScreen()">Play Again</button>
+                </div>
+            </div>
+
+            <div id="leaderboard-overlay" class="overlay hidden">
+                <div class="overlay-content large">
+                    <div class="modal-header">
+                        <h2>Wall of Fame 🏆</h2>
+                        <button class="close-btn" onclick="toggleLeaderboardModal()">×</button>
+                    </div>
+                    
+                    <div class="tabs">
+                        <button class="tab-btn active" onclick="loadLeaderboard(1, this)">1 Suit</button>
+                        <button class="tab-btn" onclick="loadLeaderboard(2, this)">2 Suits</button>
+                        <button class="tab-btn" onclick="loadLeaderboard(4, this)">4 Suits</button>
+                    </div>
+
+                    <div id="leaderboard-list">
+                        <div class="loader">Loading...</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer>
+        <p>Made with 🕸️ and 💖 by Yuna An Vu.</p>
+        <p>&copy; 2025 | Spooder Solitaire</p>
+    </footer>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+        import { getFirestore, collection, addDoc, query, where, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBFlnejgRsNIlIXHkU5U0l9GwuByVMlhR8",
+            authDomain: "spooder-solitaire.firebaseapp.com",
+            projectId: "spooder-solitaire",
+            storageBucket: "spooder-solitaire.firebasestorage.app",
+            messagingSenderId: "828312455942",
+            appId: "1:828312455942:web:1c0606fff29684c9446c87",
+            measurementId: "G-9GFS4T2KQG"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Expose DB functions to global window for the game.js to access
+        window.saveGameScore = async (name, score, difficulty, moves, time) => {
+            try {
+                await addDoc(collection(db, "leaderboard"), {
+                    name: name || "Anonymous",
+                    score: parseInt(score),
+                    difficulty: parseInt(difficulty),
+                    moves: parseInt(moves),
+                    time: time,
+                    timestamp: new Date()
+                });
+                return true;
+            } catch (e) {
+                console.error("Error adding document: ", e);
+                return false;
+            }
+        };
+
+        window.fetchLeaderboard = async (difficulty) => {
+            const scores = [];
+            try {
+                const q = query(
+                    collection(db, "leaderboard"), 
+                    where("difficulty", "==", parseInt(difficulty)),
+                    orderBy("score", "desc"),
+                    limit(10)
+                );
+                
+                const querySnapshot = await getDocs(q);
+                querySnapshot.forEach((doc) => {
+                    scores.push(doc.data());
+                });
+            } catch (e) {
+                console.error("Error fetching leaderboard: ", e);
+            }
+            return scores;
+        };
+    </script>
+
+    <script src="game.js"></script>
+</body>
+</html>
