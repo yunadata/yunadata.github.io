@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skåne Fusion Catering | Exklusiv Matupplevelse</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Manrope:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- CSS VARIABLER (LJUS & LIVLIG) --- */
+        :root {
+            --bg-body: #fdfcf8;
+            --bg-surface: #ffffff;
+            --accent-gradient: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%); 
+            --accent-color: #FF6B6B;
+            --text-main: #2b2b2b;
+            --text-muted: #666666;
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Manrope', sans-serif;
+            --shadow-soft: 0 10px 40px rgba(0,0,0,0.05);
+            --shadow-hover: 0 20px 50px rgba(255, 107, 107, 0.15);
+        }
+
+        html { scroll-behavior: smooth; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 { font-family: var(--font-heading); color: var(--text-main); }
+        a { text-decoration: none; color: inherit; transition: all 0.3s ease; }
+        ul { list-style: none; }
+
+        /* --- UTILITY KLASSER --- */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+
+        .text-gradient {
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+            font-weight: 800;
+        }
+
+        /* --- HEADER & NAV --- */
+        header {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            padding: 20px 0;
+            transition: all 0.4s ease;
+            background: transparent;
+        }
+
+        header.scrolled {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            z-index: 1001;
+            color: var(--text-main);
+        }
+
+        .nav-links { display: flex; gap: 40px; }
+        .nav-links a {
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-main);
+            opacity: 0.8;
+            position: relative;
+        }
+        
+        .nav-links a:hover { opacity: 1; color: var(--accent-color); }
+        .nav-links a::after {
+            content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 2px;
+            background: var(--accent-color); transition: width 0.3s ease;
+        }
+        .nav-links a:hover::after { width: 100%; }
+
+        .mobile-toggle { 
+            display: none; 
+            font-size: 1.8rem; 
+            cursor: pointer; 
+            color: var(--text-main);
+            z-index: 1002; /* Måste ligga över menyn */
+        }
+
+        /* --- HERO SECTION --- */
+        #hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            background: linear-gradient(180deg, rgba(253, 252, 248, 0.6) 0%, rgba(253, 252, 248, 1) 100%),
+                        url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            padding: 0 20px;
+        }
+
+        .hero-content h1 {
+            font-size: 5.5rem;
+            line-height: 1.1;
+            margin-bottom: 25px;
+            font-weight: 700;
+            opacity: 0;
+            animation: fadeUp 1s ease-out 0.2s forwards;
+            color: #1a1a1a;
+        }
+        
+        .hero-content h1 span { 
+            font-style: italic; 
+            font-weight: 400; 
+            font-family: var(--font-heading);
+            color: var(--accent-color);
+        }
+
+        .hero-content p {
+            font-size: 1.3rem;
+            max-width: 650px;
+            margin: 0 auto 45px;
+            color: #4a4a4a;
+            font-weight: 400;
+            opacity: 0;
+            animation: fadeUp 1s ease-out 0.4s forwards;
+        }
+
+        .btn-glow {
+            display: inline-block;
+            padding: 18px 50px;
+            background: var(--accent-gradient);
+            color: white;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-radius: 50px;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 25px rgba(255, 107, 107, 0.4);
+            opacity: 0;
+            animation: fadeUp 1s ease-out 0.6s forwards;
+        }
+
+        .btn-glow:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(255, 107, 107, 0.6);
+        }
+
+        .scroll-indicator {
+            position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+            animation: float 3s ease-in-out infinite; opacity: 0.6; color: var(--text-main);
+        }
+
+        /* --- SEKTIONER --- */
+        section { padding: 120px 0; position: relative; }
+        
+        .section-header { text-align: center; margin-bottom: 80px; }
+        .section-header h2 { font-size: 3.5rem; margin-bottom: 15px; color: #1a1a1a; }
+        .section-header p { color: var(--text-muted); font-size: 1.2rem; max-width: 600px; margin: 0 auto; }
+
+        /* --- MENU GRID --- */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+        }
+
+        .card {
+            background: var(--bg-surface);
+            border: 1px solid rgba(0,0,0,0.03);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .card:hover { 
+            transform: translateY(-10px); 
+            box-shadow: var(--shadow-hover);
+        }
+
+        .card-img {
+            height: 250px;
+            width: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .card:hover .card-img { transform: scale(1.05); }
+
+        .card-body {
+            padding: 35px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-surface);
+        }
+
+        .card-icon {
+            color: var(--accent-color);
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+            background: rgba(255, 107, 107, 0.1);
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .card h3 { font-size: 1.6rem; margin-bottom: 12px; color: #1a1a1a; }
+        .card p { color: var(--text-muted); font-size: 1rem; line-height: 1.7; }
+
+        /* --- KONTAKT --- */
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 60px;
+            background: #ffffff;
+            box-shadow: var(--shadow-soft);
+            padding: 60px;
+            border-radius: 30px;
+            border: 1px solid rgba(0,0,0,0.03);
+        }
+
+        .contact-info h3 { font-size: 2rem; margin-bottom: 30px; color: #1a1a1a; }
+        .info-item { display: flex; align-items: flex-start; margin-bottom: 30px; }
+        .info-item i { 
+            font-size: 1.4rem; color: var(--accent-color); margin-right: 20px; margin-top: 5px; 
+            background: rgba(255, 107, 107, 0.1); padding: 15px; border-radius: 50%;
+        }
+        .info-item div h4 { font-size: 1.1rem; margin-bottom: 5px; font-weight: 700; color: #1a1a1a; }
+
+        .form-group { margin-bottom: 25px; }
+        
+        /* Ny klass för raden med två inputs för enklare responsivitet */
+        .form-row {
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 20px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            background: #f8f8f8;
+            border: 1px solid #e0e0e0;
+            padding: 18px 20px;
+            color: #333;
+            font-family: var(--font-body);
+            font-size: 1rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.1);
+        }
+        
+        ::placeholder { color: #aaa; }
+        textarea { resize: none; height: 160px; }
+
+        footer {
+            padding: 60px 0 30px;
+            background: white;
+            border-top: 1px solid #eee;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        
+        footer i { color: var(--text-main); transition: color 0.3s; }
+        footer i:hover { color: var(--accent-color); }
+
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        .stagger-delay:nth-child(1) { transition-delay: 0.1s; }
+        .stagger-delay:nth-child(2) { transition-delay: 0.2s; }
+        .stagger-delay:nth-child(3) { transition-delay: 0.3s; }
+
+        @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+        @keyframes float { 0%, 100% { transform: translate(-50%, 0); } 50% { transform: translate(-50%, 15px); } }
+
+        /* --- RESPONSIV DESIGN (MOBIL) --- */
+        @media (max-width: 900px) {
+            .hero-content h1 { font-size: 3rem; } /* Mindre text på mobil */
+            .contact-container { grid-template-columns: 1fr; padding: 30px; }
+            
+            .mobile-toggle { display: block; }
+            
+            /* Mobilmeny logik */
+            .nav-links { 
+                position: fixed;
+                top: 0;
+                right: -100%; /* Gömd utanför skärmen */
+                height: 100vh;
+                width: 100%;
+                background: rgba(255, 255, 255, 0.98); /* Nästan helt täckande vit */
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 50px;
+                transition: 0.4s ease-in-out;
+                z-index: 1000;
+            }
+            
+            /* Klassen som läggs på via Javascript */
+            .nav-links.active {
+                right: 0;
+                box-shadow: -5px 0 30px rgba(0,0,0,0.1);
+            }
+            
+            .nav-links a {
+                font-size: 1.5rem; /* Större länkar i mobilmenyn */
+            }
+
+            .section-header h2 { font-size: 2.5rem; }
+            .menu-grid { grid-template-columns: 1fr; } /* En kolumn kort på mobil */
+            
+            /* Gör formuläret staplat på mobil */
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            section { padding: 80px 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <header id="navbar">
+        <div class="container">
+            <nav>
+                <a href="#" class="logo">SKÅNE <span class="text-gradient">FUSION</span>.</a>
+                <ul class="nav-links">
+                    <li><a href="#about">Filosofi</a></li>
+                    <li><a href="#menu">Våra Kök</a></li>
+                    <li><a href="#contact">Boka</a></li>
+                </ul>
+                <div class="mobile-toggle" id="mobile-menu-btn"><i class="fa-solid fa-bars"></i></div>
+            </nav>
+        </div>
+    </header>
+
+    <section id="hero">
+        <div class="container hero-content">
+            <h1>Smaker som <br>korsar <span>gränser</span></h1>
+            <p>Vi förenar det trygga skånska med Asiens dynamiska hetta. <br>Exklusiv catering för bröllop, företag och event.</p>
+            <a href="#contact" class="btn-glow">Starta Planeringen</a>
+        </div>
+        <div class="scroll-indicator">
+            <i class="fa-solid fa-arrow-down-long" style="font-size: 1.5rem;"></i>
+        </div>
+    </section>
+
+    <section id="about">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>Mer än bara mat</h2>
+                <p>En upplevelse för alla sinnen.</p>
+            </div>
+            <div class="reveal" style="text-align: center; max-width: 800px; margin: 0 auto; font-size: 1.35rem; line-height: 1.9; color: #555;">
+                <p>Vi tror inte på standardlösningar. Vår passion ligger i mötet mellan tradition och innovation. Från det rustika Österlen till pulserande Seoul – vi hämtar inspiration från hela världen men lagar maten med lokala råvaror här i Skåne.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="menu">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>Våra Signaturkök</h2>
+                <p>Noggrant kurerade menyer för varje tillfälle.</p>
+            </div>
+
+            <div class="menu-grid">
+                <article class="card reveal stagger-delay">
+                    <div style="overflow: hidden;">
+                        <img src="https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=500&q=60" alt="Europeisk Mat" class="card-img">
+                    </div>
+                    <div class="card-body">
+                        <div class="card-icon"><i class="fa-solid fa-utensils"></i></div>
+                        <h3>Europeisk Klassiker</h3>
+                        <p>Fransk finess möter italiensk rustik. Trerätters middagar eller lyxiga kanapéer skapade med säsongens bästa råvaror.</p>
+                    </div>
+                </article>
+
+                <article class="card reveal stagger-delay">
+                    <div style="overflow: hidden;">
+                        <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=500&q=60" alt="Asian Fusion" class="card-img">
+                    </div>
+                    <div class="card-body">
+                        <div class="card-icon"><i class="fa-solid fa-bolt"></i></div>
+                        <h3>Asian Fusion</h3>
+                        <p>Det oväntade mötet. Västerländska tillagningstekniker som lyfts av österländska kryddor och umami.</p>
+                    </div>
+                </article>
+
+                <article class="card reveal stagger-delay">
+                    <div style="overflow: hidden;">
+                        <img src="https://images.unsplash.com/photo-1498654896293-37aacf113fd9?auto=format&fit=crop&w=500&q=60" alt="Koreanskt" class="card-img">
+                    </div>
+                    <div class="card-body">
+                        <div class="card-icon"><i class="fa-solid fa-fire"></i></div>
+                        <h3>Seoul Vibes</h3>
+                        <p>Hett, syrat och fermenterat. Autentisk Bulgogi, Bibimbap och vår egenlagrade Kimchi som sätter färg på festen.</p>
+                    </div>
+                </article>
+
+                <article class="card reveal stagger-delay">
+                    <div style="overflow: hidden;">
+                        <img src="https://images.unsplash.com/photo-1559314809-0d155014e29e?auto=format&fit=crop&w=500&q=60" alt="Thailändskt" class="card-img">
+                    </div>
+                    <div class="card-body">
+                        <div class="card-icon"><i class="fa-solid fa-leaf"></i></div>
+                        <h3>Sydostasien Fresh</h3>
+                        <p>Citrongräs, lime och färsk chili. Lätta, fräscha smaker från Vietnam och Thailand som passar perfekt till minglet.</p>
+                    </div>
+                </article>
+
+                 <article class="card reveal stagger-delay">
+                    <div style="overflow: hidden;">
+                        <img src="https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=500&q=60" alt="Sushi" class="card-img">
+                    </div>
+                    <div class="card-body">
+                        <div class="card-icon"><i class="fa-solid fa-fish-fins"></i></div>
+                        <h3>Japansk Precision</h3>
+                        <p>Estetiskt tilltalande Sushi och Sashimi. Renhet i smakerna och en presentation som imponerar på gästerna.</p>
+                    </div>
+                </article>
+
+                <article class="card reveal stagger-delay">
+                    <div style="overflow: hidden;">
+                        <img src="https://images.unsplash.com/photo-1600565193348-f74bd3c7ccdf?auto=format&fit=crop&w=500&q=60" alt="Custom" class="card-img">
+                    </div>
+                    <div class="card-body">
+                        <div class="card-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                        <h3>Tailor Made</h3>
+                        <p>Har du en specifik vision? Våra kockar älskar utmaningar. Vi skräddarsyr en meny helt efter dina önskemål.</p>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>Låt oss skapa magi</h2>
+                <p>Hör av dig så skissar vi på ett förslag inom 24h.</p>
+            </div>
+
+            <div class="contact-container reveal">
+                <div class="contact-info">
+                    <h3>Kontaktuppgifter</h3>
+                    <div class="info-item">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <div>
+                            <h4>Bas</h4>
+                            <p style="color:var(--text-muted)">Verksamma i hela Skåne<br>(Sjöbo / Malmö / Lund)</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <i class="fa-solid fa-phone"></i>
+                        <div>
+                            <h4>Telefon</h4>
+                            <p style="color:var(--text-muted)">+46 00 000 00 00</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <i class="fa-solid fa-envelope"></i>
+                        <div>
+                            <h4>Email</h4>
+                            <p style="color:var(--text-muted)">hello@skanefusion.se</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-form">
+                    <form>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <input type="text" placeholder="Namn" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="tel" placeholder="Telefon">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" placeholder="Emailadress" required>
+                        </div>
+                        <div class="form-group">
+                            <select>
+                                <option value="" disabled selected>Typ av event</option>
+                                <option>Bröllop</option>
+                                <option>Företagsevent</option>
+                                <option>Privatfest</option>
+                                <option>Annat</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <textarea placeholder="Datum, antal gäster och önskemål..."></textarea>
+                        </div>
+                        <button type="submit" class="btn-glow" style="width: 100%; border: none; cursor: pointer;">Skicka Förfrågan</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Skåne Fusion Catering. Designad med passion.</p>
+            <div style="margin-top: 20px; font-size: 1.2rem;">
+                <i class="fa-brands fa-instagram" style="margin: 0 10px; cursor: pointer;"></i>
+                <i class="fa-brands fa-facebook" style="margin: 0 10px; cursor: pointer;"></i>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 1. Navbar Scroll Effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // 2. Reveal on Scroll Animation
+        const revealElements = document.querySelectorAll('.reveal');
+
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        revealElements.forEach((el) => revealObserver.observe(el));
+
+        // 3. Mobile Menu Functionality (FIXED)
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const navLinks = document.querySelector('.nav-links');
+        const navItems = document.querySelectorAll('.nav-links a');
+        const icon = mobileBtn.querySelector('i');
+
+        mobileBtn.addEventListener('click', () => {
+            // Toggle menu visibility
+            navLinks.classList.toggle('active');
+            
+            // Toggle Icon (Bars <-> X)
+            if (navLinks.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-xmark');
+            } else {
+                icon.classList.remove('fa-xmark');
+                icon.classList.add('fa-bars');
+            }
+        });
+
+        // Close menu when clicking a link
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                icon.classList.remove('fa-xmark');
+                icon.classList.add('fa-bars');
+            });
+        });
+    </script>
+</body>
+</html>
