@@ -32,15 +32,19 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// --- GAME CONSTANTS ---
+// --- GAME CONSTANTS (ADJUSTED FOR BETTER JUMPS) ---
 const CANVAS_WIDTH = 800;
 const CANVAS_HEIGHT = 450;
-const GRAVITY = 0.6;
-const FRICTION = 0.8;
-const MOVE_SPEED = 5;
-const JUMP_FORCE = -12;
-const WALL_JUMP_FORCE_X = 8;
-const WALL_JUMP_FORCE_Y = -10;
+
+// PHYSICS TWEAKS:
+const GRAVITY = 0.5;        // Lowered from 0.6 for floatier jumps
+const FRICTION = 0.92;      // Increased from 0.8 (Higher number = less drag)
+const ACCELERATION = 1.0;   // How fast you speed up
+const MAX_SPEED = 8;        // Maximum horizontal speed cap
+const JUMP_FORCE = -13;     // Increased from -12 for higher jumps
+
+const WALL_JUMP_FORCE_X = 9;
+const WALL_JUMP_FORCE_Y = -11;
 
 // Colors
 const PALETTE = {
@@ -233,13 +237,17 @@ function generateChunk(startX) {
 }
 
 function updatePhysics() {
-    // 1. Controls
-    if (keys.ArrowRight) player.vx += 0.5;
-    if (keys.ArrowLeft) player.vx -= 0.5;
+    // 1. Controls (Updated with ACCELERATION constant)
+    if (keys.ArrowRight) player.vx += ACCELERATION;
+    if (keys.ArrowLeft) player.vx -= ACCELERATION;
 
     // Friction & Gravity
     player.vx *= FRICTION;
     player.vy += GRAVITY;
+
+    // CAP MAX SPEED (Prevents uncontrollable speed)
+    if(player.vx > MAX_SPEED) player.vx = MAX_SPEED;
+    if(player.vx < -MAX_SPEED) player.vx = -MAX_SPEED;
 
     // Terminal velocity
     if(player.vy > 15) player.vy = 15;
