@@ -174,7 +174,8 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-        import { getFirestore, collection, addDoc, query, where, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+        // ADDED: updateDoc
+        import { getFirestore, collection, addDoc, updateDoc, query, where, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBFlnejgRsNIlIXHkU5U0l9GwuByVMlhR8",
@@ -189,20 +190,57 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // Expose DB functions to global window for the game.js to access
+        // --- UPDATED: Save Score Logic ---
         window.saveGameScore = async (name, score, difficulty, moves, time) => {
+            const cleanName = name.trim() || "Anonymous";
+            const diffInt = parseInt(difficulty);
+            const scoreInt = parseInt(score);
+
             try {
-                await addDoc(collection(db, "leaderboard"), {
-                    name: name || "Anonymous",
-                    score: parseInt(score),
-                    difficulty: parseInt(difficulty),
-                    moves: parseInt(moves),
-                    time: time,
-                    timestamp: new Date()
-                });
-                return true;
+                // 1. Check if this player already has a score for this difficulty
+                const q = query(
+                    collection(db, "leaderboard"), 
+                    where("name", "==", cleanName),
+                    where("difficulty", "==", diffInt)
+                );
+                
+                const querySnapshot = await getDocs(q);
+
+                if (!querySnapshot.empty) {
+                    // --- PLAYER EXISTS: UPDATE IF HIGHER ---
+                    const docRef = querySnapshot.docs[0].ref;
+                    const oldScore = querySnapshot.docs[0].data().score;
+
+                    if (scoreInt > oldScore) {
+                        await updateDoc(docRef, {
+                            score: scoreInt,
+                            moves: parseInt(moves),
+                            time: time,
+                            timestamp: new Date()
+                        });
+                        console.log("New high score updated!");
+                        return true;
+                    } else {
+                        console.log("Score not higher than previous best. Skipping.");
+                        // We return true here so the UI still says "Saved" (or "Done") 
+                        // instead of showing an error to the user.
+                        return true; 
+                    }
+                } else {
+                    // --- NEW PLAYER: CREATE ENTRY ---
+                    await addDoc(collection(db, "leaderboard"), {
+                        name: cleanName,
+                        score: scoreInt,
+                        difficulty: diffInt,
+                        moves: parseInt(moves),
+                        time: time,
+                        timestamp: new Date()
+                    });
+                    return true;
+                }
+
             } catch (e) {
-                console.error("Error adding document: ", e);
+                console.error("Error saving score: ", e);
                 return false;
             }
         };
