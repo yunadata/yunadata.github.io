@@ -509,6 +509,7 @@ main {
     .btn-game {
         width: 80% !important;
         padding: 14px !important;
-        margin-top: 8px;
+        display: block;      /* Ensures the button behaves like a block element */
+        margin: 8px auto;    /* 'auto' on left/right centers the block */
     }
 }
