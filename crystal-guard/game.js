@@ -1,32 +1,56 @@
 /**
  * CRYSTAL GUARD - GAME ENGINE
  * Portfolio Version: Pastel & Glassmorphism Update
+ * Backend: Firebase Firestore (v12.7.0)
  */
 
+// --- FIREBASE IMPORTS ---
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-analytics.js";
+import { 
+    getFirestore, 
+    collection, 
+    doc,        // Required for specific user IDs
+    setDoc,     // Required to write/overwrite specific IDs
+    getDoc,     // Required to check existing scores
+    getDocs, 
+    query, 
+    orderBy, 
+    limit 
+} from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+
+// --- FIREBASE CONFIGURATION ---
+const firebaseConfig = {
+    apiKey: "AIzaSyCnG80OdgMqP6HC2oFymOx95BcBSjNnqAE",
+    authDomain: "crystal-guard-db.firebaseapp.com",
+    projectId: "crystal-guard-db",
+    storageBucket: "crystal-guard-db.firebasestorage.app",
+    messagingSenderId: "685143467444",
+    appId: "1:685143467444:web:e61787161a461779b63ee1",
+    measurementId: "G-4PZEYHZLYW"
+};
+
+// --- INITIALIZE FIREBASE ---
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+const db = getFirestore(app);
+
+// --- GAME SETUP ---
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
-// --- LEADERBOARD CONFIG ---
-const DREAMLO_PRIVATE = "-QMdaM9NQUuOpn6cCl9WjAH6v9CVOy9ka-pRpFcjM8TA";
-const DREAMLO_PUBLIC  = "69457d098f40bbcf805ee9ba";
-
 // --- THEME COLORS ---
 const COLORS = {
-    // Brand Colors
     primary: '#FFC4D6',   // Soft Pink
     secondary: '#CCD5FF', // Soft Blue
     accent: '#FFE5B4',    // Soft Gold
     text: '#4A4A4A',
-    
-    // Environment
-    grassLight: '#eefcf5', // Very pale mint
-    grassDark: '#d5f5e3',  // Checkerboard pattern
-    path: '#fff8e1',       // Creamy path
-    pathBorder: '#FFE5B4', // Accent border
-    
-    // Game Objects
+    grassLight: '#eefcf5',
+    grassDark: '#d5f5e3',
+    path: '#fff8e1',
+    pathBorder: '#FFE5B4',
     enemy: '#636e72',      
-    enemyBoss: '#f1c40f',  // Updated to Gold directly
+    enemyBoss: '#f1c40f',
     uiSelected: 'rgba(255, 196, 214, 0.4)',
     uiRange: 'rgba(204, 213, 255, 0.3)'
 };
@@ -100,7 +124,7 @@ class Enemy {
         if(wave % 5 === 0) { 
             this.maxHp *= 3;
             this.hp = this.maxHp;
-            this.radius = 16; // Slightly smaller radius to fit tile better
+            this.radius = 16;
             this.speed *= 0.7;
             this.isBoss = true;
             this.color = COLORS.enemyBoss; 
@@ -148,65 +172,55 @@ class Enemy {
         ctx.ellipse(0, 16 - wobble, 12, 4, 0, 0, Math.PI*2);
         ctx.fill();
 
-        // --- DRAW BODY ---
         if (this.isBoss) {
-            // --- 1. IRIDESCENT BUBBLE ---
-            
-            // Create Gradient (White center -> Blue -> Pink edge)
             let grad = ctx.createRadialGradient(-4, -4, 2, 0, 0, this.radius);
-            grad.addColorStop(0, 'rgba(255, 255, 255, 0.9)');    // Highlight
-            grad.addColorStop(0.3, 'rgba(204, 213, 255, 0.6)');  // Soft Blue
-            grad.addColorStop(0.7, 'rgba(255, 196, 214, 0.6)');  // Soft Pink
-            grad.addColorStop(1, 'rgba(100, 200, 255, 0.4)');    // Cyan Rim
+            grad.addColorStop(0, 'rgba(255, 255, 255, 0.9)');
+            grad.addColorStop(0.3, 'rgba(204, 213, 255, 0.6)');
+            grad.addColorStop(0.7, 'rgba(255, 196, 214, 0.6)');
+            grad.addColorStop(1, 'rgba(100, 200, 255, 0.4)');
 
             ctx.fillStyle = grad;
             ctx.beginPath();
             ctx.arc(0, 0, this.radius, 0, Math.PI*2);
             ctx.fill();
 
-            // Glass Border
             ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
             ctx.lineWidth = 1.5;
             ctx.stroke();
 
-            // Specular Shine (Reflection)
             ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
             ctx.beginPath();
             ctx.ellipse(-6, -6, 4, 2, Math.PI / 4, 0, Math.PI * 2);
             ctx.fill();
 
-            // --- 2. GOLD CROWN ---
-            ctx.fillStyle = '#f1c40f'; // Gold
-            ctx.strokeStyle = '#c27c0e'; // Darker Gold Outline
+            ctx.fillStyle = '#f1c40f';
+            ctx.strokeStyle = '#c27c0e';
             ctx.lineWidth = 1;
             ctx.lineJoin = 'round';
 
-            // Crown Geometry (sits on top of the bubble)
-            let cy = -this.radius + 2; // Y position relative to center
-            let cw = 14; // Half width
-            let ch = 10; // Height
+            let cy = -this.radius + 2; 
+            let cw = 14; 
+            let ch = 10; 
 
             ctx.beginPath();
-            ctx.moveTo(-cw, cy);             // Bottom Left
-            ctx.lineTo(-cw, cy - ch);        // Left Tip
-            ctx.lineTo(-cw/2, cy - ch/2);    // Left Valley
-            ctx.lineTo(0, cy - ch - 3);      // Center Tip (Tallest)
-            ctx.lineTo(cw/2, cy - ch/2);     // Right Valley
-            ctx.lineTo(cw, cy - ch);         // Right Tip
-            ctx.lineTo(cw, cy);              // Bottom Right
+            ctx.moveTo(-cw, cy);             
+            ctx.lineTo(-cw, cy - ch);        
+            ctx.lineTo(-cw/2, cy - ch/2);    
+            ctx.lineTo(0, cy - ch - 3);      
+            ctx.lineTo(cw/2, cy - ch/2);     
+            ctx.lineTo(cw, cy - ch);         
+            ctx.lineTo(cw, cy);              
             ctx.closePath();
             
             ctx.fill();
             ctx.stroke();
 
         } else {
-            // --- STANDARD ENEMY ---
             ctx.fillStyle = this.color;
             ctx.beginPath();
             ctx.arc(0, 0, this.radius, 0, Math.PI*2);
             ctx.fill();
 
-            // Eyes (Cute style)
             ctx.fillStyle = 'white';
             ctx.beginPath();
             ctx.arc(-5, -2, 4, 0, Math.PI*2);
@@ -220,7 +234,6 @@ class Enemy {
             ctx.fill();
         }
 
-        // Ice Effect Overlay (Shared for both)
         if(this.slowed > 0) {
             ctx.fillStyle = 'rgba(204, 213, 255, 0.6)';
             ctx.beginPath();
@@ -230,7 +243,6 @@ class Enemy {
 
         ctx.restore();
 
-        // Minimalist HP Bar
         if(this.hp < this.maxHp) {
             let hpW = 24;
             let hpPct = this.hp / this.maxHp;
@@ -240,7 +252,6 @@ class Enemy {
             ctx.roundRect(this.x - hpW/2, this.y - 32, hpW, 4, 2);
             ctx.fill();
             
-            // Color based on HP
             ctx.fillStyle = hpPct > 0.5 ? '#2ecc71' : '#e74c3c';
             ctx.beginPath();
             ctx.roundRect(this.x - hpW/2, this.y - 32, hpW * hpPct, 4, 2);
@@ -348,20 +359,16 @@ class Tower {
         ctx.save();
         ctx.translate(this.x, this.y);
 
-        // --- 1. BASE PLATFORM (Shared) ---
-        // Soft Shadow
         ctx.fillStyle = 'rgba(0,0,0,0.1)';
         ctx.beginPath();
         ctx.ellipse(0, 14, 16, 6, 0, 0, Math.PI*2);
         ctx.fill();
 
-        // White Pillar Base
         ctx.fillStyle = '#fff';
         ctx.beginPath();
         ctx.roundRect(-14, -14, 28, 28, 5);
         ctx.fill();
         
-        // Colored Top Surface
         ctx.fillStyle = this.color;
         ctx.globalAlpha = 0.2;
         ctx.beginPath();
@@ -369,7 +376,6 @@ class Tower {
         ctx.fill();
         ctx.globalAlpha = 1.0;
 
-        // Buff Glow Effect
         if(this.buffed) {
             ctx.shadowBlur = 10;
             ctx.shadowColor = COLORS.accent;
@@ -379,31 +385,24 @@ class Tower {
             ctx.shadowBlur = 0;
         }
 
-        // --- 2. SPECIFIC TOWER ART ---
-        
         if (this.typeKey === 'archer') {
             ctx.rotate(this.angle);
-            // Modern Turret Design
             ctx.fillStyle = this.color;
             ctx.beginPath();
             ctx.arc(0, 0, 10, 0, Math.PI*2);
             ctx.fill();
             
-            // Cannon/Bow Barrel
             ctx.fillStyle = '#666';
             ctx.fillRect(0, -3, 16, 6);
             
-            // Highlight
             ctx.fillStyle = 'rgba(255,255,255,0.5)';
             ctx.beginPath();
             ctx.arc(3, -3, 3, 0, Math.PI*2);
             ctx.fill();
 
         } else if (this.typeKey === 'mage') {
-            // Floating Rune Stone
             let float = Math.sin(frameCount * 0.05) * 3;
             
-            // Glow
             ctx.shadowBlur = 15;
             ctx.shadowColor = this.color;
             
@@ -417,7 +416,6 @@ class Tower {
             
             ctx.shadowBlur = 0;
             
-            // Inner Light
             ctx.fillStyle = '#fff';
             ctx.beginPath();
             ctx.arc(0, float, 3, 0, Math.PI*2);
@@ -425,23 +423,19 @@ class Tower {
 
         } else if (this.typeKey === 'cannon') {
             ctx.rotate(this.angle);
-            // Heavy Box Design
             ctx.fillStyle = '#555';
             ctx.fillRect(-10, -10, 20, 20);
             
-            // Barrel
             ctx.fillStyle = '#333';
             ctx.beginPath();
             ctx.arc(0, 0, 8, 0, Math.PI*2);
             ctx.fill();
             ctx.fillRect(0, -6, 18, 12);
             
-            // Accent Stripe
             ctx.fillStyle = COLORS.accent;
             ctx.fillRect(8, -6, 4, 12);
 
         } else if (this.typeKey === 'support') {
-            // Radar Dish style
             ctx.rotate(this.angle);
             
             ctx.strokeStyle = this.color;
@@ -450,7 +444,6 @@ class Tower {
             ctx.arc(0, 0, 10, -0.5, 3.6); 
             ctx.stroke();
             
-            // Center Pulse
             let pulse = (frameCount % 60) / 2;
             ctx.strokeStyle = `rgba(255, 229, 180, ${1 - pulse/30})`;
             ctx.beginPath();
@@ -460,7 +453,6 @@ class Tower {
 
         ctx.restore();
         
-        // --- 3. LEVEL INDICATORS (Modern Dots) ---
         let startX = this.x - ((this.level-1) * 6) / 2;
         for(let i=0; i<this.level; i++) {
             ctx.fillStyle = COLORS.accent;
@@ -490,7 +482,6 @@ class Projectile {
             return;
         }
 
-        // Add tail position
         this.tail.push({x: this.x, y: this.y});
         if(this.tail.length > 5) this.tail.shift();
 
@@ -510,7 +501,6 @@ class Projectile {
         this.active = false;
         if(this.type === 'aoe') {
             createParticles(this.x, this.y, '#555', 8);
-            // AOE Shockwave
             ctx.beginPath();
             ctx.arc(this.x, this.y, 40, 0, Math.PI*2);
             ctx.fillStyle = 'rgba(255,200,200,0.5)';
@@ -531,7 +521,6 @@ class Projectile {
     }
 
     draw() {
-        // Draw Tail
         ctx.beginPath();
         ctx.moveTo(this.x, this.y);
         for(let p of this.tail) ctx.lineTo(p.x, p.y);
@@ -541,7 +530,6 @@ class Projectile {
         ctx.stroke();
         ctx.globalAlpha = 1.0;
 
-        // Draw Head
         ctx.fillStyle = this.color;
         ctx.shadowBlur = 10;
         ctx.shadowColor = this.color;
@@ -597,7 +585,6 @@ function isPath(c, r) {
 }
 
 function initBackground() {
-    // 1. Base Layer (Checkered Lawn)
     bgCtx.fillStyle = COLORS.grassLight;
     bgCtx.fillRect(0, 0, bgCanvas.width, bgCanvas.height);
     
@@ -610,7 +597,6 @@ function initBackground() {
         }
     }
 
-    // 2. Draw Path (Smooth, connected look)
     for (let r = 0; r < ROWS; r++) {
         for (let c = 0; c < COLS; c++) {
             if (isPath(c, r)) {
@@ -620,13 +606,11 @@ function initBackground() {
                 bgCtx.fillStyle = COLORS.path;
                 bgCtx.fillRect(x, y, TILE_SIZE, TILE_SIZE);
                 
-                // Add "Road dots"
                 bgCtx.fillStyle = COLORS.pathBorder;
                 bgCtx.beginPath();
                 bgCtx.arc(x + TILE_SIZE/2, y + TILE_SIZE/2, 2, 0, Math.PI*2);
                 bgCtx.fill();
             } else {
-                // Decor: Random flowers
                 if(Math.random() > 0.95) {
                     let fx = c * TILE_SIZE + Math.random() * 30;
                     let fy = r * TILE_SIZE + Math.random() * 30;
@@ -639,12 +623,11 @@ function initBackground() {
         }
     }
 
-    // --- WATERMARK (MOVED TO LEFT) ---
     bgCtx.save();
     bgCtx.font = "bold 14px Quicksand, sans-serif";
-    bgCtx.textAlign = "left"; // CHANGED FROM RIGHT
+    bgCtx.textAlign = "left"; 
     bgCtx.fillStyle = "rgba(0, 0, 0, 0.1)"; 
-    bgCtx.fillText("yunadata.github.io", 15, bgCanvas.height - 15); // X changed to 15
+    bgCtx.fillText("yunadata.github.io", 15, bgCanvas.height - 15);
     bgCtx.restore();
 }
 
@@ -655,12 +638,10 @@ function drawCrystal(x, y) {
     ctx.save();
     ctx.translate(x, cy);
     
-    // Pulse Aura
     let pulse = 25 + 5 * Math.sin(frameCount * 0.1);
     ctx.shadowBlur = pulse;
     ctx.shadowColor = COLORS.secondary;
     
-    // Main Gem
     ctx.fillStyle = COLORS.secondary; 
     ctx.beginPath();
     ctx.moveTo(0, -25); 
@@ -670,7 +651,6 @@ function drawCrystal(x, y) {
     ctx.closePath();
     ctx.fill();
     
-    // Facet
     ctx.fillStyle = "rgba(255,255,255,0.4)";
     ctx.beginPath();
     ctx.moveTo(0, -25);
@@ -682,7 +662,6 @@ function drawCrystal(x, y) {
 
     ctx.restore();
 
-    // Health Bar underneath
     let hpPct = gameState.lives / gameState.maxLives;
     if (hpPct < 0) hpPct = 0;
     
@@ -809,12 +788,10 @@ function drawPlacementPreview() {
     if(gameState.selectedTower) {
         let t = gameState.selectedTower;
         
-        // Highlight Selection
         ctx.strokeStyle = '#fff';
         ctx.lineWidth = 3;
         ctx.strokeRect(t.c * TILE_SIZE, t.r * TILE_SIZE, TILE_SIZE, TILE_SIZE);
         
-        // Range Circle
         ctx.fillStyle = COLORS.uiRange;
         ctx.beginPath();
         let range = t.buffed ? t.range * 1.2 : t.range;
@@ -829,11 +806,9 @@ function drawPlacementPreview() {
     let hasTower = gameState.towers.some(t => t.c === c && t.r === r);
 
     if(!onPath && !hasTower) {
-        // Valid Spot
         ctx.fillStyle = COLORS.uiSelected;
         ctx.fillRect(c*TILE_SIZE + 2, r*TILE_SIZE + 2, TILE_SIZE - 4, TILE_SIZE - 4);
         
-        // Range Preview
         let range = TOWER_TYPES[gameState.buildType].range * TILE_SIZE;
         ctx.beginPath();
         ctx.strokeStyle = TOWER_TYPES[gameState.buildType].color;
@@ -845,7 +820,6 @@ function drawPlacementPreview() {
         ctx.setLineDash([]); 
         ctx.globalAlpha = 1.0;
     } else {
-        // Invalid Spot
         ctx.fillStyle = 'rgba(231, 76, 60, 0.3)';
         ctx.fillRect(c*TILE_SIZE, r*TILE_SIZE, TILE_SIZE, TILE_SIZE);
     }
@@ -946,73 +920,122 @@ function endGame() {
     fetchLeaderboard();
 }
 
-function submitScore() {
-    const name = document.getElementById('player-name').value;
-    if(!name) return alert("Please enter a name!");
-    
-    const dreamloURL = `http://dreamlo.com/lb/${DREAMLO_PRIVATE}/add-pipe/${encodeURIComponent(name)}/${gameState.score}`;
-    const proxyURL = `https://api.allorigins.win/get?url=${encodeURIComponent(dreamloURL)}`;
+// --- LEADERBOARD LOGIC: ONE ENTRY PER PLAYER ---
 
-    fetch(proxyURL)
-    .then(response => {
-        if (response.ok) return response.json();
-        throw new Error('Network response was not ok.');
-    })
-    .then(data => {
-        alert("Score Uploaded!");
+async function submitScore() {
+    const nameInput = document.getElementById('player-name');
+    let name = nameInput.value.trim();
+    
+    if (!name) return alert("Please enter a name!");
+    
+    // UI Feedback
+    const btn = document.querySelector('#submit-score-container .btn-game');
+    btn.disabled = true;
+    btn.innerText = "Checking...";
+
+    try {
+        // 1. Create a "Safe ID" to use as the Document Key
+        // Example: "Danny K" becomes "dannyk"
+        const safeID = name.toLowerCase().replace(/\s+/g, '');
+        
+        // 2. Reference this specific user's document
+        const userScoreRef = doc(db, "leaderboard", safeID);
+        
+        // 3. Check if they already exist
+        const docSnap = await getDoc(userScoreRef);
+        
+        const newScore = parseInt(gameState.score);
+        const newWave = parseInt(gameState.wave);
+
+        if (docSnap.exists()) {
+            const existingData = docSnap.data();
+            // 4. Update ONLY if the new score is better
+            if (newScore > existingData.score) {
+                await setDoc(userScoreRef, {
+                    name: name, // Keep the display name with original casing
+                    score: newScore,
+                    wave: newWave,
+                    timestamp: Date.now()
+                });
+                alert("New High Score Uploaded!");
+            } else {
+                alert("Score uploaded, but you didn't beat your personal best!");
+            }
+        } else {
+            // 5. First time user? Create the doc.
+            await setDoc(userScoreRef, {
+                name: name,
+                score: newScore,
+                wave: newWave,
+                timestamp: Date.now()
+            });
+            alert("Score Uploaded!");
+        }
+
         document.getElementById('submit-score-container').classList.add('hidden');
-        fetchLeaderboard();
-    })
-    .catch(err => {
-        console.error("Submit Error:", err);
-        alert("Connection failed. Check console.");
-    });
+        fetchLeaderboard(); // Refresh list
+
+    } catch (e) {
+        console.error("Error adding score: ", e);
+        alert("Upload failed. Check console.");
+    } finally {
+        btn.disabled = false;
+        btn.innerText = "Submit Score";
+    }
 }
 
-function fetchLeaderboard() {
+async function fetchLeaderboard() {
     const list = document.getElementById('leaderboard-list');
     const container = document.getElementById('leaderboard-display');
     
     container.classList.remove('hidden');
     list.innerHTML = "Fetching global scores...";
 
-    const dreamloURL = `http://dreamlo.com/lb/${DREAMLO_PUBLIC}/json?t=${Date.now()}`;
-    const proxyURL = `https://api.allorigins.win/get?url=${encodeURIComponent(dreamloURL)}`;
+    try {
+        // Query: Get Top 20 scores
+        const q = query(
+            collection(db, "leaderboard"), 
+            orderBy("score", "desc"), 
+            limit(20)
+        );
 
-    fetch(proxyURL)
-    .then(res => res.json())
-    .then(data => {
-        if (!data.contents) throw new Error("No content from proxy");
-        const dreamloData = JSON.parse(data.contents);
-
+        const querySnapshot = await getDocs(q);
+        
         let html = "";
-        let scores = [];
-
-        if (!dreamloData.dreamlo || !dreamloData.dreamlo.leaderboard) {
+        
+        if (querySnapshot.empty) {
             html = "<div style='text-align:center'>No scores yet!</div>";
         } else {
-            let entries = dreamloData.dreamlo.leaderboard.entry;
-            scores = Array.isArray(entries) ? entries : [entries];
-            scores.sort((a,b) => parseInt(b.score) - parseInt(a.score));
-
-            scores.slice(0, 10).forEach(entry => {
+            let rank = 1;
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
                 html += `
                 <div class="score-entry">
-                    <span>${entry.name}</span>
-                    <span style="color:var(--accent); font-weight:bold;">${entry.score}</span>
+                    <span>#${rank}. ${data.name}</span>
+                    <span style="color:var(--accent); font-weight:bold;">${data.score}</span>
                 </div>`;
+                rank++;
             });
         }
+        
         list.innerHTML = html;
-    })
-    .catch(err => {
-        list.innerHTML = "Error loading leaderboard.";
-        console.error("Leaderboard Error:", err);
-    });
+        
+    } catch (error) {
+        console.error("Error fetching leaderboard: ", error);
+        list.innerHTML = "Error loading scores.";
+    }
 }
+
+// --- EXPOSE FUNCTIONS TO WINDOW ---
+// Critical: Makes functions available to onclick="" events in HTML
+window.startGame = startGame;
+window.selectTowerType = selectTowerType;
+window.upgradeSelectedTower = upgradeSelectedTower;
+window.sellSelectedTower = sellSelectedTower;
+window.submitScore = submitScore;
 
 // Initial Render
 initBackground();
 ctx.drawImage(bgCanvas, 0, 0);
-let end = path[path.length-1];
-drawCrystal(end.x*TILE_SIZE + TILE_SIZE/2, end.y*TILE_SIZE + TILE_SIZE/2);
+let endPos = path[path.length-1];
+drawCrystal(endPos.x*TILE_SIZE + TILE_SIZE/2, endPos.y*TILE_SIZE + TILE_SIZE/2);
