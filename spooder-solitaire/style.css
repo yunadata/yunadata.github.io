@@ -1,0 +1,262 @@
+:root {
+    --bg-color: #FFFCF7;
+    --primary: #FFC4D6;      /* Pastel Pink */
+    --secondary: #CCD5FF;    /* Pastel Blue */
+    --accent: #E2C6FF;       /* Pastel Purple */
+    --text-color: #4A4A4A;
+    --card-bg: #FFFFFF;
+    --card-back: #FFC4D6; 
+    --green-felt: rgba(255, 255, 255, 0.4);
+    --shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; user-select: none; -webkit-user-select: none; }
+
+body {
+    font-family: 'Quicksand', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    overflow-x: hidden; /* Prevent body scroll, game handles it */
+    min-height: 100vh;
+}
+
+/* --- Reuse Blobs from Crystal Guard --- */
+.bg-decoration {
+    position: fixed;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    filter: blur(80px); opacity: 0.3; z-index: -1;
+    animation: float-blob 20s ease-in-out infinite;
+}
+.blob-1 { background: var(--primary); top: -100px; left: -100px; }
+.blob-2 { background: var(--secondary); bottom: -100px; right: -100px; animation-delay: 5s; }
+.blob-3 { background: var(--accent); top: 50%; right: 10%; animation-delay: 10s; }
+
+@keyframes float-blob {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(50px, -50px) scale(1.1); }
+    66% { transform: translate(-50px, 50px) scale(0.9); }
+}
+
+/* --- Nav --- */
+nav {
+    padding: 1rem 2rem;
+    background: rgba(255,255,255,0.7);
+    backdrop-filter: blur(10px);
+    position: sticky; top: 0; z-index: 100;
+}
+.nav-container { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; }
+.logo { font-weight: 700; cursor: pointer; }
+.btn-small { text-decoration: none; color: var(--text-color); background: rgba(255,196,214,0.3); padding: 5px 15px; border-radius: 20px; font-size: 0.9rem; }
+
+/* --- Game Layout --- */
+main {
+    display: flex; justify-content: center;
+    padding: 10px; height: calc(100vh - 70px);
+}
+
+.game-container {
+    width: 100%; max-width: 1200px;
+    background: rgba(255,255,255,0.5);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    display: flex; flex-direction: column;
+    overflow: hidden;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255,255,255,0.8);
+    position: relative;
+}
+
+/* Header */
+.game-header {
+    padding: 15px 20px;
+    background: rgba(255,255,255,0.6);
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,0.5);
+}
+
+.game-title { font-size: 1.5rem; color: var(--text-color); margin-bottom: 5px; }
+.game-title i { color: var(--primary); }
+
+.stats-bar { display: flex; gap: 20px; font-size: 0.9rem; font-weight: 600; }
+.stat .label { color: #888; font-size: 0.8rem; text-transform: uppercase; }
+
+.header-right { display: flex; gap: 10px; }
+
+/* Buttons */
+.btn-game {
+    border: none; padding: 8px 16px; border-radius: 20px;
+    cursor: pointer; font-family: 'Quicksand', sans-serif; font-weight: 600;
+    transition: 0.2s;
+}
+.btn-game.undo { background: #ffeaa7; color: #555; }
+.btn-game.restart { background: var(--primary); color: white; }
+.btn-game.leaderboard-btn { background: var(--secondary); color: white; }
+.btn-game:hover { transform: translateY(-2px); opacity: 0.9; }
+
+/* --- Board --- */
+#game-board {
+    flex: 1;
+    position: relative;
+    padding: 10px;
+    overflow: hidden; /* Prevent native scroll, we manage drag */
+}
+
+/* Top Row (Stock + Foundations) */
+.top-row {
+    height: 100px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding: 0 10px;
+}
+
+.stock-pile {
+    width: 70px; height: 96px;
+    border: 2px dashed rgba(0,0,0,0.1);
+    border-radius: 8px;
+    position: relative;
+    cursor: pointer;
+}
+.stock-pile::after { content: 'Stock'; position: absolute; top: 105%; width: 100%; text-align: center; font-size: 10px; color: #aaa; }
+
+.foundations-row {
+    display: flex; gap: 10px;
+}
+.foundation-slot {
+    width: 70px; height: 96px;
+    border: 2px solid rgba(0,0,0,0.05);
+    background: rgba(255,255,255,0.3);
+    border-radius: 8px;
+    position: relative;
+}
+
+/* Tableau (Columns) */
+.tableau-grid {
+    display: flex;
+    justify-content: space-between;
+    height: calc(100% - 110px);
+    padding: 0 10px;
+}
+
+.column {
+    flex: 1;
+    margin: 0 2px;
+    position: relative;
+    min-height: 200px;
+    /* Optional: visible slot */
+    /* border-top: 2px solid rgba(0,0,0,0.05); */
+    border-radius: 5px 5px 0 0;
+}
+
+/* --- Cards --- */
+.card {
+    width: 100%; /* Relative to column width */
+    max-width: 80px; /* Cap size */
+    aspect-ratio: 2.5 / 3.5;
+    background: white;
+    border-radius: 6px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    position: absolute; /* Stacked in column */
+    display: flex; flex-direction: column;
+    border: 1px solid #eee;
+    font-size: 14px;
+    transition: transform 0.1s; /* Only animate programmatic moves, not drag */
+    z-index: 1;
+}
+
+.card.face-down {
+    background: repeating-linear-gradient(
+        45deg,
+        var(--primary),
+        var(--primary) 10px,
+        #ffdae6 10px,
+        #ffdae6 20px
+    );
+    border: 2px solid white;
+}
+.card.face-down .card-content { display: none; }
+
+.card-content {
+    padding: 2px 5px;
+    display: flex; flex-direction: column; height: 100%;
+    pointer-events: none; /* Let clicks pass to card div */
+}
+
+.card-top { text-align: left; }
+.card-center { 
+    flex: 1; display: flex; justify-content: center; align-items: center; 
+    font-size: 24px; opacity: 0.2; 
+}
+.suit-red { color: #ff6b6b; }
+.suit-black { color: #57606f; } /* Soft black */
+
+/* Dragging State */
+.card.dragging {
+    z-index: 9999;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    pointer-events: none; /* Important for detecting drop target below */
+    opacity: 0.9;
+}
+
+/* --- Overlays --- */
+.overlay {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(5px);
+    display: flex; justify-content: center; align-items: center;
+    z-index: 1000;
+}
+.hidden { display: none !important; }
+
+.overlay-content {
+    background: white; padding: 40px; border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(100,100,100,0.1);
+    text-align: center; max-width: 500px; width: 90%;
+}
+.overlay-content h1 { color: var(--primary); margin-bottom: 10px; }
+.overlay-content p { color: #888; margin-bottom: 30px; }
+
+/* Difficulty Buttons */
+.difficulty-options { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
+.diff-btn {
+    background: #f8f9fa; border: 2px solid transparent;
+    padding: 15px; border-radius: 12px; cursor: pointer;
+    min-width: 100px; transition: 0.2s;
+}
+.diff-btn:hover { border-color: var(--primary); background: #fff5f8; transform: translateY(-5px); }
+.diff-icon { font-size: 24px; margin-bottom: 5px; }
+
+/* Leaderboard Modal */
+.overlay-content.large { max-width: 600px; padding: 20px; }
+.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.close-btn { background: none; border: none; font-size: 24px; cursor: pointer; }
+
+.tabs { display: flex; gap: 10px; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+.tab-btn { background: none; border: none; padding: 5px 15px; cursor: pointer; color: #aaa; font-weight: bold; }
+.tab-btn.active { color: var(--primary); border-bottom: 2px solid var(--primary); }
+
+#leaderboard-list { height: 300px; overflow-y: auto; text-align: left; }
+.score-row {
+    display: flex; justify-content: space-between;
+    padding: 10px; border-bottom: 1px solid #f5f5f5;
+}
+.score-row:nth-child(1) { color: #f1c40f; font-weight: bold; } /* Gold */
+.score-row:nth-child(2) { color: #95a5a6; font-weight: bold; } /* Silver */
+.score-row:nth-child(3) { color: #cd7f32; font-weight: bold; } /* Bronze */
+
+/* Input group */
+.input-group { display: flex; gap: 10px; justify-content: center; margin-bottom: 10px; }
+input { padding: 10px; border: 1px solid #ddd; border-radius: 20px; font-family: inherit; }
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+    .tableau-grid { overflow-x: auto; padding-bottom: 10px; justify-content: flex-start; }
+    .column { min-width: 45px; flex: none; width: 10%; } /* Force columns to stay manageable */
+    .card { width: 40px; font-size: 10px; }
+    .card-center { font-size: 16px; }
+    
+    .game-header { flex-direction: column; gap: 10px; align-items: flex-start; }
+    .header-right { width: 100%; justify-content: space-between; }
+    .game-title { font-size: 1.2rem; }
+}
