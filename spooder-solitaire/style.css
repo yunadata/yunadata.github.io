@@ -375,3 +375,42 @@ footer {
     width: 100%;
     margin-top: 20px; /* specific breathing room from the bottom of the page */
 }
+
+
+
+
+
+
+
+/* --- UPDATED: Leaderboard Colors (Pastel Goth Theme) --- */
+.score-row:nth-child(1) { 
+    color: #FFD97D; /* Pastel Honey Gold */
+    font-weight: 800; 
+    text-shadow: 1px 1px 0px rgba(0,0,0,0.1);
+} 
+.score-row:nth-child(2) { 
+    color: #B2BEC3; /* Soft Silver Mist */
+    font-weight: 700; 
+} 
+.score-row:nth-child(3) { 
+    color: #FFB7B2; /* Pastel Rose Gold/Bronze */
+    font-weight: 700; 
+}
+
+/* --- NEW: Play Again Button Style --- */
+.btn-game.replay {
+    background: transparent;
+    border: 2px solid var(--secondary); /* Pastel Blue Outline */
+    color: var(--secondary);
+    margin-top: 15px;
+    width: auto;
+    padding: 10px 30px;
+    display: inline-block;
+}
+
+.btn-game.replay:hover {
+    background: var(--secondary);
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(204, 213, 255, 0.4);
+}
