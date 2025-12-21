@@ -563,28 +563,52 @@ async function submitScore() {
     let name = nameInput.value.trim();
     if (!name) return alert("Please enter a name!");
     
+    // UI Feedback
     const btn = document.querySelector('#submit-score-container .btn-game');
     btn.disabled = true;
-    btn.innerText = "Saving...";
+    btn.innerText = "Checking...";
 
     let totalScore = gameState.score + gameState.distance;
 
     try {
-        const safeID = name.toLowerCase().replace(/\s+/g, '') + "_" + Math.floor(Math.random()*1000);
+        // 1. Create a predictable ID based on the name (e.g., "David" -> "david")
+        // REMOVED the random number part so it always points to the same user doc
+        const safeID = name.toLowerCase().replace(/\s+/g, '');
         
-        await setDoc(doc(db, "leaderboard", safeID), {
-            name: name,
-            score: totalScore,
-            timestamp: Date.now()
-        });
+        const userScoreRef = doc(db, "leaderboard", safeID);
+        const docSnap = await getDoc(userScoreRef);
+        
+        // 2. Check if this user already exists
+        if (docSnap.exists()) {
+            const existingData = docSnap.data();
+            
+            // 3. Only update if the NEW score is HIGHER
+            if (totalScore > existingData.score) {
+                await setDoc(userScoreRef, {
+                    name: name, // Keep original casing (e.g. "David")
+                    score: totalScore,
+                    timestamp: Date.now()
+                });
+                alert("New High Score Uploaded!");
+            } else {
+                alert(`Nice try! But your best score is still ${existingData.score}.`);
+            }
+        } else {
+            // 4. User doesn't exist yet, create their first entry
+            await setDoc(userScoreRef, {
+                name: name,
+                score: totalScore,
+                timestamp: Date.now()
+            });
+            alert("Score Uploaded!");
+        }
 
-        alert("Score Uploaded!");
         document.getElementById('submit-score-container').classList.add('hidden');
         fetchLeaderboard();
 
     } catch (e) {
         console.error("Error adding score: ", e);
-        alert("Upload failed.");
+        alert("Upload failed. Check console.");
     } finally {
         btn.disabled = false;
         btn.innerText = "Submit Score";
