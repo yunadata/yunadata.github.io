@@ -442,24 +442,37 @@ main {
         -webkit-backdrop-filter: none !important;
     }
 
-    /* 2. The Overlay - Breaks out of the canvas box */
+    /* 2. The Overlay (DEFAULT / START SCREEN) 
+       Keep it inside the canvas box so users can scroll */
     #overlay {
-        position: fixed !important;  /* Locks it to the screen, not the game box */
-        top: 80px;                   /* Starts BELOW your header (adjust if needed) */
-        left: 0;
-        width: 100vw;                /* Full screen width */
-        bottom: 0;                   /* Stretches to the very bottom */
-        height: auto;                /* Allows it to be tall */
-        
-        z-index: 9999;               /* Sits on top of the game */
-        background: rgba(26, 26, 46, 0.98); /* Dark background */
-        
-        /* Flex centering */
+        position: absolute !important; 
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        border-radius: 12px;
+        z-index: 10;
+        /* Ensure flex centering remains */
         display: flex;
         flex-direction: column;
-        justify-content: center;     /* Centers content vertically */
+        justify-content: center;
         align-items: center;
         padding: 20px;
+    }
+
+    /* 2b. The Overlay (GAME OVER ONLY) 
+       Breaks out to full screen */
+    #overlay.mode-game-over {
+        position: fixed !important;  /* Locks it to the screen */
+        top: 80px !important;        /* Starts below header */
+        left: 0 !important;
+        width: 100vw !important;     /* Full screen width */
+        bottom: 0 !important;        /* Stretches to bottom */
+        height: auto !important;     
+        
+        z-index: 9999 !important;    /* Highest priority */
+        background: rgba(26, 26, 46, 0.98); 
+        border-radius: 0;            /* Remove corners for full screen */
     }
 
     /* 3. Make the content fit nicely */
