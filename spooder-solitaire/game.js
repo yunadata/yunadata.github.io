@@ -130,25 +130,26 @@ function dealInitialCards() {
 // --- Rendering ---
 
 function renderBoard() {
-    // We only re-render columns that changed, but for simplicity here we can re-render all or specific ones.
-    // To optimize: clear DOM cols and rebuild.
-    
     gameState.columns.forEach((colData, index) => {
         const colEl = elTableau.children[index];
         colEl.innerHTML = ''; // Clear existing
         
+        // Track the current vertical position for this column
+        let currentTop = 0; 
+        
         colData.forEach((card, cardIndex) => {
             const cardEl = createCardElement(card, index, cardIndex);
-            // Position calculation
-            // Standard overlap: 25px usually
-            const overlap = card.faceUp ? 30 : 10;
-            // We can just use relative positioning via margin, or absolute top.
-            // Let's use absolute top relative to column.
             
-            // To make dragging easier, let's stack them using `top`
-            cardEl.style.top = `${cardIndex * (card.faceUp ? 25 : 8)}px`;
+            // Set the position using our tracking variable
+            cardEl.style.top = `${currentTop}px`;
             
             colEl.appendChild(cardEl);
+            
+            // Determine how much space to add for the NEXT card.
+            // If this card is face up, we need space to see it (e.g., 30px).
+            // If it's face down, we need a tight overlap (e.g., 8px).
+            const spacing = card.faceUp ? 30 : 8; 
+            currentTop += spacing;
         });
     });
 }
