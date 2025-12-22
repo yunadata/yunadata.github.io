@@ -214,6 +214,19 @@ main {
     opacity: 0.9;
 }
 
+
+
+/* Specific style for the completed King in the foundation slots */
+.foundation-slot .card-center {
+    font-size: 24px;
+    font-weight: bold;
+	opacity: 0.5;
+}
+
+
+
+
+
 /* --- Overlays --- */
 .overlay {
     position: absolute; top: 0; left: 0; width: 100%; height: 100%;
@@ -297,6 +310,11 @@ input { padding: 10px; border: 1px solid #ddd; border-radius: 20px; font-family:
     .stock-pile::after {
         font-size: 8px;
         top: 100%;
+    }
+	
+	/* Make the King letter fit inside the tiny mobile slot */
+    .foundation-slot .card-center {
+        font-size: 14px; 
     }
 }
 
