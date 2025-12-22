@@ -103,6 +103,17 @@ main {
 .btn-game.leaderboard-btn { background: var(--secondary); color: white; }
 .btn-game:hover { transform: translateY(-2px); opacity: 0.9; }
 
+/* Style for the Save Score button */
+.btn-game.action {
+    background: var(--primary); /* Pink background */
+    color: white;               /* White text */
+}
+
+.btn-game.action:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
 /* --- Board --- */
 #game-board {
     flex: 1;
@@ -251,14 +262,20 @@ main {
     background: #f8f9fa; border: 2px solid transparent;
     padding: 15px; border-radius: 12px; cursor: pointer;
     min-width: 100px; transition: 0.2s;
+	color: var(--text-color);
 }
 .diff-btn:hover { border-color: var(--primary); background: #fff5f8; transform: translateY(-5px); }
 .diff-icon { font-size: 24px; margin-bottom: 5px; }
 
+.diff-btn h3 {
+    color: var(--text-color);
+    margin-bottom: 5px;
+}
+
 /* Leaderboard Modal */
 .overlay-content.large { max-width: 600px; padding: 20px; }
 .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-.close-btn { background: none; border: none; font-size: 24px; cursor: pointer; }
+.close-btn { background: none; border: none; font-size: 24px; cursor: pointer; color: var(--text-color);}
 
 .tabs { display: flex; gap: 10px; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
 .tab-btn { background: none; border: none; padding: 5px 15px; cursor: pointer; color: #aaa; font-weight: bold; }
