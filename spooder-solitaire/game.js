@@ -469,7 +469,7 @@ function removeRun(colIdx) {
     const fSlot = document.querySelector('.foundation-slot:empty');
     if(fSlot) {
         fSlot.innerHTML = `<div class="card" style="position:relative; top:0; left:0; color:${SUIT_COLORS[run[0].suit]}">
-            <div class="card-content"><div class="card-center" style="opacity:1; font-size:30px">K${SUIT_ICONS[run[0].suit]}</div></div>
+            <div class="card-content"><div class="card-center">K${SUIT_ICONS[run[0].suit]}</div></div>
         </div>`;
     }
 
