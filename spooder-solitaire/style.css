@@ -274,6 +274,30 @@ input { padding: 10px; border: 1px solid #ddd; border-radius: 20px; font-family:
     .game-header { flex-direction: column; gap: 10px; align-items: flex-start; }
     .header-right { width: 100%; justify-content: space-between; }
     .game-title { font-size: 1.2rem; }
+	
+	/* 1. Shrink the height of the top row container */
+    .top-row {
+        height: 60px; /* Reduced from 100px */
+        padding: 0 5px;
+    }
+
+    /* 2. Resize Stock and Foundations to fit 9 items across (8 slots + 1 stock) */
+    .stock-pile, .foundation-slot {
+        width: 34px;  /* Small enough to fit all 9 in a row */
+        height: 48px; /* Maintain ~2.5/3.5 aspect ratio */
+        border-width: 1px; /* Thinner border looks better on mobile */
+    }
+
+    /* 3. Tighten the gap between completed piles */
+    .foundations-row {
+        gap: 2px; /* Reduced from 10px */
+    }
+
+    /* 4. Adjust the "Stock" text label position */
+    .stock-pile::after {
+        font-size: 8px;
+        top: 100%;
+    }
 }
 
 
