@@ -256,6 +256,13 @@ main {
 .overlay-content h1 { color: var(--primary); margin-bottom: 10px; }
 .overlay-content p { color: #888; margin-bottom: 30px; }
 
+/* --- UPDATED: Updated to target H2 as well for SEO fix --- */
+.overlay-content h1, 
+.overlay-content h2 { 
+    color: var(--primary); 
+    margin-bottom: 10px; 
+}
+
 /* Difficulty Buttons */
 .difficulty-options { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
 .diff-btn {
@@ -339,16 +346,6 @@ input { padding: 10px; border: 1px solid #ddd; border-radius: 20px; font-family:
         position: static;
     }
 }
-
-
-
-
-
-
-
-
-
-
 
 
 /* --- How to Play Section --- */
@@ -446,12 +443,6 @@ footer {
     margin-top: 20px; /* specific breathing room from the bottom of the page */
 }
 
-
-
-
-
-
-
 /* --- UPDATED: Leaderboard Colors (Pastel Goth Theme) --- */
 .score-row:nth-child(1) { 
     color: #CCCCFF; /* Pastel Periwinkle */
@@ -484,8 +475,6 @@ footer {
     transform: translateY(-3px);
     box-shadow: 0 5px 15px rgba(204, 213, 255, 0.4);
 }
-
-
 
 /* --- Input Focus State --- */
 input:focus {
