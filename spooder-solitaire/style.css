@@ -194,8 +194,14 @@ main {
 
 .card-top { text-align: left; }
 .card-center { 
-    flex: 1; display: flex; justify-content: center; align-items: center; 
-    font-size: 24px; opacity: 0.2; 
+    position: absolute;
+    top: 55%; /* Vertically centered (slightly lower to clear the top number) */
+    left: 50%; /* Horizontally centered */
+    transform: translate(-50%, -50%); /* Perfect centering alignment */
+    font-size: 50px; /* Increased from 24px to 50px */
+    opacity: 0.25; /* Slight bump in visibility */
+    pointer-events: none;
+    z-index: 0;
 }
 .suit-red { color: #ff6b6b; }
 .suit-black { color: #57606f; } /* Soft black */
