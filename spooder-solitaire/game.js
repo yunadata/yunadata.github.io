@@ -570,7 +570,6 @@ window.submitScore = async function() {
         btn.innerText = "Saved!";
         setTimeout(() => {
             toggleLeaderboardModal();
-            loadLeaderboard(gameState.difficulty);
         }, 1000);
     } else {
         btn.innerText = "Error :(";
@@ -581,8 +580,16 @@ window.submitScore = async function() {
 window.toggleLeaderboardModal = function() {
     const el = document.getElementById('leaderboard-overlay');
     el.classList.toggle('hidden');
+    
     if(!el.classList.contains('hidden')) {
-        loadLeaderboard(gameState.difficulty || 1);
+        // 1. Get current difficulty (default to 1 if undefined)
+        const diff = gameState.difficulty || 1;
+        
+        // 2. Find the specific button using the IDs we added in HTML
+        const targetBtn = document.getElementById(`tab-${diff}`);
+        
+        // 3. Load leaderboard AND pass the button so the UI updates
+        loadLeaderboard(diff, targetBtn);
     }
 }
 
