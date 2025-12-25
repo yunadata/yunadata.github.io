@@ -157,15 +157,25 @@ class Bubble {
 
         // Iridescent Effect
         let grad = context.createRadialGradient(-5, -5, 2, 0, 0, RADIUS - 1);
-        grad.addColorStop(0, 'rgba(255, 255, 255, 0.9)'); 
+        grad.addColorStop(0, 'rgba(255, 255, 255, 0.8)'); 
         grad.addColorStop(0.3, color.main);
         grad.addColorStop(0.9, color.dark);
         grad.addColorStop(1, 'rgba(0,0,0,0.1)'); 
+
+        // --- CHANGE START: Transparency Settings ---
+        
+        // 1. Make the main bubble body see-through (glass effect)
+        context.globalAlpha = 0.75; 
 
         context.beginPath();
         context.arc(0, 0, RADIUS - 1, 0, Math.PI * 2);
         context.fillStyle = grad;
         context.fill();
+
+        // 2. Reset opacity to 1.0 for the reflection so it stays bright
+        context.globalAlpha = 1.0;
+
+        // --- CHANGE END ---
 
         context.fillStyle = 'rgba(255,255,255,0.8)';
         context.beginPath();
