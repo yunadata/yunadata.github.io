@@ -2,6 +2,7 @@
  * BUBBLE POP - GAME ENGINE
  * Aesthetic: Pastel Iridescent / Glassmorphism
  * Backend: Firebase Firestore (v12.7.0)
+ * Update: Survival Mode & Difficulty Scaling
  */
 
 // --- FIREBASE IMPORTS ---
@@ -53,7 +54,7 @@ const BUBBLE_COLORS = [
 
 // Game State
 let gameState = {
-    grid: [], 
+    grid: [], // 2D Array [row][col]
     activeBubble: null,
     nextBubbleColor: null,
     projectiles: [],
@@ -61,14 +62,14 @@ let gameState = {
     score: 0,
     level: 1,
     gameOver: true,
-    angle: -Math.PI / 2, 
-    isProcessing: false,
+    angle: -Math.PI / 2, // Pointing up
+    isProcessing: false, // Prevent shooting while animations happen
     
-    // --- NEW VARIABLES FOR SURVIVAL MODE ---
+    // --- SURVIVAL VARIABLES ---
     framesSinceLastRow: 0,
-    rowInterval: 600,       // Start: Add row every ~10 seconds (at 60fps)
-    minRowInterval: 180,    // Cap: Fastest speed is ~3 seconds
-    difficultyStep: 10      // How much faster it gets per row added
+    rowInterval: 600,       // Frames until next row (600 = ~10s at 60fps)
+    minRowInterval: 180,    // Fastest speed cap (~3s)
+    difficultyStep: 10      // How many frames faster per row added
 };
 
 let animationId;
@@ -200,7 +201,7 @@ function initGrid() {
         for (let c = 0; c < COLS; c++) {
             // Fill top 5 rows
             if (r < 5) {
-                // Determine if this col exists (odd rows have 1 less col usually in straight grids, but simple offset works here)
+                // Determine if this col exists (odd rows have 1 less col)
                 if (r % 2 !== 0 && c === COLS - 1) continue; 
                 gameState.grid[r][c] = new Bubble(r, c, Math.floor(Math.random() * BUBBLE_COLORS.length));
             } else {
@@ -218,6 +219,10 @@ function startGame() {
     gameState.projectiles = [];
     gameState.particles = [];
     
+    // Reset Survival Variables
+    gameState.framesSinceLastRow = 0;
+    gameState.rowInterval = 600; 
+    
     // UI Reset
     document.getElementById('overlay').classList.add('hidden');
     document.getElementById('submit-score-container').classList.add('hidden');
@@ -230,6 +235,51 @@ function startGame() {
     
     if (animationId) cancelAnimationFrame(animationId);
     gameLoop();
+}
+
+// --- SURVIVAL MECHANIC: ADD NEW ROW ---
+function addNewRow() {
+    // 1. Check for Game Over BEFORE shifting (Check 2nd to last row)
+    for (let c = 0; c < COLS; c++) {
+        if (gameState.grid[ROWS - 2][c]) { 
+            triggerGameOver();
+            return;
+        }
+    }
+
+    // 2. Shift all bubbles down
+    // Iterate backwards (bottom up)
+    for (let r = ROWS - 2; r >= 0; r--) {
+        for (let c = 0; c < COLS; c++) {
+            let b = gameState.grid[r][c];
+            gameState.grid[r+1][c] = b; // Move pointer to new row
+            
+            if (b) {
+                b.r = r + 1; // Update bubble's internal row
+                // Recalculate visual position (X, Y)
+                let pos = getHexPos(b.r, b.c);
+                b.x = pos.x;
+                b.y = pos.y;
+            }
+        }
+    }
+
+    // 3. Create new top row
+    gameState.grid[0] = []; 
+    for (let c = 0; c < COLS; c++) {
+        // Handle hex grid stagger (odd rows usually have 1 less, but row 0 is even)
+        gameState.grid[0][c] = new Bubble(0, c, Math.floor(Math.random() * BUBBLE_COLORS.length));
+    }
+
+    // 4. Increase Difficulty (Make the next row come faster)
+    if (gameState.rowInterval > gameState.minRowInterval) {
+        gameState.rowInterval -= gameState.difficultyStep;
+    }
+    
+    // Reset timer
+    gameState.framesSinceLastRow = 0;
+    gameState.level++; // Increment "Level" metric
+    updateUI();
 }
 
 function generateNextBubble() {
@@ -254,6 +304,19 @@ function gameLoop() {
     if (gameState.gameOver) return;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // --- AUTOMATIC ROW ADDITION LOGIC ---
+    gameState.framesSinceLastRow++;
+    
+    // Draw "Next Row" Progress Bar at top
+    let timerPct = gameState.framesSinceLastRow / gameState.rowInterval;
+    ctx.fillStyle = 'rgba(255, 196, 214, 0.4)'; // Soft Pink
+    ctx.fillRect(0, 0, canvas.width * timerPct, 6); 
+    
+    if (gameState.framesSinceLastRow > gameState.rowInterval) {
+        addNewRow();
+    }
+    // -------------------------------------
 
     // 1. Draw Grid
     for (let r = 0; r < ROWS; r++) {
@@ -459,16 +522,33 @@ function dropFloatingBubbles() {
 
     // 2. Remove anything NOT in 'attached' set
     let dropped = false;
+    let totalBubbles = 0; // Count remaining bubbles for clear check
+
     for (let r = 0; r < ROWS; r++) {
         for (let c = 0; c < COLS; c++) {
-            if (gameState.grid[r][c] && !attached.has(key(r, c))) {
-                let b = gameState.grid[r][c];
-                createExplosion(b.x, b.y, BUBBLE_COLORS[b.colorIndex].main);
-                gameState.grid[r][c] = null;
-                gameState.score += 20; // Extra points for drops
-                dropped = true;
+            if (gameState.grid[r][c]) {
+                if (!attached.has(key(r, c))) {
+                    let b = gameState.grid[r][c];
+                    createExplosion(b.x, b.y, BUBBLE_COLORS[b.colorIndex].main);
+                    gameState.grid[r][c] = null;
+                    gameState.score += 20; // Extra points for drops
+                    dropped = true;
+                } else {
+                    totalBubbles++;
+                }
             }
         }
+    }
+
+    // --- 3. CHECK FOR BOARD CLEAR ---
+    if (totalBubbles === 0) {
+        gameState.score += 1000;
+        createExplosion(canvas.width/2, canvas.height/2, '#f1c40f'); // Gold Explosion
+        
+        // Wait 0.5s then add a new row to continue the game
+        setTimeout(() => {
+            if(!gameState.gameOver) addNewRow();
+        }, 500);
     }
 }
 
