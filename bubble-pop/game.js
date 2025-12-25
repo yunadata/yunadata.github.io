@@ -2,7 +2,7 @@
  * BUBBLE POP - GAME ENGINE
  * Aesthetic: Pastel Iridescent / Glassmorphism
  * Backend: Firebase Firestore (v12.7.0)
- * Update: Fixed Bubble Position Jitter (Grid Shift Logic)
+ * Update: Fixed Visibility of Launcher, Preview, and Projectiles
  */
 
 // --- FIREBASE IMPORTS ---
@@ -71,8 +71,7 @@ let gameState = {
     minRowInterval: 180,    
     difficultyStep: 10,
     
-    // NEW: Global Grid Shift (0 or 1)
-    // Determines if Row 0 is "Even" or "Odd" aligned at any given moment
+    // Global Grid Shift (0 or 1)
     gridShift: 0 
 };
 
@@ -86,14 +85,22 @@ class Bubble {
         this.r = r;
         this.c = c;
         this.colorIndex = colorIndex;
-        // Position is calculated dynamically based on gridShift
-        this.updatePos();
+        
+        // Only calculate grid position if it's actually ON the grid (row >= 0)
+        // Bubbles with r = -1 are "floating" (launcher, projectile, preview)
+        if (this.r >= 0) {
+            this.updatePos();
+        }
+        
         this.popping = false;
         this.scale = 1;
     }
 
     // Helper to refresh X/Y if grid shifts
     updatePos() {
+        // SAFETY CHECK: Never force position for floating bubbles
+        if (this.r < 0) return;
+
         const pos = getHexPos(this.r, this.c);
         this.x = pos.x;
         this.y = pos.y;
@@ -102,8 +109,8 @@ class Bubble {
     draw(context) {
         if(this.scale <= 0) return;
 
-        // Always ensure visual position is up to date before drawing
-        this.updatePos();
+        // Ensure visual position is up to date for GRID bubbles
+        if (this.r >= 0) this.updatePos();
 
         context.save();
         context.translate(this.x, this.y);
@@ -157,7 +164,8 @@ class Projectile {
     }
 
     draw() {
-        let tempBubble = new Bubble(0, 0, this.colorIndex);
+        // FIX: Use r=-1, c=-1 to tell Bubble class this is free-floating
+        let tempBubble = new Bubble(-1, -1, this.colorIndex);
         tempBubble.x = this.x;
         tempBubble.y = this.y;
         tempBubble.draw(ctx);
@@ -190,7 +198,7 @@ class Particle {
 
 // --- CORE FUNCTIONS ---
 
-// NEW: Helper to determine if a row is effectively indented
+// Helper to determine if a row is effectively indented
 function isRowEffectiveOdd(r) {
     return (r + gameState.gridShift) % 2 !== 0;
 }
@@ -199,7 +207,7 @@ function isRowEffectiveOdd(r) {
 function getHexPos(r, c) {
     let x = c * DIAMETER + OFFSET_X;
     
-    // UPDATED: Use the helper to check indentation
+    // Check effective indentation
     if (isRowEffectiveOdd(r)) {
         x += RADIUS; 
     }
@@ -214,7 +222,7 @@ function initGrid() {
         gameState.grid[r] = [];
         for (let c = 0; c < COLS; c++) {
             if (r < 5) {
-                // UPDATED: Check effective oddness for column limits
+                // Check effective oddness for column limits
                 if (isRowEffectiveOdd(r) && c === COLS - 1) continue; 
                 gameState.grid[r][c] = new Bubble(r, c, Math.floor(Math.random() * BUBBLE_COLORS.length));
             } else {
@@ -265,21 +273,17 @@ function addNewRow() {
             
             if (b) {
                 b.r = r + 1; 
-                // We don't need to manually update X/Y here, 
-                // the b.draw() method calls b.updatePos() every frame!
+                // Position auto-updates in draw()
             }
         }
     }
 
     // 2. TOGGLE GRID SHIFT
-    // This flips the alignment logic so the moved bubbles (Row 0 -> Row 1)
-    // maintain their screen X position instead of jumping.
     gameState.gridShift = (gameState.gridShift + 1) % 2;
 
     // 3. Create new top row
     gameState.grid[0] = []; 
     for (let c = 0; c < COLS; c++) {
-        // Use updated shift logic for new row (Row 0)
         if (isRowEffectiveOdd(0) && c === COLS - 1) continue;
         gameState.grid[0][c] = new Bubble(0, c, Math.floor(Math.random() * BUBBLE_COLORS.length));
     }
@@ -300,7 +304,8 @@ function generateNextBubble() {
 
 function drawPreview() {
     pCtx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
-    let tempBubble = new Bubble(0, 0, gameState.nextBubbleColor);
+    // FIX: Use r=-1 to prevent grid snapping
+    let tempBubble = new Bubble(-1, -1, gameState.nextBubbleColor);
     tempBubble.x = previewCanvas.width / 2;
     tempBubble.y = previewCanvas.height / 2;
     tempBubble.scale = 1.5; 
@@ -343,7 +348,8 @@ function gameLoop() {
         ctx.stroke();
         ctx.setLineDash([]);
         
-        let launcherBubble = new Bubble(0, 0, gameState.nextBubbleColor);
+        // FIX: Use r=-1 to keep it at launcher position
+        let launcherBubble = new Bubble(-1, -1, gameState.nextBubbleColor);
         launcherBubble.x = startX;
         launcherBubble.y = startY;
         launcherBubble.draw(ctx);
@@ -383,7 +389,7 @@ function checkCollision(p) {
         for (let c = 0; c < COLS; c++) {
             let b = gameState.grid[r][c];
             if (b) {
-                // IMPORTANT: Calculate collision based on current effective positions
+                // Ensure we check against current visual position
                 b.updatePos(); 
                 let dx = p.x - b.x;
                 let dy = p.y - b.y;
@@ -408,7 +414,6 @@ function snapBubble(p) {
     for (let r = 0; r < ROWS; r++) {
         for (let c = 0; c < COLS; c++) {
             if (!gameState.grid[r][c]) {
-                // UPDATED: Check validity based on effective row type
                 if (isRowEffectiveOdd(r) && c === COLS - 1) continue;
 
                 let pos = getHexPos(r, c);
@@ -465,7 +470,7 @@ function resolveMatches(startR, startC, colorIndex) {
     if (matches.length >= 3) {
         matches.forEach(m => {
             let b = gameState.grid[m.r][m.c];
-            b.updatePos(); // Ensure explosion is at correct spot
+            b.updatePos(); 
             createExplosion(b.x, b.y, BUBBLE_COLORS[b.colorIndex].main);
             gameState.grid[m.r][m.c] = null;
             gameState.score += 10;
@@ -532,7 +537,6 @@ function dropFloatingBubbles() {
 }
 
 function getNeighbors(r, c) {
-    // UPDATED: Neighbors offsets now depend on Effective Row Type
     let offsets;
     
     if (!isRowEffectiveOdd(r)) {
