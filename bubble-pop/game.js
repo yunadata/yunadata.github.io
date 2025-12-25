@@ -143,6 +143,8 @@ class Bubble {
         this.y = pos.y;
     }
 
+    // In game.js, replace the entire Bubble.prototype.draw method:
+
     draw(context) {
         if(this.scale <= 0) return;
 
@@ -155,31 +157,49 @@ class Bubble {
 
         const color = BUBBLE_COLORS[this.colorIndex];
 
-        // Iridescent Effect
-        let grad = context.createRadialGradient(-5, -5, 2, 0, 0, RADIUS - 1);
-        grad.addColorStop(0, 'rgba(255, 255, 255, 0.8)'); 
-        grad.addColorStop(0.3, color.main);
-        grad.addColorStop(0.9, color.dark);
-        grad.addColorStop(1, 'rgba(0,0,0,0.1)'); 
+        // --- NEW REALISTIC SOAP BUBBLE GRADIENT ---
 
-        // --- CHANGE START: Transparency Settings ---
+        // Create a radial gradient. We start it partially out from the center 
+        // to leave the middle highly transparent.
+        let grad = context.createRadialGradient(0, 0, RADIUS * 0.4, 0, 0, RADIUS);
+
+        // Center: Almost entirely clear/transparent white
+        grad.addColorStop(0, 'rgba(255, 255, 255, 0.1)');
+        grad.addColorStop(0.5, 'rgba(255, 255, 255, 0.2)');
+
+        // Near Edge: Introduce the pastel color, but keep it translucent.
+        // We take the existing 'rgb(r,g,b)' string and convert it to 'rgba(r,g,b, 0.5)'
+        const mainColorTransparent = color.main.replace('rgb', 'rgba').replace(')', ', 0.5)');
+        grad.addColorStop(0.85, mainColorTransparent);
+
+        // The Rim (100%): A sharp, bright white/silvery edge defines the bubble.
+        // This replaces the dark outline.
+        grad.addColorStop(1, 'rgba(255, 255, 255, 0.95)');
         
-        // 1. Make the main bubble body see-through (glass effect)
-        context.globalAlpha = 0.75; 
+        // ---------------------------
+
+        // Set overall opacity slightly down to blend with the sky
+        context.globalAlpha = 0.9; 
 
         context.beginPath();
-        context.arc(0, 0, RADIUS - 1, 0, Math.PI * 2);
+        context.arc(0, 0, RADIUS, 0, Math.PI * 2);
         context.fillStyle = grad;
         context.fill();
 
-        // 2. Reset opacity to 1.0 for the reflection so it stays bright
+        // Reset opacity for the sharp highlight so it's super bright
         context.globalAlpha = 1.0;
 
-        // --- CHANGE END ---
-
-        context.fillStyle = 'rgba(255,255,255,0.8)';
+        // Draw the sharp specular highlight (the main "shine" spot) on the top left
+        context.fillStyle = '#ffffff'; // Pure white
         context.beginPath();
-        context.arc(-7, -7, 3, 0, Math.PI * 2);
+        // Positioned slightly further out for a glossy look
+        context.arc(-RADIUS * 0.4, -RADIUS * 0.4, RADIUS * 0.15, 0, Math.PI * 2);
+        context.fill();
+
+        // Optional: Add a second, smaller subtle reflection on the bottom right for extra realism
+        context.fillStyle = 'rgba(255, 255, 255, 0.5)';
+        context.beginPath();
+        context.arc(RADIUS * 0.4, RADIUS * 0.4, RADIUS * 0.08, 0, Math.PI * 2);
         context.fill();
 
         context.restore();
