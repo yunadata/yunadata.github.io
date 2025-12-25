@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-KH2HGFPW');</script>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Bubble Pop | Arcade Puzzle by Yuna An Vu</title>
+    <meta name="description" content="Play Bubble Pop, a cute iridescent puzzle game. Match bubbles and climb the global leaderboard.">
+    <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/favicon.ico">
+
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KH2HGFPW"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+    <div class="bg-decoration blob-1"></div>
+    <div class="bg-decoration blob-2"></div>
+    <div class="bg-decoration blob-3"></div>
+
+    <nav>
+        <div class="nav-container">
+            <div class="logo" onclick="window.location.href='../index.html'">YunaData.</div>
+            <a href="../index.html" class="btn-small">← Back to Portfolio</a>
+        </div>
+    </nav>
+
+    <main>
+        <div class="game-layout">
+            
+            <div id="game-wrapper">
+                <div class="canvas-container">
+                    <canvas id="gameCanvas" width="450" height="600"></canvas>
+                    
+                    <div id="overlay">
+                        <h1 id="overlay-title">BUBBLE POP</h1>
+                        <p id="overlay-desc">Match 3 bubbles of the same color to pop them.<br>Don't let them reach the bottom line!</p>
+                        
+                        <div id="leaderboard-display" class="hidden">
+                            <h3>TOP POPPERS 🏆</h3>
+                            <div id="leaderboard-list">Loading scores...</div>
+                        </div>
+    
+                        <div id="submit-score-container" class="hidden">
+                            <p class="final-score-text">Final Score: <span id="final-score">0</span></p>
+                            <input type="text" id="player-name" placeholder="Enter Your Name" maxlength="15">
+                            <button class="btn-game action" onclick="submitScore()">Submit Score</button>
+                        </div>
+    
+                        <button class="btn-game start" onclick="startGame()" id="start-btn">PLAY NOW</button>
+                    </div>
+                </div>
+                
+                <div id="ui-sidebar">
+                    <h2>Game Stats</h2>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-box gold"><span>Score</span> <span id="score-display">0</span></div>
+                        <div class="stat-box"><span>Level</span> <span id="level-display">1</span></div>
+                    </div>
+    
+                    <hr>
+                    <div class="section-title">Next Bubble</div>
+                    
+                    <div id="next-bubble-container">
+                        <canvas id="previewCanvas" width="100" height="100"></canvas>
+                    </div>
+
+                    <div class="section-title">Controls</div>
+                    <p style="text-align: center; font-size: 0.8rem; color: #666;">
+                        Aim with Mouse/Touch.<br>Click to Shoot.
+                    </p>
+
+                    <button class="btn-game upgrade" onclick="restartGame()" style="margin-top:auto;">Restart</button>
+                </div>
+            </div>
+
+            <section id="how-to-play">
+                <h2>How to Play 🫧</h2>
+                <div class="instructions-grid">
+                    <div class="instruction-card">
+                        <i class="fas fa-bullseye icon"></i>
+                        <h3>Aim & Shoot</h3>
+                        <p>Move your mouse to aim the guide line. Click to fire a bubble into the cluster.</p>
+                    </div>
+                    
+                    <div class="instruction-card">
+                        <i class="fas fa-layer-group icon" style="color: #FFC4D6;"></i>
+                        <h3>Match 3</h3>
+                        <p>Connect <strong>3 or more</strong> bubbles of the same color to pop them and earn points.</p>
+                    </div>
+
+                    <div class="instruction-card">
+                        <i class="fas fa-exclamation-triangle icon" style="color: #e74c3c;"></i>
+                        <h3>Watch Out!</h3>
+                        <p>If the bubbles touch the bottom line, it's Game Over. Clear them fast!</p>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <footer>
+        <p>Made with 💖 by Yuna An Vu.</p>
+        <p>&copy; 2025 | Bubble Pop</p>
+    </footer>
+
+    <script type="module" src="game.js"></script>
+</body>
+</html>
