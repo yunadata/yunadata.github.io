@@ -94,6 +94,18 @@ main {
     flex-shrink: 0; 
 }
 
+.watermark {
+    position: absolute;
+    bottom: 15px;
+    left: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-color);
+    opacity: 0.1; /* Low opacity so it is subtle */
+    pointer-events: none; /* Ensures clicks pass through it if a card covers it */
+    z-index: 50;
+}
+
 /* Header */
 .game-header {
     padding: 15px 20px;
