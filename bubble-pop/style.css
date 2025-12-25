@@ -88,10 +88,7 @@ main {
 }
 canvas { display: block; max-width: 100%; height: auto; cursor: crosshair; }
 #gameCanvas { 
-    /* Pastel Sky Gradient: Soft Blue to Light Pinkish-White */
-    background: linear-gradient(180deg, #89f7fe 0%, #66a6ff 100%);
-    /* Optional: If you prefer a warmer "Sunrise" pastel look, uncomment the line below instead: */
-    /* background: linear-gradient(to bottom, #a18cd1 0%, #fbc2eb 100%); */
+    background: linear-gradient(to bottom, #a18cd1 0%, #fbc2eb 100%);
 }
 
 /* --- Sidebar --- */
