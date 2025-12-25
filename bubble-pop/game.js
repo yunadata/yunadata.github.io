@@ -463,7 +463,7 @@ function gameLoop() {
 	
 	// --- WATERMARK ---
     ctx.save();
-    ctx.font = '600 12px Quicksand, sans-serif'; // Matches website font
+    ctx.font = '400 12px Quicksand, sans-serif'; // Matches website font
     ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
     ctx.textAlign = 'left';
     ctx.fillText('yunadata.github.io', 15, canvas.height - 15); // Bottom left padding
