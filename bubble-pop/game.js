@@ -85,21 +85,31 @@ class Bubble {
         this.r = r;
         this.c = c;
         this.colorIndex = colorIndex;
-        if (this.r >= 0) this.updatePos();
+        
+        // Only calculate grid position if it's actually ON the grid (row >= 0)
+        // Bubbles with r = -1 are "floating" (launcher, projectile, preview)
+        if (this.r >= 0) {
+            this.updatePos();
+        }
+        
         this.popping = false;
         this.scale = 1;
-        this.popAnimVal = 0; // For pop animation
     }
 
+    // Helper to refresh X/Y if grid shifts
     updatePos() {
+        // SAFETY CHECK: Never force position for floating bubbles
         if (this.r < 0) return;
+
         const pos = getHexPos(this.r, this.c);
         this.x = pos.x;
         this.y = pos.y;
     }
 
     draw(context) {
-        if (this.scale <= 0) return;
+        if(this.scale <= 0) return;
+
+        // Ensure visual position is up to date for GRID bubbles
         if (this.r >= 0) this.updatePos();
 
         context.save();
@@ -108,44 +118,22 @@ class Bubble {
 
         const color = BUBBLE_COLORS[this.colorIndex];
 
-        // 1. Drop Shadow (Subtle depth)
-        context.beginPath();
-        context.arc(2, 4, RADIUS - 2, 0, Math.PI * 2);
-        context.fillStyle = 'rgba(0,0,0,0.1)';
-        context.fill();
+        // Iridescent Effect
+        let grad = context.createRadialGradient(-5, -5, 2, 0, 0, RADIUS - 1);
+        grad.addColorStop(0, 'rgba(255, 255, 255, 0.9)'); 
+        grad.addColorStop(0.3, color.main);
+        grad.addColorStop(0.9, color.dark);
+        grad.addColorStop(1, 'rgba(0,0,0,0.1)'); 
 
-        // 2. Main Body (Solid color)
         context.beginPath();
         context.arc(0, 0, RADIUS - 1, 0, Math.PI * 2);
-        context.fillStyle = color.main;
+        context.fillStyle = grad;
         context.fill();
 
-        // 3. Inner Shadow (Bottom Right - creates volume)
-        let innerGrad = context.createRadialGradient(-5, -5, 2, 0, 0, RADIUS);
-        innerGrad.addColorStop(0, 'rgba(255,255,255,0.1)');
-        innerGrad.addColorStop(0.8, color.dark);
-        innerGrad.addColorStop(1, color.dark);
-        context.fillStyle = innerGrad;
-        context.fill();
-
-        // 4. Top Glare (Glossy reflection)
+        context.fillStyle = 'rgba(255,255,255,0.8)';
         context.beginPath();
-        context.ellipse(-6, -6, 6, 3, Math.PI / 4, 0, Math.PI * 2);
-        context.fillStyle = 'rgba(255, 255, 255, 0.7)';
+        context.arc(-7, -7, 3, 0, Math.PI * 2);
         context.fill();
-
-        // 5. Small Specular Highlight
-        context.beginPath();
-        context.arc(-5, -5, 2, 0, Math.PI * 2);
-        context.fillStyle = '#fff';
-        context.fill();
-
-        // 6. Bottom Rim Light (Bounce light)
-        context.beginPath();
-        context.arc(0, 0, RADIUS - 2, 0.2 * Math.PI, 0.8 * Math.PI);
-        context.strokeStyle = 'rgba(255,255,255,0.3)';
-        context.lineWidth = 2;
-        context.stroke();
 
         context.restore();
     }
@@ -189,25 +177,20 @@ class Particle {
         this.x = x;
         this.y = y;
         this.color = color;
-        const angle = Math.random() * Math.PI * 2;
-        const speed = Math.random() * 4 + 2;
-        this.vx = Math.cos(angle) * speed;
-        this.vy = Math.sin(angle) * speed;
+        this.vx = (Math.random() - 0.5) * 5;
+        this.vy = (Math.random() - 0.5) * 5;
         this.life = 1.0;
-        this.size = Math.random() * 4 + 2;
     }
     update() {
         this.x += this.vx;
         this.y += this.vy;
-        this.vy += 0.2; // Gravity
-        this.life -= 0.04;
-        this.size *= 0.95; // Shrink
+        this.life -= 0.05;
     }
     draw() {
         ctx.globalAlpha = Math.max(0, this.life);
         ctx.fillStyle = this.color;
         ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.arc(this.x, this.y, 3, 0, Math.PI*2);
         ctx.fill();
         ctx.globalAlpha = 1.0;
     }
@@ -332,41 +315,19 @@ function drawPreview() {
 function gameLoop() {
     if (gameState.gameOver) return;
 
-    // Clear Canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // --- NEW: Draw Subtle Hex Grid Background ---
-    // This helps the user see where bubbles will snap
-    ctx.save();
-    ctx.strokeStyle = 'rgba(0,0,0,0.05)';
-    ctx.lineWidth = 1;
-    for (let r = 0; r < ROWS; r++) {
-        for (let c = 0; c < COLS; c++) {
-            if(r >= 0) { // Safety check
-                let pos = getHexPos(r, c);
-                ctx.beginPath();
-                ctx.arc(pos.x, pos.y, RADIUS - 2, 0, Math.PI*2);
-                ctx.stroke();
-            }
-        }
-    }
-    ctx.restore();
-
-    // Timer Bar
     gameState.framesSinceLastRow++;
+    
     let timerPct = gameState.framesSinceLastRow / gameState.rowInterval;
-    // Pretty gradient bar
-    let barGrad = ctx.createLinearGradient(0, 0, canvas.width, 0);
-    barGrad.addColorStop(0, '#FF9AA2');
-    barGrad.addColorStop(1, '#C7CEEA');
-    ctx.fillStyle = barGrad;
-    ctx.fillRect(0, 0, canvas.width * timerPct, 8); 
+    ctx.fillStyle = 'rgba(255, 196, 214, 0.4)'; 
+    ctx.fillRect(0, 0, canvas.width * timerPct, 6); 
     
     if (gameState.framesSinceLastRow > gameState.rowInterval) {
         addNewRow();
     }
 
-    // Draw Grid Bubbles
+    // Draw Grid
     for (let r = 0; r < ROWS; r++) {
         for (let c = 0; c < COLS; c++) {
             let b = gameState.grid[r][c];
@@ -374,38 +335,26 @@ function gameLoop() {
         }
     }
 
-    // --- NEW: Dotted Aim Line ---
+    // Draw Aim Line
     if (!gameState.isProcessing) {
         let startX = canvas.width / 2;
         let startY = canvas.height - 30;
-        let aimLen = 200;
-        let endX = startX + Math.cos(gameState.angle) * aimLen;
-        let endY = startY + Math.sin(gameState.angle) * aimLen;
-        
         ctx.beginPath();
         ctx.moveTo(startX, startY);
-        ctx.lineTo(endX, endY);
-        
-        // Create a dotted gradient look
-        let grad = ctx.createLinearGradient(startX, startY, endX, endY);
-        grad.addColorStop(0, 'rgba(255, 154, 162, 0.8)');
-        grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
-        
-        ctx.strokeStyle = grad;
-        ctx.lineWidth = 4;
-        ctx.setLineCap('round');
-        ctx.setLineDash([5, 10]); // Dotted effect
+        ctx.lineTo(startX + Math.cos(gameState.angle) * 60, startY + Math.sin(gameState.angle) * 60);
+        ctx.strokeStyle = 'rgba(255, 196, 214, 0.8)';
+        ctx.lineWidth = 3;
+        ctx.setLineDash([5, 5]);
         ctx.stroke();
         ctx.setLineDash([]);
         
-        // Draw Launcher Bubble
+        // FIX: Use r=-1 to keep it at launcher position
         let launcherBubble = new Bubble(-1, -1, gameState.nextBubbleColor);
         launcherBubble.x = startX;
         launcherBubble.y = startY;
         launcherBubble.draw(ctx);
     }
 
-    // Projectiles & Particles
     if (gameState.projectiles.length > 0) {
         let p = gameState.projectiles[0];
         p.update();
@@ -420,16 +369,15 @@ function gameLoop() {
         if(p.life <= 0) gameState.particles.splice(i, 1);
     }
 
-    // Danger Line
     let limitY = (ROWS - 1) * ROW_OFFSET;
     ctx.beginPath();
     ctx.moveTo(0, limitY + RADIUS);
     ctx.lineTo(canvas.width, limitY + RADIUS);
-    ctx.strokeStyle = '#FFB7B2';
+    ctx.strokeStyle = '#e74c3c';
     ctx.lineWidth = 2;
-    ctx.setLineDash([10, 5]);
+    ctx.globalAlpha = 0.3;
     ctx.stroke();
-    ctx.setLineDash([]);
+    ctx.globalAlpha = 1;
 
     animationId = requestAnimationFrame(gameLoop);
 }
