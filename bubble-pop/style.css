@@ -88,7 +88,8 @@ main {
 }
 canvas { display: block; max-width: 100%; height: auto; cursor: crosshair; }
 #gameCanvas { 
-    background: linear-gradient(to bottom, #a18cd1 0%, #fbc2eb 100%);
+    /* NEW: Very light pastel blue matching the start screen */
+    background: linear-gradient(180deg, #E6F7FF 0%, #CDF0FF 100%);
 }
 
 /* --- Sidebar --- */
