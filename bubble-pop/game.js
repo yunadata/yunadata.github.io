@@ -79,6 +79,43 @@ let animationId;
 let mouseX = 0, mouseY = 0;
 
 // --- CLASSES ---
+class Cloud {
+    constructor() {
+        this.reset(true); // true = randomize initial X position across screen
+    }
+
+    reset(randomX = false) {
+        this.x = randomX ? Math.random() * canvas.width : canvas.width + 50;
+        this.y = Math.random() * (canvas.height * 0.6); // Only in top 60% of screen
+        this.speed = 0.2 + Math.random() * 0.3; // Slow drift
+        this.scale = 0.5 + Math.random() * 0.8; // Random sizes
+        this.opacity = 0.3 + Math.random() * 0.3;
+    }
+
+    update() {
+        this.x -= this.speed;
+        // If cloud goes off the left side, reset to the right
+        if (this.x < -100) {
+            this.reset(false);
+        }
+    }
+
+    draw(ctx) {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.scale(this.scale, this.scale);
+        ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+        
+        // Draw a fluffy cloud shape using 3 overlapping circles
+        ctx.beginPath();
+        ctx.arc(0, 0, 30, 0, Math.PI * 2);
+        ctx.arc(25, -10, 35, 0, Math.PI * 2);
+        ctx.arc(50, 0, 30, 0, Math.PI * 2);
+        ctx.fill();
+        
+        ctx.restore();
+    }
+}
 
 class Bubble {
     constructor(r, c, colorIndex) {
@@ -239,6 +276,11 @@ function startGame() {
     gameState.isProcessing = false;
     gameState.projectiles = [];
     gameState.particles = [];
+	
+	gameState.clouds = [];
+    for(let i = 0; i < 8; i++) { // Generate 8 clouds
+        gameState.clouds.push(new Cloud());
+    }
     
     gameState.framesSinceLastRow = 0;
     gameState.rowInterval = 600; 
@@ -316,6 +358,12 @@ function gameLoop() {
     if (gameState.gameOver) return;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+	
+	// --- Draw Background Clouds ---
+    gameState.clouds.forEach(cloud => {
+        cloud.update();
+        cloud.draw(ctx);
+    });
 
     gameState.framesSinceLastRow++;
     
