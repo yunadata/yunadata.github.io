@@ -593,6 +593,17 @@ window.toggleLeaderboardModal = function() {
     }
 }
 
+// --- Helper to prevent XSS ---
+function escapeHtml(text) {
+    if (!text) return text;
+    return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
 window.loadLeaderboard = async function(diff, btnEl) {
     if(btnEl) {
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -600,23 +611,48 @@ window.loadLeaderboard = async function(diff, btnEl) {
     }
     
     const list = document.getElementById('leaderboard-list');
-    list.innerHTML = '<div class="loader">Fetching scores...</div>';
+    list.innerHTML = '<div class="loader" style="text-align:center; padding:20px; color:#aaa;">Fetching scores...</div>';
     
     const scores = await window.fetchLeaderboard(diff);
     
     if(scores.length === 0) {
-        list.innerHTML = '<p>No scores yet! Be the first.</p>';
+        list.innerHTML = '<div style="text-align:center; padding:40px; color:#aaa; font-style:italic;">No scores yet!<br>Be the first to clear the webs. 🕸️</div>';
         return;
     }
     
     let html = '';
     scores.forEach((s, i) => {
+        let rankDisplay = `#${i + 1}`;
+        let rowClass = '';
+        
+        // Add special icons and classes for top 3
+        if (i === 0) { rankDisplay = '👑'; rowClass = 'rank-1'; }
+        else if (i === 1) { rankDisplay = '🥈'; rowClass = 'rank-2'; }
+        else if (i === 2) { rankDisplay = '🥉'; rowClass = 'rank-3'; }
+        
+        // Safety check for old data (if you wipe DB, this isn't needed, but good to have)
+        const timeStr = s.time || '--:--';
+        const movesStr = s.moves || '0';
+
         html += `
-        <div class="score-row">
-            <span>#${i+1} ${s.name}</span>
-            <span>${s.score} pts</span>
+        <div class="score-row ${rowClass}">
+            <div class="rank-col">${rankDisplay}</div>
+            
+            <div class="player-info">
+                <div class="player-name">${escapeHtml(s.name)}</div>
+                <div class="player-meta">
+                    <span title="Time"><i class="far fa-clock"></i> ${timeStr}</span>
+                    <span title="Moves"><i class="fas fa-shoe-prints"></i> ${movesStr}</span>
+                </div>
+            </div>
+            
+            <div class="score-col">
+                <div class="main-score">${s.score}</div>
+                <div class="sub-score">POINTS</div>
+            </div>
         </div>`;
     });
+    
     list.innerHTML = html;
 }
 
