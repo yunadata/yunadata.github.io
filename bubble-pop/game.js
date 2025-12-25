@@ -401,7 +401,7 @@ function gameLoop() {
     gameState.framesSinceLastRow++;
     
     let timerPct = gameState.framesSinceLastRow / gameState.rowInterval;
-    ctx.fillStyle = 'rgba(255, 196, 214, 0.4)'; 
+    ctx.fillStyle = '#A0E7E5'; 
     ctx.fillRect(0, 0, canvas.width * timerPct, 6); 
     
     if (gameState.framesSinceLastRow > gameState.rowInterval) {
@@ -451,11 +451,12 @@ function gameLoop() {
     }
 
     let limitY = (ROWS - 1) * ROW_OFFSET;
-    ctx.beginPath();
-    ctx.moveTo(0, limitY + RADIUS);
-    ctx.lineTo(canvas.width, limitY + RADIUS);
-    ctx.strokeStyle = '#e74c3c';
-    ctx.lineWidth = 2;
+	ctx.beginPath();
+	ctx.moveTo(0, limitY + RADIUS);
+	ctx.lineTo(canvas.width, limitY + RADIUS);
+	// NEW: Soft Dark Pink (Matches your "Pink" bubbles but darker)
+	ctx.strokeStyle = '#ff9bb9'; 
+	ctx.lineWidth = 3; // Made slightly thicker for better visibility
     ctx.globalAlpha = 0.3;
     ctx.stroke();
     ctx.globalAlpha = 1;
