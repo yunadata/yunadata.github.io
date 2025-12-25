@@ -460,6 +460,14 @@ function gameLoop() {
     ctx.globalAlpha = 0.3;
     ctx.stroke();
     ctx.globalAlpha = 1;
+	
+	// --- WATERMARK ---
+    ctx.save();
+    ctx.font = '600 12px Quicksand, sans-serif'; // Matches website font
+    ctx.fillStyle = 'rgba(100, 110, 150, 0.4)';  // Subtle, semi-transparent grey-blue
+    ctx.textAlign = 'left';
+    ctx.fillText('yunadata.github.io', 15, canvas.height - 15); // Bottom left padding
+    ctx.restore();
 
     animationId = requestAnimationFrame(gameLoop);
 }
