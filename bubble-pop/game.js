@@ -157,46 +157,49 @@ class Bubble {
 
         const color = BUBBLE_COLORS[this.colorIndex];
 
-        // --- NEW REALISTIC SOAP BUBBLE GRADIENT ---
+        // --- HELPER: Convert Hex to RGBA for transparency control ---
+        const hexToRgba = (hex, alpha) => {
+            const r = parseInt(hex.slice(1, 3), 16);
+            const g = parseInt(hex.slice(3, 5), 16);
+            const b = parseInt(hex.slice(5, 7), 16);
+            return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+        };
 
-        // Create a radial gradient. We start it partially out from the center 
-        // to leave the middle highly transparent.
-        let grad = context.createRadialGradient(0, 0, RADIUS * 0.4, 0, 0, RADIUS);
+        // --- IMPROVED COLOR GRADIENT ---
+        // 1. We start the gradient at the absolute center (0) so the whole bubble has color
+        let grad = context.createRadialGradient(0, 0, 0, 0, 0, RADIUS);
 
-        // Center: Almost entirely clear/transparent white
-        grad.addColorStop(0, 'rgba(255, 255, 255, 0.1)');
-        grad.addColorStop(0.5, 'rgba(255, 255, 255, 0.2)');
+        // 0% (Center): Light tint of the MAIN color (was white previously)
+        // This ensures the center is not clear, but "tinted"
+        grad.addColorStop(0, hexToRgba(color.main, 0.2)); 
 
-        // Near Edge: Introduce the pastel color, but keep it translucent.
-        // We take the existing 'rgb(r,g,b)' string and convert it to 'rgba(r,g,b, 0.5)'
-        const mainColorTransparent = color.main.replace('rgb', 'rgba').replace(')', ', 0.5)');
-        grad.addColorStop(0.85, mainColorTransparent);
+        // 60% (Body): Stronger Main Color. This makes the bubble clearly Pink/Blue/etc.
+        grad.addColorStop(0.6, hexToRgba(color.main, 0.6));
 
-        // The Rim (100%): A sharp, bright white/silvery edge defines the bubble.
-        // This replaces the dark outline.
-        grad.addColorStop(1, 'rgba(255, 255, 255, 0.95)');
+        // 85% (Edge Depth): Darker version of the color for volume
+        grad.addColorStop(0.85, hexToRgba(color.dark, 0.7));
+
+        // 100% (Rim): Sharp White edge for the "soap film" look
+        grad.addColorStop(1, 'rgba(255, 255, 255, 0.9)');
         
         // ---------------------------
-
-        // Set overall opacity slightly down to blend with the sky
-        context.globalAlpha = 0.9; 
 
         context.beginPath();
         context.arc(0, 0, RADIUS, 0, Math.PI * 2);
         context.fillStyle = grad;
         context.fill();
 
-        // Reset opacity for the sharp highlight so it's super bright
-        context.globalAlpha = 1.0;
-
-        // Draw the sharp specular highlight (the main "shine" spot) on the top left
-        context.fillStyle = '#ffffff'; // Pure white
+        // --- REFLECTIONS (SHINE) ---
+        // Keep these pure white and sharp for the "wet" look
+        context.globalAlpha = 0.9;
+        
+        // Main Reflection (Top Left)
+        context.fillStyle = '#ffffff'; 
         context.beginPath();
-        // Positioned slightly further out for a glossy look
         context.arc(-RADIUS * 0.4, -RADIUS * 0.4, RADIUS * 0.15, 0, Math.PI * 2);
         context.fill();
 
-        // Optional: Add a second, smaller subtle reflection on the bottom right for extra realism
+        // Secondary Reflection (Bottom Right - smaller)
         context.fillStyle = 'rgba(255, 255, 255, 0.5)';
         context.beginPath();
         context.arc(RADIUS * 0.4, RADIUS * 0.4, RADIUS * 0.08, 0, Math.PI * 2);
