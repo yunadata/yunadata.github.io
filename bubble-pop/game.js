@@ -2,7 +2,7 @@
  * BUBBLE POP - GAME ENGINE
  * Aesthetic: Pastel Iridescent / Glassmorphism
  * Backend: Firebase Firestore (v12.7.0)
- * Update: Survival Mode & Difficulty Scaling
+ * Update: Fixed Bubble Position Jitter (Grid Shift Logic)
  */
 
 // --- FIREBASE IMPORTS ---
@@ -54,7 +54,7 @@ const BUBBLE_COLORS = [
 
 // Game State
 let gameState = {
-    grid: [], // 2D Array [row][col]
+    grid: [], 
     activeBubble: null,
     nextBubbleColor: null,
     projectiles: [],
@@ -62,14 +62,18 @@ let gameState = {
     score: 0,
     level: 1,
     gameOver: true,
-    angle: -Math.PI / 2, // Pointing up
-    isProcessing: false, // Prevent shooting while animations happen
+    angle: -Math.PI / 2, 
+    isProcessing: false,
     
-    // --- SURVIVAL VARIABLES ---
+    // --- SURVIVAL & GRID VARIABLES ---
     framesSinceLastRow: 0,
-    rowInterval: 600,       // Frames until next row (600 = ~10s at 60fps)
-    minRowInterval: 180,    // Fastest speed cap (~3s)
-    difficultyStep: 10      // How many frames faster per row added
+    rowInterval: 600,       
+    minRowInterval: 180,    
+    difficultyStep: 10,
+    
+    // NEW: Global Grid Shift (0 or 1)
+    // Determines if Row 0 is "Even" or "Odd" aligned at any given moment
+    gridShift: 0 
 };
 
 let animationId;
@@ -82,16 +86,24 @@ class Bubble {
         this.r = r;
         this.c = c;
         this.colorIndex = colorIndex;
-        // Calculate XY based on Hex Grid
-        const pos = getHexPos(r, c);
-        this.x = pos.x;
-        this.y = pos.y;
+        // Position is calculated dynamically based on gridShift
+        this.updatePos();
         this.popping = false;
         this.scale = 1;
     }
 
+    // Helper to refresh X/Y if grid shifts
+    updatePos() {
+        const pos = getHexPos(this.r, this.c);
+        this.x = pos.x;
+        this.y = pos.y;
+    }
+
     draw(context) {
         if(this.scale <= 0) return;
+
+        // Always ensure visual position is up to date before drawing
+        this.updatePos();
 
         context.save();
         context.translate(this.x, this.y);
@@ -101,17 +113,16 @@ class Bubble {
 
         // Iridescent Effect
         let grad = context.createRadialGradient(-5, -5, 2, 0, 0, RADIUS - 1);
-        grad.addColorStop(0, 'rgba(255, 255, 255, 0.9)'); // Highlight
+        grad.addColorStop(0, 'rgba(255, 255, 255, 0.9)'); 
         grad.addColorStop(0.3, color.main);
         grad.addColorStop(0.9, color.dark);
-        grad.addColorStop(1, 'rgba(0,0,0,0.1)'); // Edge Shadow
+        grad.addColorStop(1, 'rgba(0,0,0,0.1)'); 
 
         context.beginPath();
         context.arc(0, 0, RADIUS - 1, 0, Math.PI * 2);
         context.fillStyle = grad;
         context.fill();
 
-        // Shiny reflection dot
         context.fillStyle = 'rgba(255,255,255,0.8)';
         context.beginPath();
         context.arc(-7, -7, 3, 0, Math.PI * 2);
@@ -125,7 +136,7 @@ class Projectile {
     constructor(x, y, angle, colorIndex) {
         this.x = x;
         this.y = y;
-        this.vx = Math.cos(angle) * 12; // Speed
+        this.vx = Math.cos(angle) * 12;
         this.vy = Math.sin(angle) * 12;
         this.colorIndex = colorIndex;
         this.active = true;
@@ -135,20 +146,17 @@ class Projectile {
         this.x += this.vx;
         this.y += this.vy;
 
-        // Wall Bouncing
         if (this.x < RADIUS || this.x > canvas.width - RADIUS) {
             this.vx *= -1;
             this.x = Math.max(RADIUS, Math.min(this.x, canvas.width - RADIUS));
         }
 
-        // Ceiling Collision (Game Over check effectively handled by snap)
         if (this.y < RADIUS) {
             snapBubble(this);
         }
     }
 
     draw() {
-        // Draw just like a bubble but at free coordinates
         let tempBubble = new Bubble(0, 0, this.colorIndex);
         tempBubble.x = this.x;
         tempBubble.y = this.y;
@@ -182,27 +190,32 @@ class Particle {
 
 // --- CORE FUNCTIONS ---
 
+// NEW: Helper to determine if a row is effectively indented
+function isRowEffectiveOdd(r) {
+    return (r + gameState.gridShift) % 2 !== 0;
+}
+
 // Convert Grid (Row, Col) to Pixels (X, Y)
 function getHexPos(r, c) {
     let x = c * DIAMETER + OFFSET_X;
-    // Offset every odd row
-    if (r % 2 !== 0) {
+    
+    // UPDATED: Use the helper to check indentation
+    if (isRowEffectiveOdd(r)) {
         x += RADIUS; 
     }
+    
     let y = r * ROW_OFFSET + OFFSET_Y;
     return { x, y };
 }
 
-// Initialize Grid with some rows
 function initGrid() {
     gameState.grid = [];
     for (let r = 0; r < ROWS; r++) {
         gameState.grid[r] = [];
         for (let c = 0; c < COLS; c++) {
-            // Fill top 5 rows
             if (r < 5) {
-                // Determine if this col exists (odd rows have 1 less col)
-                if (r % 2 !== 0 && c === COLS - 1) continue; 
+                // UPDATED: Check effective oddness for column limits
+                if (isRowEffectiveOdd(r) && c === COLS - 1) continue; 
                 gameState.grid[r][c] = new Bubble(r, c, Math.floor(Math.random() * BUBBLE_COLORS.length));
             } else {
                 gameState.grid[r][c] = null;
@@ -219,11 +232,10 @@ function startGame() {
     gameState.projectiles = [];
     gameState.particles = [];
     
-    // Reset Survival Variables
     gameState.framesSinceLastRow = 0;
     gameState.rowInterval = 600; 
+    gameState.gridShift = 0; // Reset Shift
     
-    // UI Reset
     document.getElementById('overlay').classList.add('hidden');
     document.getElementById('submit-score-container').classList.add('hidden');
     document.getElementById('leaderboard-display').classList.add('hidden');
@@ -237,9 +249,7 @@ function startGame() {
     gameLoop();
 }
 
-// --- SURVIVAL MECHANIC: ADD NEW ROW ---
 function addNewRow() {
-    // 1. Check for Game Over BEFORE shifting (Check 2nd to last row)
     for (let c = 0; c < COLS; c++) {
         if (gameState.grid[ROWS - 2][c]) { 
             triggerGameOver();
@@ -247,38 +257,39 @@ function addNewRow() {
         }
     }
 
-    // 2. Shift all bubbles down
-    // Iterate backwards (bottom up)
+    // 1. Shift all bubbles down
     for (let r = ROWS - 2; r >= 0; r--) {
         for (let c = 0; c < COLS; c++) {
             let b = gameState.grid[r][c];
-            gameState.grid[r+1][c] = b; // Move pointer to new row
+            gameState.grid[r+1][c] = b; 
             
             if (b) {
-                b.r = r + 1; // Update bubble's internal row
-                // Recalculate visual position (X, Y)
-                let pos = getHexPos(b.r, b.c);
-                b.x = pos.x;
-                b.y = pos.y;
+                b.r = r + 1; 
+                // We don't need to manually update X/Y here, 
+                // the b.draw() method calls b.updatePos() every frame!
             }
         }
     }
 
+    // 2. TOGGLE GRID SHIFT
+    // This flips the alignment logic so the moved bubbles (Row 0 -> Row 1)
+    // maintain their screen X position instead of jumping.
+    gameState.gridShift = (gameState.gridShift + 1) % 2;
+
     // 3. Create new top row
     gameState.grid[0] = []; 
     for (let c = 0; c < COLS; c++) {
-        // Handle hex grid stagger (odd rows usually have 1 less, but row 0 is even)
+        // Use updated shift logic for new row (Row 0)
+        if (isRowEffectiveOdd(0) && c === COLS - 1) continue;
         gameState.grid[0][c] = new Bubble(0, c, Math.floor(Math.random() * BUBBLE_COLORS.length));
     }
 
-    // 4. Increase Difficulty (Make the next row come faster)
     if (gameState.rowInterval > gameState.minRowInterval) {
         gameState.rowInterval -= gameState.difficultyStep;
     }
     
-    // Reset timer
     gameState.framesSinceLastRow = 0;
-    gameState.level++; // Increment "Level" metric
+    gameState.level++; 
     updateUI();
 }
 
@@ -289,36 +300,29 @@ function generateNextBubble() {
 
 function drawPreview() {
     pCtx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
-    
-    // Draw in center of small canvas
     let tempBubble = new Bubble(0, 0, gameState.nextBubbleColor);
     tempBubble.x = previewCanvas.width / 2;
     tempBubble.y = previewCanvas.height / 2;
-    tempBubble.scale = 1.5; // Make it look big in preview
+    tempBubble.scale = 1.5; 
     tempBubble.draw(pCtx);
 }
-
-// --- GAME LOOP ---
 
 function gameLoop() {
     if (gameState.gameOver) return;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // --- AUTOMATIC ROW ADDITION LOGIC ---
     gameState.framesSinceLastRow++;
     
-    // Draw "Next Row" Progress Bar at top
     let timerPct = gameState.framesSinceLastRow / gameState.rowInterval;
-    ctx.fillStyle = 'rgba(255, 196, 214, 0.4)'; // Soft Pink
+    ctx.fillStyle = 'rgba(255, 196, 214, 0.4)'; 
     ctx.fillRect(0, 0, canvas.width * timerPct, 6); 
     
     if (gameState.framesSinceLastRow > gameState.rowInterval) {
         addNewRow();
     }
-    // -------------------------------------
 
-    // 1. Draw Grid
+    // Draw Grid
     for (let r = 0; r < ROWS; r++) {
         for (let c = 0; c < COLS; c++) {
             let b = gameState.grid[r][c];
@@ -326,7 +330,7 @@ function gameLoop() {
         }
     }
 
-    // 2. Draw Aim Line
+    // Draw Aim Line
     if (!gameState.isProcessing) {
         let startX = canvas.width / 2;
         let startY = canvas.height - 30;
@@ -339,24 +343,19 @@ function gameLoop() {
         ctx.stroke();
         ctx.setLineDash([]);
         
-        // Draw "Current" Bubble at launcher
         let launcherBubble = new Bubble(0, 0, gameState.nextBubbleColor);
         launcherBubble.x = startX;
         launcherBubble.y = startY;
         launcherBubble.draw(ctx);
     }
 
-    // 3. Update & Draw Projectile
     if (gameState.projectiles.length > 0) {
         let p = gameState.projectiles[0];
         p.update();
         p.draw();
-        
-        // Collision Detection against Grid
         if (p.active) checkCollision(p);
     }
 
-    // 4. Update Particles
     for(let i = gameState.particles.length - 1; i >= 0; i--) {
         let p = gameState.particles[i];
         p.update();
@@ -364,7 +363,6 @@ function gameLoop() {
         if(p.life <= 0) gameState.particles.splice(i, 1);
     }
 
-    // 5. Check Line of Death
     let limitY = (ROWS - 1) * ROW_OFFSET;
     ctx.beginPath();
     ctx.moveTo(0, limitY + RADIUS);
@@ -381,17 +379,17 @@ function gameLoop() {
 // --- PHYSICS & LOGIC ---
 
 function checkCollision(p) {
-    // Check every existing bubble
     for (let r = 0; r < ROWS; r++) {
         for (let c = 0; c < COLS; c++) {
             let b = gameState.grid[r][c];
             if (b) {
+                // IMPORTANT: Calculate collision based on current effective positions
+                b.updatePos(); 
                 let dx = p.x - b.x;
                 let dy = p.y - b.y;
                 let dist = Math.sqrt(dx*dx + dy*dy);
                 
-                // Collision happened
-                if (dist < DIAMETER - 5) { // -5 makes it a bit forgiving
+                if (dist < DIAMETER - 5) { 
                     snapBubble(p);
                     return;
                 }
@@ -402,17 +400,16 @@ function checkCollision(p) {
 
 function snapBubble(p) {
     p.active = false;
-    gameState.projectiles = []; // Remove projectile
+    gameState.projectiles = []; 
 
-    // Find closest grid coordinate
     let bestDist = Infinity;
     let bestR = -1, bestC = -1;
 
     for (let r = 0; r < ROWS; r++) {
         for (let c = 0; c < COLS; c++) {
             if (!gameState.grid[r][c]) {
-                // Ensure correct staggering
-                if (r % 2 !== 0 && c === COLS - 1) continue;
+                // UPDATED: Check validity based on effective row type
+                if (isRowEffectiveOdd(r) && c === COLS - 1) continue;
 
                 let pos = getHexPos(r, c);
                 let dist = Math.sqrt(Math.pow(p.x - pos.x, 2) + Math.pow(p.y - pos.y, 2));
@@ -426,9 +423,7 @@ function snapBubble(p) {
         }
     }
 
-    // Place the bubble
     if (bestR !== -1) {
-        // Game Over Check: Did we hit the bottom?
         if (bestR >= ROWS - 2) {
             triggerGameOver();
             return;
@@ -436,12 +431,9 @@ function snapBubble(p) {
 
         let newBubble = new Bubble(bestR, bestC, p.colorIndex);
         gameState.grid[bestR][bestC] = newBubble;
-
-        // Process Matches
         resolveMatches(bestR, bestC, p.colorIndex);
     }
     
-    // Prepare for next shot
     gameState.isProcessing = false;
     generateNextBubble();
 }
@@ -454,7 +446,6 @@ function resolveMatches(startR, startC, colorIndex) {
 
     visited.add(key(startR, startC));
 
-    // Flood Fill (BFS) to find matches
     while(toVisit.length > 0) {
         let curr = toVisit.pop();
         matches.push(curr);
@@ -472,18 +463,15 @@ function resolveMatches(startR, startC, colorIndex) {
     }
 
     if (matches.length >= 3) {
-        // POP!
         matches.forEach(m => {
             let b = gameState.grid[m.r][m.c];
+            b.updatePos(); // Ensure explosion is at correct spot
             createExplosion(b.x, b.y, BUBBLE_COLORS[b.colorIndex].main);
             gameState.grid[m.r][m.c] = null;
             gameState.score += 10;
         });
         
-        // Bonus for large clusters
         if (matches.length > 3) gameState.score += (matches.length - 3) * 20;
-
-        // Check for floating bubbles
         dropFloatingBubbles();
     }
     
@@ -491,12 +479,10 @@ function resolveMatches(startR, startC, colorIndex) {
 }
 
 function dropFloatingBubbles() {
-    // 1. Mark all bubbles attached to ceiling (Row 0)
     let attached = new Set();
     let toVisit = [];
     let key = (r, c) => `${r},${c}`;
 
-    // Start with top row
     for(let c=0; c<COLS; c++) {
         if(gameState.grid[0][c]) {
             toVisit.push({r:0, c:c});
@@ -504,7 +490,6 @@ function dropFloatingBubbles() {
         }
     }
 
-    // BFS to find all connected bubbles
     while(toVisit.length > 0) {
         let curr = toVisit.pop();
         let neighbors = getNeighbors(curr.r, curr.c);
@@ -520,19 +505,16 @@ function dropFloatingBubbles() {
         });
     }
 
-    // 2. Remove anything NOT in 'attached' set
-    let dropped = false;
-    let totalBubbles = 0; // Count remaining bubbles for clear check
-
+    let totalBubbles = 0; 
     for (let r = 0; r < ROWS; r++) {
         for (let c = 0; c < COLS; c++) {
             if (gameState.grid[r][c]) {
                 if (!attached.has(key(r, c))) {
                     let b = gameState.grid[r][c];
+                    b.updatePos();
                     createExplosion(b.x, b.y, BUBBLE_COLORS[b.colorIndex].main);
                     gameState.grid[r][c] = null;
-                    gameState.score += 20; // Extra points for drops
-                    dropped = true;
+                    gameState.score += 20; 
                 } else {
                     totalBubbles++;
                 }
@@ -540,12 +522,9 @@ function dropFloatingBubbles() {
         }
     }
 
-    // --- 3. CHECK FOR BOARD CLEAR ---
     if (totalBubbles === 0) {
         gameState.score += 1000;
-        createExplosion(canvas.width/2, canvas.height/2, '#f1c40f'); // Gold Explosion
-        
-        // Wait 0.5s then add a new row to continue the game
+        createExplosion(canvas.width/2, canvas.height/2, '#f1c40f'); 
         setTimeout(() => {
             if(!gameState.gameOver) addNewRow();
         }, 500);
@@ -553,17 +532,18 @@ function dropFloatingBubbles() {
 }
 
 function getNeighbors(r, c) {
-    // Hex Grid Neighbor Offsets depend on whether row is Even or Odd
+    // UPDATED: Neighbors offsets now depend on Effective Row Type
     let offsets;
-    if (r % 2 === 0) {
-        // Even Row
+    
+    if (!isRowEffectiveOdd(r)) {
+        // Effective EVEN (Left Aligned)
         offsets = [
-            {r: -1, c: -1}, {r: -1, c: 0}, // Top Left, Top Right
-            {r: 0, c: -1},  {r: 0, c: 1},  // Left, Right
-            {r: 1, c: -1},  {r: 1, c: 0}   // Bot Left, Bot Right
+            {r: -1, c: -1}, {r: -1, c: 0}, 
+            {r: 0, c: -1},  {r: 0, c: 1},  
+            {r: 1, c: -1},  {r: 1, c: 0}   
         ];
     } else {
-        // Odd Row
+        // Effective ODD (Right Aligned)
         offsets = [
             {r: -1, c: 0}, {r: -1, c: 1},
             {r: 0, c: -1}, {r: 0, c: 1},
@@ -608,7 +588,6 @@ function updateUI() {
 }
 
 // --- INPUT HANDLERS ---
-
 canvas.addEventListener('mousemove', (e) => {
     let rect = canvas.getBoundingClientRect();
     let scaleX = canvas.width / rect.width;
@@ -616,27 +595,21 @@ canvas.addEventListener('mousemove', (e) => {
     mouseX = (e.clientX - rect.left) * scaleX;
     mouseY = (e.clientY - rect.top) * scaleY;
 
-    // Calculate Angle
     let startX = canvas.width / 2;
     let startY = canvas.height - 30;
     gameState.angle = Math.atan2(mouseY - startY, mouseX - startX);
-    
-    // Clamp Angle (don't let them shoot down)
     if (gameState.angle > 0) gameState.angle = -Math.PI/2; 
 });
 
 canvas.addEventListener('mousedown', (e) => {
     if (gameState.gameOver || gameState.isProcessing || gameState.projectiles.length > 0) return;
-    
     let startX = canvas.width / 2;
     let startY = canvas.height - 30;
-    
     gameState.projectiles.push(new Projectile(startX, startY, gameState.angle, gameState.nextBubbleColor));
     gameState.isProcessing = true;
 });
 
 // --- FIREBASE LEADERBOARD ---
-
 async function submitScore() {
     const nameInput = document.getElementById('player-name');
     let name = nameInput.value.trim();
@@ -708,7 +681,6 @@ async function fetchLeaderboard() {
     }
 }
 
-// Expose functions globally for HTML onclick
 window.startGame = startGame;
 window.submitScore = submitScore;
 window.restartGame = startGame;
