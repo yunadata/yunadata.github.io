@@ -53,7 +53,7 @@ const BUBBLE_COLORS = [
 
 // Game State
 let gameState = {
-    grid: [], // 2D Array [row][col]
+    grid: [], 
     activeBubble: null,
     nextBubbleColor: null,
     projectiles: [],
@@ -61,8 +61,14 @@ let gameState = {
     score: 0,
     level: 1,
     gameOver: true,
-    angle: -Math.PI / 2, // Pointing up
-    isProcessing: false // Prevent shooting while animations happen
+    angle: -Math.PI / 2, 
+    isProcessing: false,
+    
+    // --- NEW VARIABLES FOR SURVIVAL MODE ---
+    framesSinceLastRow: 0,
+    rowInterval: 600,       // Start: Add row every ~10 seconds (at 60fps)
+    minRowInterval: 180,    // Cap: Fastest speed is ~3 seconds
+    difficultyStep: 10      // How much faster it gets per row added
 };
 
 let animationId;
