@@ -683,9 +683,8 @@ function triggerGameOver() {
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
         'event': 'game_complete',
-        'game_score': gameState.score,
-        'game_level': gameState.level, // Measures progress
-        'game_name': 'Bubble Pop'      // Distinguishes this from Crystal Guard
+        'game_score': gameState.score, // Matches existing GTM variable
+        'game_name': 'Bubble Pop'
     });
     // --- TRACKING CODE END ---
     document.getElementById('overlay').classList.remove('hidden');
@@ -756,7 +755,8 @@ async function submitScore() {
 			// --- TRACKING CODE START ---
             window.dataLayer = window.dataLayer || [];
             window.dataLayer.push({
-                'event': 'score_submission',
+                'event': 'score_submission', // Standard event name for both games
+                'game_score': gameState.score,
                 'game_name': 'Bubble Pop'
             });
             // --- TRACKING CODE END ---
