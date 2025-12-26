@@ -534,7 +534,7 @@ function snapBubble(p) {
     }
 
     if (bestR !== -1) {
-        if (bestR >= ROWS - 2) {
+        if (bestR >= ROWS - 1) {
             triggerGameOver();
             return;
         }
