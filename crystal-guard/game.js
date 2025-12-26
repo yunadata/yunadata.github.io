@@ -971,6 +971,14 @@ async function submitScore() {
                     wave: newWave,
                     timestamp: Date.now()
                 });
+				// --- TRACKING ---
+                window.dataLayer = window.dataLayer || [];
+                window.dataLayer.push({
+                    'event': 'score_submission',
+                    'game_score': gameState.score,
+                    'game_name': 'Crystal Guard'
+                });
+                // -------------------
                 alert("New High Score Uploaded!");
             } else {
                 alert("Score uploaded, but you didn't beat your personal best!");
@@ -983,6 +991,14 @@ async function submitScore() {
                 wave: newWave,
                 timestamp: Date.now()
             });
+			// --- TRACKING ---
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                'event': 'score_submission',
+                'game_score': gameState.score,
+                'game_name': 'Crystal Guard'
+            });
+            // -------------------
             alert("Score Uploaded!");
         }
 
