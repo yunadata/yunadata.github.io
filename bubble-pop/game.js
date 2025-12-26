@@ -305,6 +305,13 @@ function initGrid() {
 function startGame() {
     gameState.score = 0;
     gameState.level = 1;
+	// --- TRACKING CODE START ---
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ 
+        'event': 'game_start',
+        'game_name': 'Bubble Pop'
+    });
+    // --- TRACKING CODE END ---
     gameState.gameOver = false;
     gameState.isProcessing = false;
     gameState.projectiles = [];
@@ -369,6 +376,14 @@ function addNewRow() {
     
     gameState.framesSinceLastRow = 0;
     gameState.level++; 
+	// --- TRACKING CODE START ---
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ 
+        'event': 'level_up',
+        'level_number': gameState.level,
+        'game_name': 'Bubble Pop'
+    });
+    // --- TRACKING CODE END ---
     updateUI();
 }
 
@@ -664,6 +679,15 @@ function createExplosion(x, y, color) {
 
 function triggerGameOver() {
     gameState.gameOver = true;
+	// --- TRACKING CODE START ---
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+        'event': 'game_complete',
+        'game_score': gameState.score,
+        'game_level': gameState.level, // Measures progress
+        'game_name': 'Bubble Pop'      // Distinguishes this from Crystal Guard
+    });
+    // --- TRACKING CODE END ---
     document.getElementById('overlay').classList.remove('hidden');
     document.getElementById('overlay-title').innerText = "GAME OVER";
     document.getElementById('overlay-desc').innerText = "The bubbles reached the bottom!";
@@ -729,6 +753,13 @@ async function submitScore() {
                 score: gameState.score,
                 timestamp: Date.now()
             });
+			// --- TRACKING CODE START ---
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                'event': 'score_submission',
+                'game_name': 'Bubble Pop'
+            });
+            // --- TRACKING CODE END ---
             alert("Score Uploaded!");
         } else {
             alert("Score uploaded, but you didn't beat your high score!");
