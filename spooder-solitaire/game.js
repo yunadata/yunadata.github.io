@@ -50,6 +50,15 @@ function startGame(difficulty) {
     gameState.moves = 0;
     gameState.history = [];
     gameState.columns = Array(10).fill().map(() => []);
+	
+	// --- TRACKING CODE START ---
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ 
+        'event': 'game_start',
+        'game_name': 'Spooder Solitaire',
+        'difficulty': difficulty + ' Suits' // e.g., "1 Suits", "4 Suits"
+    });
+    // --- TRACKING CODE END ---
     
     document.getElementById('start-overlay').classList.add('hidden');
     document.getElementById('win-overlay').classList.add('hidden');
@@ -479,6 +488,14 @@ function removeRun(colIdx) {
     }
 
     gameState.score += 100;
+	// --- TRACKING CODE START ---
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ 
+        'event': 'level_up', // Re-using standard name for consistency
+        'game_name': 'Spooder Solitaire',
+        'level_number': gameState.difficulty // No I'm not going to track 'suits_cleared' count since I don't want to add a counter, it's pointless as the game only gets completed if you finish all suits in that round
+    });
+    // --- TRACKING CODE END ---
     updateStats();
     renderBoard();
 }
@@ -496,6 +513,15 @@ function isGameWon() {
 
 function endGame() {
     clearInterval(gameState.timerInterval);
+	// --- TRACKING CODE START ---
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+        'event': 'game_complete',
+        'game_score': gameState.score,
+        'game_name': 'Spooder Solitaire',
+        'difficulty': gameState.difficulty + ' Suits'
+    });
+    // --- TRACKING CODE END ---
     document.getElementById('final-score').innerText = gameState.score;
     document.getElementById('final-time').innerText = elTime.innerText;
     document.getElementById('win-overlay').classList.remove('hidden');
@@ -567,6 +593,15 @@ window.submitScore = async function() {
     );
     
     if(success) {
+		// --- TRACKING CODE START ---
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+            'event': 'score_submission',
+            'game_score': gameState.score,
+            'game_name': 'Spooder Solitaire',
+            'difficulty': gameState.difficulty + ' Suits'
+        });
+        // --- TRACKING CODE END ---
         btn.innerText = "Saved!";
         setTimeout(() => {
             toggleLeaderboardModal();
