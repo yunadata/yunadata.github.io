@@ -303,7 +303,11 @@ class Tower {
         this.range *= 1.1;
         this.cooldownMax *= 0.9;
         window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push({'event': 'tower_upgrade', 'tower_type': this.typeKey});
+		window.dataLayer.push({
+			'event': 'tower_upgrade', 
+			'tower_type': this.typeKey,
+			'game_name': 'Crystal Guard'
+		});
     }
 
     getSellValue() { return Math.floor(TOWER_TYPES[this.typeKey].cost * 0.75); }
@@ -708,7 +712,10 @@ function startGame() {
     updateUI();
     
     window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({ 'event': 'game_start' });
+	window.dataLayer.push({ 
+		'event': 'game_start',
+		'game_name': 'Crystal Guard'
+	});
     
     if(gameLoopId) cancelAnimationFrame(gameLoopId);
     
@@ -738,7 +745,11 @@ function gameLoop() {
         gameState.spawnTimer = -120; 
         updateUI();
         window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push({'event': 'wave_complete', 'wave_number': gameState.wave - 1});
+		window.dataLayer.push({
+			'event': 'wave_complete', 
+			'wave_number': gameState.wave - 1,
+			'game_name': 'Crystal Guard'
+		});
     }
 
     gameState.towers.forEach(t => { t.update(); t.draw(); });
@@ -913,11 +924,12 @@ function endGame() {
     document.getElementById('final-score').innerText = gameState.score;
     
     window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-        'event': 'game_complete',
-        'game_score': gameState.score,
-        'game_wave': gameState.wave
-    });
+	window.dataLayer.push({
+		'event': 'game_complete',
+		'game_score': gameState.score,
+		'game_wave': gameState.wave,
+		'game_name': 'Crystal Guard'
+	});
 
     fetchLeaderboard();
 }
