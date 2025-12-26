@@ -764,3 +764,10 @@ footer {
 .project-card {
     padding-top: 1.5rem; 
 }
+
+
+
+
+#games .project-image {
+    height: 216px;
+}
