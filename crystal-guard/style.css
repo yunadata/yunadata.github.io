@@ -252,7 +252,7 @@ canvas {
 #overlay {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(19, 15, 38, 0.9);
+    background: rgba(19, 15, 38, 0.95);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -260,7 +260,7 @@ canvas {
     z-index: 10;
     color: white;
     text-align: center;
-    padding: 20px; /* Ensure content doesn't touch edges */
+    padding: 20px;
 }
 #overlay h1 { 
     font-family: 'Press Start 2P'; 
@@ -280,13 +280,12 @@ canvas {
     padding: 15px;
     border: 2px solid #45326e;
     margin-bottom: 20px;
-    width: 350px; /* Slightly wider for scrollbar */
+    width: 350px; 
 }
 
-/* Scrollbar Constraint & Logic */
 #leaderboard-list {
-    max-height: 200px; /* Constrain height to prevent overlay growing too tall */
-    overflow-y: auto;  /* Enable Vertical Scroll */
+    max-height: 200px; 
+    overflow-y: auto;  
     padding-right: 5px;
 }
 
@@ -380,46 +379,39 @@ footer {
 }
 footer a:hover { color: var(--primary) !important; }
 
-/* --- COOKIE BANNER RESTYLING (NEON/PIXEL) --- */
-
-/* 1. Main Banner Container */
+/* --- COOKIE BANNER RESTYLING --- */
 #simple-cookie-banner {
-    background: #241b42 !important; /* Dark Purple Panel Color */
-    color: #e2e8f0 !important; /* Off-white text */
+    background: #241b42 !important; 
+    color: #e2e8f0 !important; 
     font-family: 'VT323', monospace !important;
     font-size: 1.2rem !important;
-    
-    border: 3px solid #45326e !important; /* Match Game Border */
-    border-top: 4px solid var(--primary) !important; /* Neon Pink Top */
-    border-radius: 4px !important; /* Slight pixel roundness */
-    
-    backdrop-filter: none !important; /* Remove GTM glass effect */
+    border: 3px solid #45326e !important; 
+    border-top: 4px solid var(--primary) !important; 
+    border-radius: 4px !important; 
+    backdrop-filter: none !important; 
     box-shadow: 0 0 25px rgba(0,0,0,0.8) !important;
     padding: 15px !important;
     z-index: 99999 !important;
 }
 
-/* 2. Headline "I respect your privacy" */
 #simple-cookie-banner strong {
     font-family: 'Press Start 2P', cursive !important;
     font-size: 0.9rem !important;
-    color: var(--primary) !important; /* Neon Pink */
-    background: none !important; /* Remove GTM gradient text */
+    color: var(--primary) !important;
+    background: none !important;
     -webkit-text-fill-color: var(--primary) !important;
     text-shadow: 2px 2px 0px #000 !important;
     display: block !important;
     margin-bottom: 8px !important;
 }
 
-/* 3. Body Text */
 #simple-cookie-banner div, 
 #simple-cookie-banner p {
     color: #e2e8f0 !important;
 }
 
-/* 4. Links ("Read more") */
 #simple-cookie-banner a {
-    color: var(--secondary) !important; /* Cyan */
+    color: var(--secondary) !important;
     text-decoration: underline !important;
     font-weight: normal !important;
 }
@@ -428,24 +420,21 @@ footer a:hover { color: var(--primary) !important; }
     text-shadow: 0 0 5px var(--secondary) !important;
 }
 
-/* 5. Buttons Container */
 #simple-cookie-banner .button-container {
     margin-top: 10px !important;
 }
 
-/* 6. General Button Reset */
 #simple-cookie-banner button {
     font-family: 'Press Start 2P', cursive !important;
     font-size: 0.7rem !important;
     text-transform: uppercase !important;
-    border-radius: 0px !important; /* Square pixel buttons */
+    border-radius: 0px !important;
     padding: 12px 20px !important;
     cursor: pointer !important;
     transition: 0.1s !important;
     box-shadow: 4px 4px 0px rgba(0,0,0,0.5) !important;
 }
 
-/* 7. Accept Button (Neon Cyan) */
 #btn-accept {
     background: var(--secondary) !important;
     color: #000 !important;
@@ -456,11 +445,10 @@ footer a:hover { color: var(--primary) !important; }
     box-shadow: 2px 2px 0px rgba(0,0,0,0.5) !important;
 }
 
-/* 8. Reject Button (Red Outline) */
 #btn-deny {
     background: transparent !important;
     color: #fff !important;
-    border: 2px solid var(--danger) !important; /* Neon Red Border */
+    border: 2px solid var(--danger) !important;
 }
 #btn-deny:hover {
     background: var(--danger) !important;
@@ -469,11 +457,10 @@ footer a:hover { color: var(--primary) !important; }
     box-shadow: 2px 2px 0px rgba(0,0,0,0.5) !important;
 }
 
-/* 9. Floating Settings Icon */
 #btn-reopen-settings {
     background: #241b42 !important;
     border: 2px solid var(--primary) !important;
-    border-radius: 4px !important; /* Square */
+    border-radius: 4px !important; 
     color: var(--primary) !important;
     box-shadow: 0 0 10px rgba(0,0,0,0.5) !important;
 }
@@ -482,7 +469,7 @@ footer a:hover { color: var(--primary) !important; }
     color: #000 !important;
 }
 
-/* Mobile Tweak */
+/* --- MOBILE FIXES (CRITICAL UPDATE) --- */
 @media (max-width: 900px) {
     #game-wrapper { 
         flex-direction: column; 
@@ -503,12 +490,16 @@ footer a:hover { color: var(--primary) !important; }
         border: 4px solid #45326e; 
         border-radius: 4px; 
     }
-    #overlay.mode-game-over { 
-        position: fixed !important; 
-        top: 0 !important; 
-        width: 100vw !important; 
-        height: 100vh !important; 
-        background: rgba(19, 15, 38, 0.98); 
-        z-index: 9999; 
+    
+    /* FIX FOR OVERLAY OVERLAPPING UI */
+    #overlay {
+        position: fixed !important;  /* Detach from container */
+        top: 0; left: 0; right: 0; bottom: 0;
+        width: 100vw; height: 100vh;
+        z-index: 99999; /* Ensure it is on TOP of everything */
+        background: rgba(19, 15, 38, 0.98); /* Solid background to hide game behind */
+        overflow-y: auto; /* Allow scrolling if content is too tall */
+        justify-content: flex-start; /* Start from top */
+        padding-top: 50px;
     }
 }
