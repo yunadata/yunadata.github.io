@@ -6,7 +6,7 @@
     --secondary: #06b6d4;    /* Neon Cyan */
     --accent: #facc15;       /* Bright Gold */
     --danger: #ff3366;       /* Neon Red */
-    --text-main: #e2e8f0;    /* Off-white text for the game */
+    --text-main: #e2e8f0;    /* Off-white text */
     --text-dim: #94a3b8;     
     
     --shadow-glow: 0 0 15px rgba(217, 70, 239, 0.4);
@@ -21,7 +21,7 @@
 body {
     font-family: 'VT323', monospace; 
     background-color: var(--bg-dark);
-    color: var(--text-main); /* <--- THIS caused the cookie text to go white */
+    color: var(--text-main);
     overflow-x: hidden;
     min-height: 100vh;
     font-size: 1.2rem; 
@@ -109,7 +109,7 @@ main {
     border-radius: 4px;
     flex-wrap: wrap; 
     justify-content: center;
-    align-items: stretch; 
+    align-items: stretch; /* Prevents black bar on side panel expand */
     box-shadow: 0 0 40px rgba(0,0,0,0.5);
     max-width: 1150px;
 }
@@ -361,27 +361,106 @@ footer {
 }
 footer a:hover { color: var(--primary) !important; }
 
-/* --- COOKIE BANNER FIX (RESTORATION) --- */
-/* This specifically targets the cookie banner and forces text back to dark gray */
-#cookie-law-info-bar, 
-#cookie-law-info-bar *,
-.cli-bar-container,
-.cli-bar-message,
-.cli-bar-message * {
-    color: #444444 !important; /* Force text to be Dark Gray */
-    text-shadow: none !important;
+/* --- COOKIE BANNER RESTYLING (NEON/PIXEL) --- */
+
+/* 1. Main Banner Container */
+#simple-cookie-banner {
+    background: #241b42 !important; /* Dark Purple Panel Color */
+    color: #e2e8f0 !important; /* Off-white text */
+    font-family: 'VT323', monospace !important;
+    font-size: 1.2rem !important;
+    
+    border: 3px solid #45326e !important; /* Match Game Border */
+    border-top: 4px solid var(--primary) !important; /* Neon Pink Top */
+    border-radius: 4px !important; /* Slight pixel roundness */
+    
+    backdrop-filter: none !important; /* Remove GTM glass effect */
+    box-shadow: 0 0 25px rgba(0,0,0,0.8) !important;
+    padding: 15px !important;
+    z-index: 99999 !important;
 }
 
-/* Ensure the background stays light if that's what the plugin sets, 
-   or we can force it white to be safe */
-#cookie-law-info-bar {
-    background-color: #ffffff !important; 
+/* 2. Headline "I respect your privacy" */
+#simple-cookie-banner strong {
+    font-family: 'Press Start 2P', cursive !important;
+    font-size: 0.9rem !important;
+    color: var(--primary) !important; /* Neon Pink */
+    background: none !important; /* Remove GTM gradient text */
+    -webkit-text-fill-color: var(--primary) !important;
+    text-shadow: 2px 2px 0px #000 !important;
+    display: block !important;
+    margin-bottom: 8px !important;
 }
 
-/* But keep the "Accept" buttons readable (usually white text on colored button) */
-#cookie-law-info-bar .cli-plugin-button,
-.cli-plugin-button {
-    color: #ffffff !important;
+/* 3. Body Text */
+#simple-cookie-banner div, 
+#simple-cookie-banner p {
+    color: #e2e8f0 !important;
+}
+
+/* 4. Links ("Read more") */
+#simple-cookie-banner a {
+    color: var(--secondary) !important; /* Cyan */
+    text-decoration: underline !important;
+    font-weight: normal !important;
+}
+#simple-cookie-banner a:hover {
+    color: #fff !important;
+    text-shadow: 0 0 5px var(--secondary) !important;
+}
+
+/* 5. Buttons Container */
+#simple-cookie-banner .button-container {
+    margin-top: 10px !important;
+}
+
+/* 6. General Button Reset */
+#simple-cookie-banner button {
+    font-family: 'Press Start 2P', cursive !important;
+    font-size: 0.7rem !important;
+    text-transform: uppercase !important;
+    border-radius: 0px !important; /* Square pixel buttons */
+    padding: 12px 20px !important;
+    cursor: pointer !important;
+    transition: 0.1s !important;
+    box-shadow: 4px 4px 0px rgba(0,0,0,0.5) !important;
+}
+
+/* 7. Accept Button (Neon Cyan) */
+#btn-accept {
+    background: var(--secondary) !important;
+    color: #000 !important;
+    border: 2px solid #fff !important;
+}
+#btn-accept:hover {
+    transform: translate(2px, 2px) !important;
+    box-shadow: 2px 2px 0px rgba(0,0,0,0.5) !important;
+}
+
+/* 8. Reject Button (Red Outline) */
+#btn-deny {
+    background: transparent !important;
+    color: #fff !important;
+    border: 2px solid var(--danger) !important; /* Neon Red Border */
+}
+#btn-deny:hover {
+    background: var(--danger) !important;
+    color: #fff !important;
+    transform: translate(2px, 2px) !important;
+    box-shadow: 2px 2px 0px rgba(0,0,0,0.5) !important;
+}
+
+/* 9. Floating Settings Icon */
+#btn-reopen-settings {
+    background: #241b42 !important;
+    border: 2px solid var(--primary) !important;
+    border-radius: 4px !important; /* Square */
+    color: var(--primary) !important;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5) !important;
+}
+#btn-reopen-settings:hover {
+    background: var(--primary) !important;
+    color: #000 !important;
 }
 
 /* Mobile Tweak */
