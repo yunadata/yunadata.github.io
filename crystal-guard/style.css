@@ -1,14 +1,16 @@
 :root {
-    --bg-color: #FFFCF7;
-    --primary: #FFC4D6;
-    --secondary: #CCD5FF;
-    --accent: #FFE5B4;
-    --text-color: #4A4A4A;
-    --white: #ffffff;
-    --shadow: 0 10px 30px rgba(226, 198, 255, 0.4);
-    --gold: #f1c40f;
-    --danger: #e74c3c;
-    --ui-bg: rgba(255, 255, 255, 0.85);
+    /* --- NEW NEON PALETTE --- */
+    --bg-dark: #130f26;      /* Deep Purple Background */
+    --bg-panel: #241b42;     /* Lighter Purple for UI */
+    --primary: #d946ef;      /* Neon Pink */
+    --secondary: #06b6d4;    /* Neon Cyan */
+    --accent: #facc15;       /* Bright Gold */
+    --danger: #ff3366;       /* Neon Red */
+    --text-main: #e2e8f0;    /* Off-white text */
+    --text-dim: #94a3b8;     /* Gray text */
+    
+    --shadow-glow: 0 0 15px rgba(217, 70, 239, 0.4);
+    --border-style: 3px solid #45326e;
 }
 
 * {
@@ -18,43 +20,46 @@
 }
 
 body {
-    font-family: 'Quicksand', sans-serif;
-    background-color: var(--bg-color);
-    color: var(--text-color);
+    /* Switch font to Pixel style */
+    font-family: 'VT323', monospace; 
+    background-color: var(--bg-dark);
+    color: var(--text-main);
     overflow-x: hidden;
     min-height: 100vh;
+    font-size: 1.2rem; /* Pixel fonts need to be larger to be readable */
 }
 
-/* --- Animated background blobs (Copied from your Portfolio) --- */
-.bg-decoration {
+/* --- Animated Background (Stars) --- */
+.stars, .twinkling {
     position: fixed;
-    width: 400px;
-    height: 400px;
-    border-radius: 50%;
-    filter: blur(80px);
-    opacity: 0.3;
-    z-index: -1;
-    animation: float-blob 20s ease-in-out infinite;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100%; height: 100%;
+    display: block;
 }
-.blob-1 { background: var(--primary); top: -100px; left: -100px; animation-delay: 0s; }
-.blob-2 { background: var(--secondary); bottom: -100px; right: -100px; animation-delay: 5s; }
-.blob-3 { background: var(--accent); top: 50%; right: 10%; animation-delay: 10s; }
-
-@keyframes float-blob {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    33% { transform: translate(50px, -50px) scale(1.1); }
-    66% { transform: translate(-50px, 50px) scale(0.9); }
+.stars {
+    background: #000 url(http://www.script-tutorials.com/demos/360/images/stars.png) repeat top center;
+    z-index: -2;
+}
+.twinkling {
+    background: transparent url(http://www.script-tutorials.com/demos/360/images/twinkling.png) repeat top center;
+    z-index: -1;
+    animation: move-twink-back 200s linear infinite;
+    opacity: 0.4;
+}
+@keyframes move-twink-back {
+    from {background-position:0 0;}
+    to {background-position:-10000px 5000px;}
 }
 
 /* --- Navigation --- */
 nav {
     padding: 1rem 2rem;
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(19, 15, 38, 0.95);
+    border-bottom: 2px solid var(--primary);
     position: sticky;
     top: 0;
     z-index: 100;
+    box-shadow: 0 0 20px rgba(217, 70, 239, 0.2);
 }
 .nav-container {
     max-width: 1200px;
@@ -63,73 +68,85 @@ nav {
     justify-content: space-between;
     align-items: center;
 }
-.logo { font-weight: 700; font-size: 1.5rem; cursor: pointer; }
-.btn-small {
-    font-weight: 600;
-    color: var(--text-color);
-    padding: 8px 20px;
-    border-radius: 20px;
-    background: rgba(255, 196, 214, 0.2);
-    text-decoration: none;
-    transition: 0.3s;
+.logo { 
+    font-family: 'Press Start 2P', cursive;
+    font-size: 1rem; 
+    color: var(--secondary);
+    text-shadow: 2px 2px 0px #000;
+    cursor: pointer; 
 }
-.btn-small:hover { background: var(--primary); color: var(--white); }
+.blink { animation: blinker 1s linear infinite; }
+@keyframes blinker { 50% { opacity: 0; } }
+
+.btn-small {
+    font-family: 'VT323', monospace;
+    font-size: 1.2rem;
+    color: var(--bg-dark);
+    padding: 5px 15px;
+    background: var(--secondary);
+    text-decoration: none;
+    text-transform: uppercase;
+    border: 2px solid #fff;
+    box-shadow: 4px 4px 0px rgba(0,0,0,0.5);
+    transition: 0.1s;
+}
+.btn-small:hover { 
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px rgba(0,0,0,0.5);
+}
 
 /* --- Game Layout --- */
 main {
     display: flex;
     justify-content: center;
-    align-items: center;
     padding: 2rem;
-    min-height: calc(100vh - 140px);
+    min-height: calc(100vh - 100px);
 }
 
 #game-wrapper {
     display: flex;
-    gap: 20px;
-    box-shadow: var(--shadow);
-    background: rgba(255,255,255,0.5);
-    padding: 20px;
-    border-radius: 20px;
-    backdrop-filter: blur(10px);
+    gap: 0; /* Removing gap to make it look like one machine */
+    border: 4px solid #45326e;
+    background: var(--bg-panel);
+    border-radius: 4px;
     flex-wrap: wrap; 
     justify-content: center;
-    align-items: flex-start; /* <--- THIS FIXES THE BLACK BAR */
+    box-shadow: 0 0 40px rgba(0,0,0,0.5);
+    max-width: 1150px;
 }
 
 /* --- Canvas Area --- */
 .canvas-container {
     position: relative;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    background: #e3f2fd; /* UPDATED: Matches new soft blue/green tone */
+    border-right: 4px solid #45326e;
+    background: #000;
 }
 
 canvas {
-    background-color: #e3f2fd; /* UPDATED */
     display: block;
     max-width: 100%;
     height: auto;
+    image-rendering: pixelated; /* CRITICAL for pixel art look */
 }
 
 /* --- UI Sidebar --- */
 #ui-sidebar {
     width: 300px;
-    background: var(--white);
+    background: var(--bg-panel);
     padding: 20px;
-    border-radius: 12px;
     display: flex;
     flex-direction: column;
     gap: 15px;
-    border: 1px solid rgba(255,255,255,0.6);
+    color: var(--text-main);
 }
 
 #ui-sidebar h2 {
-    font-size: 1.2rem;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.8rem;
     text-align: center;
-    color: var(--text-color);
+    color: var(--accent);
     margin-bottom: 10px;
+    text-shadow: 2px 2px 0 #000;
 }
 
 .stats-grid {
@@ -139,101 +156,101 @@ canvas {
 }
 
 .stat-box {
-    background: #f8f9fa;
+    background: rgba(0,0,0,0.3);
     padding: 10px;
-    border-radius: 8px;
+    border: 1px solid #45326e;
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-size: 0.9rem;
-    font-weight: bold;
+    font-size: 1.1rem;
 }
-.stat-box.gold span:last-child { color: #f39c12; }
-.stat-box.lives span:last-child { color: var(--danger); }
+.neon-text { color: var(--secondary); text-shadow: 0 0 5px var(--secondary); }
+.gold-text { color: var(--accent); }
+.life-text { color: var(--danger); }
 
 .section-title {
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    font-size: 1.2rem;
     text-align: center;
     margin: 10px 0 5px;
-    color: #95a5a6;
+    color: var(--text-dim);
+    letter-spacing: 2px;
 }
 
 .tower-select {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
+    gap: 8px;
 }
 
 .tower-btn {
-    background: #ecf0f1;
-    border: 2px solid transparent;
+    background: #1a152e;
+    border: 2px solid #45326e;
     padding: 10px;
     cursor: pointer;
-    border-radius: 8px;
     text-align: center;
     transition: 0.2s;
+    position: relative;
+    overflow: hidden;
 }
 
-.tower-btn:hover { background: #dfe6e9; transform: translateY(-2px); }
+.tower-btn:hover { 
+    border-color: var(--text-main); 
+    background: #2a2245;
+}
 .tower-btn.active { 
     border-color: var(--primary); 
-    background: rgba(255, 196, 214, 0.1);
+    box-shadow: inset 0 0 15px rgba(217, 70, 239, 0.3);
 }
 
-.t-name { font-weight: bold; font-size: 0.9rem; }
-.t-cost { color: #f39c12; font-size: 0.85rem; font-weight: bold; }
-.t-info { font-size: 0.7rem; color: #7f8c8d; }
+.t-name { font-weight: bold; font-size: 1.1rem; color: #fff; }
+.t-cost { color: var(--accent); font-size: 1rem; }
+.t-info { font-size: 0.9rem; color: var(--text-dim); }
 
 #upgrade-panel {
     margin-top: auto;
-    border-top: 1px solid #eee;
+    border-top: 2px dashed #45326e;
     padding-top: 15px;
     display: none;
 }
 
-/* --- Game Buttons --- */
+/* --- Game Buttons (Pixel Style) --- */
 .btn-game {
     width: 100%;
-    padding: 12px;
+    padding: 15px;
     border: none;
-    border-radius: 50px;
     cursor: pointer;
-    font-weight: bold;
-    font-family: 'Quicksand', sans-serif;
-    font-size: 1rem;
+    font-family: 'Press Start 2P', cursive; /* Header font for buttons */
+    font-size: 0.8rem; /* Smaller font for pixel button */
     margin-top: 10px;
-    transition: 0.3s;
+    text-transform: uppercase;
+    color: white;
+    border: 3px solid rgba(0,0,0,0.2);
+    box-shadow: inset 0 -4px 0 rgba(0,0,0,0.3);
+    transition: 0.1s;
+}
+
+.btn-game:active {
+    transform: translateY(2px);
+    box-shadow: inset 0 -2px 0 rgba(0,0,0,0.3);
 }
 
 .btn-game.start {
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    color: white;
-    width: 200px;
-    box-shadow: 0 4px 15px rgba(255, 196, 214, 0.4);
+    background: var(--primary);
+    box-shadow: 0 0 20px var(--primary);
+    border: 2px solid #fff;
+    font-size: 1.2rem;
 }
-.btn-game.start:hover { transform: scale(1.05); }
+.btn-game.start:hover { background: #e879f9; }
 
-.btn-game.upgrade {
-    background: var(--accent);
-    color: #555;
-}
-.btn-game.sell {
-    background: #ff7675;
-    color: white;
-}
-.btn-game.action {
-    background: var(--secondary);
-    color: white;
-    max-width: 200px;
-}
+.btn-game.upgrade { background: var(--secondary); color: #000; }
+.btn-game.sell { background: var(--danger); color: #fff; }
+.btn-game.action { background: var(--accent); color: #000; max-width: 200px; }
 
 /* --- Overlay --- */
 #overlay {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(26, 26, 46, 0.9);
+    background: rgba(19, 15, 38, 0.9);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -241,97 +258,67 @@ canvas {
     z-index: 10;
     color: white;
     text-align: center;
-    backdrop-filter: blur(5px);
 }
-#overlay h1 { font-size: 3rem; margin-bottom: 10px; color: var(--primary); }
-#overlay p { color: #bdc3c7; max-width: 400px; margin-bottom: 20px; line-height: 1.5; }
+#overlay h1 { 
+    font-family: 'Press Start 2P'; 
+    font-size: 2.5rem; 
+    margin-bottom: 20px; 
+    color: var(--primary);
+    text-shadow: 4px 4px 0 #000;
+    line-height: 1.5;
+}
+#overlay p { color: var(--text-dim); max-width: 400px; margin-bottom: 30px; font-size: 1.3rem; }
 
 .hidden { display: none !important; }
 
 /* --- Leaderboard --- */
 #leaderboard-display {
-    background: rgba(255,255,255,0.1);
+    background: rgba(0,0,0,0.5);
     padding: 15px;
-    border-radius: 10px;
+    border: 2px solid #45326e;
     margin-bottom: 20px;
-    width: 300px;
-}
-#leaderboard-list {
-    max-height: 150px;
-    overflow-y: auto;
-    font-size: 0.9rem;
-    text-align: left;
+    width: 320px;
 }
 .score-entry {
     display: flex;
     justify-content: space-between;
     padding: 5px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+    border-bottom: 1px dashed #45326e;
+    font-family: 'VT323', monospace;
+    font-size: 1.2rem;
 }
 
 #player-name {
     padding: 10px;
-    border-radius: 20px;
-    border: none;
+    background: #000;
+    border: 2px solid var(--secondary);
+    color: var(--secondary);
+    font-family: 'VT323', monospace;
+    font-size: 1.5rem;
     text-align: center;
-    font-family: 'Quicksand', sans-serif;
     margin-bottom: 10px;
     width: 200px;
+    outline: none;
 }
 
-.final-score-text { font-size: 1.5rem; color: var(--accent) !important; font-weight: bold; }
+.final-score-text { font-size: 2rem; color: var(--accent) !important; font-family: 'VT323'; margin-bottom: 10px; }
 
-footer {
-    text-align: center;
-    padding: 20px;
-    font-size: 0.9rem;
-}
-
-/* Mobile Tweak */
-@media (max-width: 900px) {
-    #game-wrapper { flex-direction: column; align-items: center; }
-    #ui-sidebar { width: 100%; max-width: 800px; }
-}
-
-
-
-/* --- UPDATED: Main Layout Container --- */
-main {
-    display: flex;
-    justify-content: center;
-    padding: 2rem;
-    min-height: calc(100vh - 140px);
-}
-
-.game-layout {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 30px;
-    width: 100%;
-    max-width: 1200px;
-}
-
-/* --- NEW: How to Play Styles --- */
+/* --- How To Play Section --- */
 #how-to-play {
     width: 100%;
-    background: rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
+    max-width: 1150px;
+    background: var(--bg-panel);
+    border: 4px solid #45326e;
     padding: 30px;
-    box-shadow: var(--shadow);
     text-align: center;
-    border: 1px solid rgba(255,255,255,0.6);
+    margin-top: 20px;
 }
 
 #how-to-play h2 {
-    font-size: 1.8rem;
-    margin-bottom: 20px;
-    color: var(--text-color);
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    display: inline-block;
+    font-family: 'Press Start 2P';
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+    color: var(--secondary);
 }
 
 .instructions-grid {
@@ -341,175 +328,40 @@ main {
 }
 
 .instruction-card {
-    background: rgba(255, 255, 255, 0.7);
+    background: #1a152e;
     padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    transition: transform 0.3s;
-    border: 1px solid rgba(255,255,255,0.5);
-    
-    /* --- NEW: Centering --- */
-    text-align: center; 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.instruction-card:hover {
-    transform: translateY(-5px);
-    background: white;
+    border: 2px solid #45326e;
+    text-align: center;
 }
 
 .instruction-card .icon {
     font-size: 2rem;
-    margin-bottom: 10px;
-    color: var(--secondary);
+    margin-bottom: 15px;
+    color: var(--primary);
+    text-shadow: 0 0 10px var(--primary);
 }
 
 .instruction-card h3 {
-    font-size: 1.1rem;
-    margin-bottom: 8px;
-    color: var(--text-color);
+    font-family: 'Press Start 2P';
+    font-size: 0.8rem;
+    margin-bottom: 10px;
+    color: var(--text-main);
 }
 
-.instruction-card p {
-    font-size: 0.9rem;
-    color: #666;
-    line-height: 1.5;
+.instruction-card p { font-size: 1.1rem; color: var(--text-dim); }
+
+footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 1rem;
+    color: var(--text-dim);
+    margin-top: 20px;
 }
 
-/* Mobile Tweaks */
-@media (max-width: 768px) {
-    .instructions-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-
-
-
-
-
-
-
-
-
-/* --- COMPACT COOKIE BANNER FIX --- */
-#cookie-law-info-bar {
-    /* Stop full width stretching */
-    width: auto !important;
-    max-width: 900px !important; /* Limits how far apart text and buttons can be */
-    
-    /* Center it and float it nicely */
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    bottom: 20px !important; /* Adds a small gap from bottom of screen */
-    border-radius: 12px !important; /* Rounds the corners */
-    box-shadow: 0 5px 25px rgba(0,0,0,0.1) !important;
-    
-    /* Ensure internal spacing is tight */
-    padding: 15px 30px !important;
-}
-
-/* On mobile, let it be full width again so it fits */
-@media (max-width: 768px) {
-    #cookie-law-info-bar {
-        width: 95% !important;
-        bottom: 10px !important;
-    }
-}
-
-
-
-
-
-
-
-
-/* --- MOBILE FIXES (FINAL) --- */
+/* Mobile Tweak */
 @media (max-width: 900px) {
-    /* 1. Reset the wrapper to prevent the "Shift Right" bug */
-    #game-wrapper {
-        padding: 0 !important;
-        width: 100% !important;
-        border: none !important;
-        box-shadow: none !important;
-        background: transparent !important;
-        
-        /* CRITICAL: This stops the overlay from shifting off-screen */
-        transform: none !important;
-        backdrop-filter: none !important;
-        -webkit-backdrop-filter: none !important;
-    }
-
-    /* 2. The Overlay (DEFAULT / START SCREEN) 
-       Keep it inside the canvas box so users can scroll */
-    #overlay {
-        position: absolute !important; 
-        top: 0 !important;
-        left: 0 !important;
-        width: 100% !important;
-        height: 100% !important;
-        border-radius: 12px;
-        z-index: 10;
-        /* Ensure flex centering remains */
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        padding: 20px;
-    }
-
-    /* 2b. The Overlay (GAME OVER ONLY) 
-       Breaks out to full screen */
-    #overlay.mode-game-over {
-        position: fixed !important;  /* Locks it to the screen */
-        top: 80px !important;        /* Starts below header */
-        left: 0 !important;
-        width: 100vw !important;     /* Full screen width */
-        bottom: 0 !important;        /* Stretches to bottom */
-        height: auto !important;     
-        
-        z-index: 9999 !important;    /* Highest priority */
-        background: rgba(26, 26, 46, 0.98); 
-        border-radius: 0;            /* Remove corners for full screen */
-    }
-
-    /* 3. Make the content fit nicely */
-    #overlay h1 {
-        font-size: 1.8rem;
-        margin-top: 0;
-        margin-bottom: 10px;
-        color: var(--primary);
-    }
-
-    #overlay p {
-        font-size: 0.9rem;
-        max-width: 90%;
-        margin-bottom: 15px;
-    }
-
-    /* 4. Scrollable Leaderboard for small screens */
-    #leaderboard-display {
-        width: 90%;
-        max-height: 25vh; /* Limits height so it doesn't push buttons off screen */
-        overflow-y: auto;
-        margin-bottom: 15px;
-        background: rgba(255,255,255,0.05);
-        border-radius: 8px;
-    }
-
-    /* 5. Input & Button Sizing */
-    #player-name {
-        width: 80%;
-        font-size: 16px; /* Prevents iPhone zooming on tap */
-        padding: 12px;
-    }
-
-    .btn-game {
-        width: 80% !important;
-        padding: 14px !important;
-        display: block;      /* Ensures the button behaves like a block element */
-        margin: 8px auto;    /* 'auto' on left/right centers the block */
-    }
+    #game-wrapper { flex-direction: column; align-items: center; border: none; background: transparent; box-shadow: none; }
+    .canvas-container { border-right: none; border-bottom: 4px solid #45326e; border-radius: 4px; }
+    #ui-sidebar { width: 100%; max-width: 800px; border: 4px solid #45326e; border-radius: 4px; }
+    #overlay.mode-game-over { position: fixed !important; top: 0 !important; width: 100vw !important; height: 100vh !important; background: rgba(19, 15, 38, 0.98); z-index: 9999; }
 }
