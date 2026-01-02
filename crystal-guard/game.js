@@ -72,7 +72,7 @@ const path = [
     {x: 8, y: 10}, {x: 8, y: 13}, {x: 19, y: 13} 
 ];
 
-// Tower Definitions (Colors updated for neon theme)
+// Tower Definitions
 const TOWER_TYPES = {
     archer: { name: 'Archer', cost: 50, range: 3.5, damage: 15, cooldown: 30, color: COLORS.primary, type: 'single' },
     mage:   { name: 'Mage', cost: 100, range: 4, damage: 5, cooldown: 45, color: COLORS.secondary, type: 'slow' },
@@ -132,44 +132,37 @@ class Enemy {
     }
 
     draw() {
-        // "Shadow Blob" aesthetic
         let wobble = Math.sin((frameCount + this.wobbleOffset) * 0.2) * 2;
         let stretch = Math.cos((frameCount + this.wobbleOffset) * 0.2) * 2;
         
         ctx.save();
         ctx.translate(this.x, this.y);
 
-        // Body (Dark blob)
         ctx.shadowBlur = 10;
         ctx.shadowColor = this.color;
-        ctx.fillStyle = "#000"; // Pitch black body
+        ctx.fillStyle = "#000"; 
         ctx.strokeStyle = this.color;
         ctx.lineWidth = 2;
         
         ctx.beginPath();
-        // Wobbly circle drawing
         ctx.ellipse(0, 0, this.radius + stretch, this.radius - stretch, 0, 0, Math.PI*2);
         ctx.fill();
         ctx.stroke();
         
         ctx.shadowBlur = 0;
 
-        // Glowing Eyes
         let eyeColor = this.isBoss ? '#ffff00' : '#fff';
         if(this.isBoss) {
-            // Boss has 3 eyes
             ctx.fillStyle = eyeColor;
             ctx.beginPath(); ctx.arc(-6, -4, 3, 0, Math.PI*2); ctx.fill();
             ctx.beginPath(); ctx.arc(6, -4, 3, 0, Math.PI*2); ctx.fill();
             ctx.beginPath(); ctx.arc(0, 5, 4, 0, Math.PI*2); ctx.fill();
         } else {
-            // Normal has 2 cute eyes
             ctx.fillStyle = eyeColor;
             ctx.beginPath(); ctx.arc(-4, -2, 2.5, 0, Math.PI*2); ctx.fill();
             ctx.beginPath(); ctx.arc(4, -2, 2.5, 0, Math.PI*2); ctx.fill();
         }
 
-        // Freeze effect
         if(this.slowed > 0) {
             ctx.strokeStyle = COLORS.secondary;
             ctx.lineWidth = 2;
@@ -177,7 +170,6 @@ class Enemy {
         }
         ctx.restore();
 
-        // Health Bar (Minimalist)
         if(this.hp < this.maxHp) {
             let hpW = 24;
             let hpPct = this.hp / this.maxHp;
@@ -266,40 +258,35 @@ class Tower {
         ctx.save();
         ctx.translate(this.x, this.y);
 
-        // --- Stone Base (Dark Gray with highlights) ---
         ctx.fillStyle = '#334155';
         ctx.fillRect(-14, -14, 28, 28);
-        ctx.fillStyle = '#475569'; // Highlight
+        ctx.fillStyle = '#475569'; 
         ctx.fillRect(-14, -14, 28, 4);
         ctx.fillRect(-14, -14, 4, 28);
         
-        // --- Neon Glow Effect ---
         ctx.shadowBlur = 15;
         ctx.shadowColor = this.color;
         
         if (this.typeKey === 'archer') {
             ctx.rotate(this.angle);
-            // Crystal Turret
             ctx.fillStyle = this.color;
             ctx.beginPath();
             ctx.moveTo(10, 0); ctx.lineTo(-8, 6); ctx.lineTo(-8, -6);
             ctx.fill();
         } 
         else if (this.typeKey === 'mage') {
-            // Floating Orb
             let float = Math.sin(frameCount * 0.1) * 3;
             ctx.fillStyle = this.color;
             ctx.beginPath(); ctx.arc(0, float, 8, 0, Math.PI*2); ctx.fill();
-            // Rings
             ctx.strokeStyle = '#fff';
             ctx.lineWidth = 1;
             ctx.beginPath(); ctx.ellipse(0, float, 12, 4, frameCount*0.1, 0, Math.PI*2); ctx.stroke();
         } 
         else if (this.typeKey === 'cannon') {
             ctx.rotate(this.angle);
-            ctx.fillStyle = '#94a3b8'; // Metallic barrel
+            ctx.fillStyle = '#94a3b8'; 
             ctx.fillRect(-2, -6, 16, 12);
-            ctx.fillStyle = this.color; // Glowing Core
+            ctx.fillStyle = this.color; 
             ctx.fillRect(0, -3, 8, 6);
         } 
         else if (this.typeKey === 'support') {
@@ -310,7 +297,6 @@ class Tower {
             ctx.beginPath(); ctx.moveTo(10, -10); ctx.lineTo(-10, 10); ctx.stroke();
         }
 
-        // Buff Indicator
         if(this.buffed) {
             ctx.shadowBlur = 0;
             ctx.strokeStyle = COLORS.accent;
@@ -320,7 +306,6 @@ class Tower {
 
         ctx.restore();
         
-        // Level Dots
         let startX = this.x - ((this.level-1) * 6) / 2;
         for(let i=0; i<this.level; i++) {
             ctx.fillStyle = COLORS.accent;
@@ -338,7 +323,7 @@ class Projectile {
     update() {
         if(!this.target || this.target.hp <= 0) { this.active = false; return; }
         this.tail.push({x: this.x, y: this.y});
-        if(this.tail.length > 8) this.tail.shift(); // Longer tail for neon look
+        if(this.tail.length > 8) this.tail.shift(); 
         
         let dx = this.target.x - this.x;
         let dy = this.target.y - this.y;
@@ -362,7 +347,6 @@ class Projectile {
         }
     }
     draw() {
-        // Laser / Bolt effect
         ctx.beginPath();
         ctx.moveTo(this.x, this.y);
         for(let p of this.tail) ctx.lineTo(p.x, p.y);
@@ -388,7 +372,7 @@ class Particle {
     draw() {
         ctx.fillStyle = this.color;
         ctx.globalAlpha = this.life;
-        ctx.fillRect(this.x, this.y, 3, 3); // Square particles for pixel look
+        ctx.fillRect(this.x, this.y, 3, 3); 
         ctx.globalAlpha = 1;
     }
 }
@@ -405,11 +389,9 @@ function isPath(c, r) {
 }
 
 function initBackground() {
-    // Dark Space/Ground Background
     bgCtx.fillStyle = COLORS.bgDark;
     bgCtx.fillRect(0, 0, bgCanvas.width, bgCanvas.height);
     
-    // Grid Pattern (Subtle)
     bgCtx.strokeStyle = 'rgba(255,255,255,0.03)';
     bgCtx.lineWidth = 1;
     for(let y=0; y<ROWS; y++) {
@@ -419,19 +401,16 @@ function initBackground() {
         bgCtx.beginPath(); bgCtx.moveTo(x*TILE_SIZE, 0); bgCtx.lineTo(x*TILE_SIZE, 600); bgCtx.stroke();
     }
 
-    // Draw Path (Glowing Road)
     for (let r = 0; r < ROWS; r++) {
         for (let c = 0; c < COLS; c++) {
             if (isPath(c, r)) {
                 let x = c * TILE_SIZE, y = r * TILE_SIZE;
                 bgCtx.fillStyle = COLORS.path;
                 bgCtx.fillRect(x, y, TILE_SIZE, TILE_SIZE);
-                // Pixel borders for path
                 bgCtx.fillStyle = COLORS.pathBorder;
-                bgCtx.fillRect(x, y, TILE_SIZE, 2); // Top edge
-                bgCtx.fillRect(x, y + TILE_SIZE - 2, TILE_SIZE, 2); // Bottom edge
+                bgCtx.fillRect(x, y, TILE_SIZE, 2); 
+                bgCtx.fillRect(x, y + TILE_SIZE - 2, TILE_SIZE, 2); 
             } else {
-                // Random stars/dust on ground
                 if(Math.random() > 0.98) {
                     bgCtx.fillStyle = 'rgba(255,255,255,0.1)';
                     bgCtx.fillRect(c*TILE_SIZE + Math.random()*30, r*TILE_SIZE + Math.random()*30, 2, 2);
@@ -448,13 +427,11 @@ function drawCrystal(x, y) {
     ctx.save();
     ctx.translate(x, cy);
     
-    // Intense Glow
     let pulse = 20 + 10 * Math.sin(frameCount * 0.1);
     ctx.shadowBlur = pulse;
     ctx.shadowColor = COLORS.secondary;
     
-    // Draw Hexagonal Prism (Tall)
-    ctx.fillStyle = '#cffafe'; // White-ish Cyan
+    ctx.fillStyle = '#cffafe'; 
     ctx.beginPath();
     ctx.moveTo(0, -35);
     ctx.lineTo(15, -25);
@@ -465,17 +442,15 @@ function drawCrystal(x, y) {
     ctx.closePath();
     ctx.fill();
 
-    // Inner facets
     ctx.fillStyle = COLORS.secondary;
     ctx.globalAlpha = 0.6;
     ctx.beginPath();
-    ctx.moveTo(0, -35); ctx.lineTo(0, 35); // Center line
+    ctx.moveTo(0, -35); ctx.lineTo(0, 35); 
     ctx.stroke();
     ctx.globalAlpha = 1.0;
     
     ctx.restore();
 
-    // Health Bar
     let hpPct = gameState.lives / gameState.maxLives;
     if (hpPct < 0) hpPct = 0;
     ctx.fillStyle = '#333';
@@ -486,7 +461,7 @@ function drawCrystal(x, y) {
     ctx.shadowBlur = 0;
 }
 
-// --- GAME LOGIC (Unchanged mostly, just calling new draws) ---
+// --- GAME LOGIC ---
 
 function startGame() {
     gameState = {
@@ -496,6 +471,8 @@ function startGame() {
         selectedTower: null, buildType: 'archer'
     };
     
+    // REMOVE Game Over Mode class so scrolling works again
+    document.getElementById('overlay').classList.remove('mode-game-over');
     document.getElementById('overlay').classList.add('hidden');
     document.getElementById('leaderboard-display').classList.add('hidden');
     document.getElementById('submit-score-container').classList.add('hidden');
@@ -674,7 +651,11 @@ function sellSelectedTower() {
 
 function endGame() {
     gameState.gameOver = true;
+    
+    // ADD Game Over Mode class to force Fullscreen Modal
+    document.getElementById('overlay').classList.add('mode-game-over');
     document.getElementById('overlay').classList.remove('hidden');
+    
     document.getElementById('overlay-title').innerText = "SYSTEM FAILURE";
     document.getElementById('overlay-desc').innerText = "The Crystal has shattered.";
     document.getElementById('start-btn').innerText = "REBOOT SYSTEM";
@@ -685,8 +666,6 @@ function endGame() {
     window.dataLayer.push({ 'event': 'game_complete', 'game_score': gameState.score });
     fetchLeaderboard();
 }
-
-// --- LEADERBOARD & SUBMIT (Updated with GA4 Tracking) ---
 
 async function submitScore() {
     const nameInput = document.getElementById('player-name');
@@ -712,7 +691,7 @@ async function submitScore() {
             alert("SCORE UPLOADED");
         }
         
-        // --- ADDED MISSING TRACKING CODE HERE ---
+        // --- GA4 FIX: Actually sending the event now ---
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({ 
             'event': 'score_submission', 
