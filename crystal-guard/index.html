@@ -9,11 +9,50 @@
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crystal Guard | Neon Defense</title>
     
+    <title>Crystal Guard | Neon Tower Defense by Yuna An Vu</title>
+    <meta name="description" content="Play Crystal Guard, a retro-neon Tower Defense game. Protect the prism from shadow blobs! A project by Yuna An Vu featuring GA4 tracking.">
+    <link rel="canonical" href="https://yunadata.github.io/crystal-guard/">
+    <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/favicon.ico">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yunadata.github.io/crystal-guard/">
+    <meta property="og:title" content="Crystal Guard | Neon Tower Defense">
+    <meta property="og:description" content="Defend the Prism! A retro-styled Tower Defense game with global leaderboards. Built by Yuna An Vu.">
+    <meta property="og:image" content="https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/crystal-guard.webp">
+
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://yunadata.github.io/crystal-guard/">
+    <meta property="twitter:title" content="Crystal Guard | Neon Tower Defense">
+    <meta property="twitter:description" content="Defend the Prism! A retro-styled Tower Defense game with global leaderboards.">
+    <meta property="twitter:image" content="https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/crystal-guard.webp">
+
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "VideoGame",
+      "name": "Crystal Guard",
+      "url": "https://yunadata.github.io/crystal-guard/",
+      "image": "https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/crystal-guard.webp",
+      "description": "A browser-based Neon Tower Defense game where players build towers to defend a prism from waves of shadow enemies.",
+      "genre": "Strategy",
+      "gamePlatform": "Web Browser",
+      "author": {
+        "@type": "Person",
+        "name": "Yuna An Vu",
+        "url": "https://yunadata.github.io/"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+    </script>
 </head>
 <body>
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KH2HGFPW"
@@ -25,7 +64,7 @@
     <nav>
         <div class="nav-container">
             <div class="logo" onclick="window.location.href='../index.html'">YUNADATA <span class="blink">_</span></div>
-            <a href="../index.html" class="btn-small">EXIT REALM</a>
+            <a href="../index.html#games" class="btn-small">EXIT REALM</a>
         </div>
     </nav>
 
@@ -104,7 +143,7 @@
             </div>
 
             <section id="how-to-play">
-                <h2>MANUAL 📖</h2>
+                <h2>MANUAL</h2>
                 <div class="instructions-grid">
                     <div class="instruction-card">
                         <i class="fas fa-mouse-pointer icon"></i>
@@ -130,7 +169,10 @@
     </main>
 
     <footer>
-        <p>CRYSTAL GUARD // YUNA AN VU // 2025</p>
+        <p>CRYSTAL GUARD // YUNA AN VU</p>
+        <p>
+            &copy; 2025 | <a href="https://yunadata.github.io/privacy-policy.html" style="color: var(--text-dim); text-decoration: none;">Privacy Policy</a>
+        </p>
     </footer>
 
     <script type="module" src="game.js"></script>
