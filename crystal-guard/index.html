@@ -9,64 +9,23 @@
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crystal Guard | Neon Defense</title>
     
-    <title>Crystal Guard | Tower Defense Game by Yuna An Vu</title>
-    <meta name="description" content="Play Crystal Guard, a browser-based Tower Defense game built with JavaScript. A project by Yuna An Vu, demonstrating analytics tracking in a game.">
-    <link rel="canonical" href="https://yunadata.github.io/crystal-guard/">
-    <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/favicon.ico">
-
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://yunadata.github.io/crystal-guard/">
-    <meta property="og:title" content="Crystal Guard | Tower Defense Game">
-    <meta property="og:description" content="Defend the crystal! A JavaScript Tower Defense game featuring GTM tracking and global leaderboards. Built by Yuna An Vu.">
-    <meta property="og:image" content="https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/crystal-guard.webp">
-
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://yunadata.github.io/crystal-guard/">
-    <meta property="twitter:title" content="Crystal Guard | Tower Defense Game">
-    <meta property="twitter:description" content="Defend the crystal! A JavaScript Tower Defense game featuring GTM tracking and global leaderboards.">
-    <meta property="twitter:image" content="https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/crystal-guard.webp">
-
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
     <link rel="stylesheet" href="style.css">
-
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "VideoGame",
-      "name": "Crystal Guard",
-      "url": "https://yunadata.github.io/crystal-guard/",
-      "image": "https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/me.webp",
-      "description": "A browser-based Tower Defense game where players build towers to defend a crystal from waves of enemies.",
-      "genre": "Strategy",
-      "gamePlatform": "Web Browser",
-      "author": {
-        "@type": "Person",
-        "name": "Yuna An Vu",
-        "url": "https://yunadata.github.io/"
-      },
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
-      }
-    }
-    </script>
 </head>
 <body>
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KH2HGFPW"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
-    <div class="bg-decoration blob-1"></div>
-    <div class="bg-decoration blob-2"></div>
-    <div class="bg-decoration blob-3"></div>
+    <div class="stars"></div>
+    <div class="twinkling"></div>
 
     <nav>
         <div class="nav-container">
-            <div class="logo" onclick="window.location.href='../index.html'">YunaData.</div>
-            <a href="../index.html#games" class="btn-small">← Back to Portfolio</a>
+            <div class="logo" onclick="window.location.href='../index.html'">YUNADATA <span class="blink">_</span></div>
+            <a href="../index.html" class="btn-small">EXIT REALM</a>
         </div>
     </nav>
 
@@ -79,90 +38,90 @@
                     
                     <div id="overlay">
                         <h1 id="overlay-title">CRYSTAL GUARD</h1>
-                        <p id="overlay-desc">Defend the Magic Crystal from the endless horde.<br>Place towers, upgrade defenses, and survive.</p>
+                        <p id="overlay-desc">Protect the Prism from the Shadow Horde.</p>
                         
                         <div id="leaderboard-display" class="hidden">
-                            <h3>TOP DEFENDERS 🏆</h3>
-                            <div id="leaderboard-list">Loading scores...</div>
+                            <h3>LEGENDS 🏆</h3>
+                            <div id="leaderboard-list">Loading...</div>
                         </div>
     
                         <div id="submit-score-container" class="hidden">
-                            <p class="final-score-text">Final Score: <span id="final-score">0</span></p>
-                            <input type="text" id="player-name" placeholder="Enter Hero Name" maxlength="15">
-                            <button class="btn-game action" onclick="submitScore()">Submit Score</button>
+                            <p class="final-score-text">SCORE: <span id="final-score">0</span></p>
+                            <input type="text" id="player-name" placeholder="ENTER NAME" maxlength="10">
+                            <button class="btn-game action" onclick="submitScore()">UPLOAD</button>
                         </div>
     
-                        <button class="btn-game start" onclick="startGame()" id="start-btn">START GAME</button>
+                        <button class="btn-game start" onclick="startGame()" id="start-btn">PLAY GAME</button>
                     </div>
                 </div>
                 
                 <div id="ui-sidebar">
-                    <h2>Defense Control</h2>
+                    <h2>COMMANDS</h2>
                     
                     <div class="stats-grid">
-                        <div class="stat-box"><span>Wave</span> <span id="wave-display">1</span></div>
-                        <div class="stat-box"><span>Score</span> <span id="score-display">0</span></div>
-                        <div class="stat-box gold"><span>Gold</span> <span id="gold-display">100</span></div>
-                        <div class="stat-box lives"><span>Crystal</span> <span id="lives-display">20</span></div>
+                        <div class="stat-box"><span>WAVE</span> <span id="wave-display" class="neon-text">1</span></div>
+                        <div class="stat-box"><span>SCORE</span> <span id="score-display" class="neon-text">0</span></div>
+                        <div class="stat-box gold"><span>GOLD</span> <span id="gold-display" class="gold-text">100</span></div>
+                        <div class="stat-box lives"><span>PRISM</span> <span id="lives-display" class="life-text">20</span></div>
                     </div>
     
                     <hr>
-                    <div class="section-title">Build Towers</div>
+                    <div class="section-title">- SUMMON TOWER -</div>
                     
                     <div class="tower-select">
                         <div class="tower-btn active" onclick="selectTowerType('archer')" id="btn-archer">
-                            <div class="t-name">Archer</div>
+                            <div class="t-name">ARCHER</div>
                             <div class="t-cost">50g</div>
-                            <div class="t-info">Fast, Single</div>
+                            <div class="t-info">Single</div>
                         </div>
                         <div class="tower-btn" onclick="selectTowerType('mage')" id="btn-mage">
-                            <div class="t-name">Mage</div>
+                            <div class="t-name">MAGE</div>
                             <div class="t-cost">100g</div>
-                            <div class="t-info">Slows Enemy</div>
+                            <div class="t-info">Slow</div>
                         </div>
                         <div class="tower-btn" onclick="selectTowerType('cannon')" id="btn-cannon">
-                            <div class="t-name">Cannon</div>
+                            <div class="t-name">BLASTER</div>
                             <div class="t-cost">150g</div>
                             <div class="t-info">Area Dmg</div>
                         </div>
                         <div class="tower-btn" onclick="selectTowerType('support')" id="btn-support">
-                            <div class="t-name">Support</div>
+                            <div class="t-name">BEACON</div>
                             <div class="t-cost">200g</div>
-                            <div class="t-info">Buffs Range</div>
+                            <div class="t-info">Buff</div>
                         </div>
                     </div>
     
                     <div id="upgrade-panel">
-                        <div class="section-title">Selected Tower</div>
+                        <div class="section-title">- MODIFY -</div>
                         <button class="btn-game upgrade" onclick="upgradeSelectedTower()">
-                            Upgrade (<span id="upgrade-cost">0</span>g)
+                            UPGRADE (<span id="upgrade-cost">0</span>g)
                         </button>
                         <button class="btn-game sell" onclick="sellSelectedTower()">
-                            Sell (75%)
+                            SELL (75%)
                         </button>
                     </div>
                 </div>
             </div>
 
             <section id="how-to-play">
-                <h2>How to Play 📖</h2>
+                <h2>MANUAL 📖</h2>
                 <div class="instructions-grid">
                     <div class="instruction-card">
                         <i class="fas fa-mouse-pointer icon"></i>
-                        <h3>Controls</h3>
-                        <p><strong>Click</strong> any empty grass tile to build a tower. <strong>Click</strong> an existing tower to Upgrade or Sell it.</p>
+                        <h3>BUILD</h3>
+                        <p>Click dark tiles to summon defenses. Click existing towers to upgrade.</p>
                     </div>
                     
                     <div class="instruction-card">
-                        <i class="fas fa-bullseye icon" style="color: #FFC4D6;"></i>
-                        <h3>Strategy</h3>
-                        <p><strong>Archers</strong> are great for bosses. <strong>Mages</strong> slow down fast enemies. <strong>Cannons</strong> destroy groups. Place <strong>Support</strong> towers in the middle of clusters!</p>
+                        <i class="fas fa-skull icon"></i>
+                        <h3>DEFEND</h3>
+                        <p>Shadow blobs are attacking the Prism. Don't let them touch it.</p>
                     </div>
 
                     <div class="instruction-card">
-                        <i class="fas fa-gem icon" style="color: #00d2d3;"></i>
-                        <h3>The Goal</h3>
-                        <p>Enemies will try to reach the <strong>Blue Crystal</strong>. Defeat them to earn Gold. If 20 enemies reach the crystal, it shatters!</p>
+                        <i class="fas fa-bolt icon"></i>
+                        <h3>POWER</h3>
+                        <p><strong>Mages</strong> freeze enemies. <strong>Blasters</strong> hit groups. Use <strong>Beacons</strong> to boost range.</p>
                     </div>
                 </div>
             </section>
@@ -171,10 +130,7 @@
     </main>
 
     <footer>
-        <p>Made with 💖 by Yuna An Vu.</p>
-        <p>
-            &copy; 2025 | <a href="https://yunadata.github.io/privacy-policy.html" style="font-weight: 600; text-decoration: none; color: inherit;">Privacy Policy</a>
-        </p>
+        <p>CRYSTAL GUARD // YUNA AN VU // 2025</p>
     </footer>
 
     <script type="module" src="game.js"></script>
