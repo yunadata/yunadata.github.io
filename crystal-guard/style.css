@@ -1,16 +1,15 @@
 :root {
-    /* --- NEW NEON PALETTE --- */
-    --bg-dark: #130f26;      /* Deep Purple Background */
-    --bg-panel: #241b42;     /* Lighter Purple for UI */
+    /* --- NEON PALETTE --- */
+    --bg-dark: #130f26;      
+    --bg-panel: #241b42;     
     --primary: #d946ef;      /* Neon Pink */
     --secondary: #06b6d4;    /* Neon Cyan */
     --accent: #facc15;       /* Bright Gold */
     --danger: #ff3366;       /* Neon Red */
-    --text-main: #e2e8f0;    /* Off-white text */
-    --text-dim: #94a3b8;     /* Gray text */
+    --text-main: #e2e8f0;    /* Off-white text for the game */
+    --text-dim: #94a3b8;     
     
     --shadow-glow: 0 0 15px rgba(217, 70, 239, 0.4);
-    --border-style: 3px solid #45326e;
 }
 
 * {
@@ -20,16 +19,15 @@
 }
 
 body {
-    /* Switch font to Pixel style */
     font-family: 'VT323', monospace; 
     background-color: var(--bg-dark);
-    color: var(--text-main);
+    color: var(--text-main); /* <--- THIS caused the cookie text to go white */
     overflow-x: hidden;
     min-height: 100vh;
-    font-size: 1.2rem; /* Pixel fonts need to be larger to be readable */
+    font-size: 1.2rem; 
 }
 
-/* --- Animated Background (Stars) --- */
+/* --- Animated Background --- */
 .stars, .twinkling {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
@@ -105,12 +103,13 @@ main {
 
 #game-wrapper {
     display: flex;
-    gap: 0; /* Removing gap to make it look like one machine */
+    gap: 0; 
     border: 4px solid #45326e;
     background: var(--bg-panel);
     border-radius: 4px;
     flex-wrap: wrap; 
     justify-content: center;
+    align-items: stretch; 
     box-shadow: 0 0 40px rgba(0,0,0,0.5);
     max-width: 1150px;
 }
@@ -120,13 +119,16 @@ main {
     position: relative;
     border-right: 4px solid #45326e;
     background: #000;
+    display: flex; 
+    justify-content: center;
+    align-items: center;
 }
 
 canvas {
     display: block;
     max-width: 100%;
     height: auto;
-    image-rendering: pixelated; /* CRITICAL for pixel art look */
+    image-rendering: pixelated; 
 }
 
 /* --- UI Sidebar --- */
@@ -213,14 +215,14 @@ canvas {
     display: none;
 }
 
-/* --- Game Buttons (Pixel Style) --- */
+/* --- Game Buttons --- */
 .btn-game {
     width: 100%;
     padding: 15px;
     border: none;
     cursor: pointer;
-    font-family: 'Press Start 2P', cursive; /* Header font for buttons */
-    font-size: 0.8rem; /* Smaller font for pixel button */
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.8rem;
     margin-top: 10px;
     text-transform: uppercase;
     color: white;
@@ -357,11 +359,58 @@ footer {
     color: var(--text-dim);
     margin-top: 20px;
 }
+footer a:hover { color: var(--primary) !important; }
+
+/* --- COOKIE BANNER FIX (RESTORATION) --- */
+/* This specifically targets the cookie banner and forces text back to dark gray */
+#cookie-law-info-bar, 
+#cookie-law-info-bar *,
+.cli-bar-container,
+.cli-bar-message,
+.cli-bar-message * {
+    color: #444444 !important; /* Force text to be Dark Gray */
+    text-shadow: none !important;
+}
+
+/* Ensure the background stays light if that's what the plugin sets, 
+   or we can force it white to be safe */
+#cookie-law-info-bar {
+    background-color: #ffffff !important; 
+}
+
+/* But keep the "Accept" buttons readable (usually white text on colored button) */
+#cookie-law-info-bar .cli-plugin-button,
+.cli-plugin-button {
+    color: #ffffff !important;
+}
 
 /* Mobile Tweak */
 @media (max-width: 900px) {
-    #game-wrapper { flex-direction: column; align-items: center; border: none; background: transparent; box-shadow: none; }
-    .canvas-container { border-right: none; border-bottom: 4px solid #45326e; border-radius: 4px; }
-    #ui-sidebar { width: 100%; max-width: 800px; border: 4px solid #45326e; border-radius: 4px; }
-    #overlay.mode-game-over { position: fixed !important; top: 0 !important; width: 100vw !important; height: 100vh !important; background: rgba(19, 15, 38, 0.98); z-index: 9999; }
+    #game-wrapper { 
+        flex-direction: column; 
+        align-items: center; 
+        border: none; 
+        background: transparent; 
+        box-shadow: none; 
+    }
+    .canvas-container { 
+        border-right: none; 
+        border-bottom: 4px solid #45326e; 
+        border-radius: 4px; 
+        width: 100%;
+    }
+    #ui-sidebar { 
+        width: 100%; 
+        max-width: 800px; 
+        border: 4px solid #45326e; 
+        border-radius: 4px; 
+    }
+    #overlay.mode-game-over { 
+        position: fixed !important; 
+        top: 0 !important; 
+        width: 100vw !important; 
+        height: 100vh !important; 
+        background: rgba(19, 15, 38, 0.98); 
+        z-index: 9999; 
+    }
 }
