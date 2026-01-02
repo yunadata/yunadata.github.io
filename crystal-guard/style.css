@@ -118,7 +118,11 @@ main {
 .canvas-container {
     position: relative;
     border-right: 4px solid #45326e;
-    background: #000;
+    
+    /* FIX FOR LAPTOP BLACK BARS: Match background to the panel purple */
+    /* This blends the extra space with the UI frame */
+    background: var(--bg-panel); 
+    
     display: flex; 
     justify-content: center;
     align-items: center;
@@ -128,6 +132,7 @@ canvas {
     display: block;
     max-width: 100%;
     height: auto;
+    background-color: #000; /* Ensure the game area itself stays black */
     image-rendering: pixelated; 
 }
 
@@ -468,7 +473,7 @@ footer a:hover { color: var(--primary) !important; }
     color: #000 !important;
 }
 
-/* --- MOBILE SPECIFIC FIXES --- */
+/* --- MOBILE SPECIFIC FIXES (TABLET & PHONE) --- */
 @media (max-width: 900px) {
     #game-wrapper { 
         flex-direction: column; 
@@ -490,10 +495,7 @@ footer a:hover { color: var(--primary) !important; }
         border-radius: 4px; 
     }
     
-    /* The "Game Over" Overlay (triggered by JS class)
-       This fixes the screenshot issue where elements overlap.
-       It forces the end screen to be a full-screen popup.
-    */
+    /* Fullscreen Overlay for Game Over */
     #overlay.mode-game-over {
         position: fixed !important; 
         top: 0 !important; 
@@ -502,14 +504,30 @@ footer a:hover { color: var(--primary) !important; }
         bottom: 0 !important;
         width: 100vw !important; 
         height: 100vh !important;
-        background: rgba(19, 15, 38, 0.98) !important; /* Solid BG covers everything */
+        background: rgba(19, 15, 38, 0.98) !important; 
         z-index: 99999 !important;
-        overflow-y: auto !important; /* Allows scrolling if leaderboard is tall */
+        overflow-y: auto !important; 
         justify-content: flex-start !important;
         padding-top: 50px !important;
     }
-    
-    /* Start Screen remains default (absolute inside container) 
-       so users can scroll down to read the manual. 
-    */
+}
+
+/* --- FIX FOR SMALL PHONES (iPhone/Smartphone Scaling) --- */
+/* This specific query targets phones to shrink the title/buttons so they fit */
+@media (max-width: 600px) {
+    #overlay h1 {
+        font-size: 1.8rem; /* Reduce title size */
+        margin-bottom: 10px;
+    }
+    #overlay p {
+        font-size: 1rem; /* Reduce intro text size */
+        margin-bottom: 20px;
+    }
+    #overlay .btn-game.start {
+        padding: 10px; /* Make the button smaller */
+        font-size: 0.9rem;
+    }
+    #overlay {
+        padding: 10px;
+    }
 }
