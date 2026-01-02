@@ -686,7 +686,7 @@ function endGame() {
     fetchLeaderboard();
 }
 
-// --- LEADERBOARD & SUBMIT (Kept same logic, updated naming for aesthetic) ---
+// --- LEADERBOARD & SUBMIT (Updated with GA4 Tracking) ---
 
 async function submitScore() {
     const nameInput = document.getElementById('player-name');
@@ -711,6 +711,14 @@ async function submitScore() {
             await setDoc(userScoreRef, { name, score: newScore, wave: newWave, timestamp: Date.now() });
             alert("SCORE UPLOADED");
         }
+        
+        // --- ADDED MISSING TRACKING CODE HERE ---
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({ 
+            'event': 'score_submission', 
+            'score': newScore 
+        });
+
         document.getElementById('submit-score-container').classList.add('hidden');
         fetchLeaderboard();
     } catch (e) { console.error("Error", e); alert("CONNECTION ERROR"); } 
