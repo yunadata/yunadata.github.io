@@ -1,8 +1,8 @@
 /**
  * BUBBLE POP - GAME ENGINE
- * Aesthetic: Pastel Iridescent / Glassmorphism
+ * Aesthetic: Cute Pixel Art / Retro Sky
  * Backend: Firebase Firestore (v12.7.0)
- * Update: Fixed Visibility of Launcher, Preview, and Projectiles
+ * Update: Replaced smooth rendering with Pixel-Art simulation
  */
 
 // --- FIREBASE IMPORTS ---
@@ -23,7 +23,6 @@ const firebaseConfig = {
     measurementId: "G-CH120T2QKY"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const db = getFirestore(app);
@@ -39,17 +38,17 @@ const RADIUS = 20;
 const DIAMETER = RADIUS * 2;
 const ROWS = 14;
 const COLS = 11;
-const ROW_OFFSET = RADIUS * Math.sqrt(3); // Height of a hex row
+const ROW_OFFSET = RADIUS * Math.sqrt(3); 
 const OFFSET_X = RADIUS; 
 const OFFSET_Y = RADIUS; 
 
-// Aesthetic Palettes
+// --- UPDATED PIXEL PALETTE (Matches the cover image) ---
 const BUBBLE_COLORS = [
-    { name: 'Pink',  main: '#FFC4D6', dark: '#ff9bb9' },
-    { name: 'Blue',  main: '#CCD5FF', dark: '#99aeff' },
-    { name: 'Mint',  main: '#A0E7E5', dark: '#7cdbd8' },
-    { name: 'Lemon', main: '#FFF5BA', dark: '#ffe680' },
-    { name: 'Lilac', main: '#E2C2FF', dark: '#cda1ff' }
+    { name: 'Pink',  main: '#FF9CCB', highlight: '#FFC8E3' }, // Pastel Pink
+    { name: 'Blue',  main: '#89DCEB', highlight: '#C6F1F8' }, // Sky Cyan
+    { name: 'Purple',main: '#CBA6F7', highlight: '#E5D4FB' }, // Soft Purple
+    { name: 'Mint',  main: '#A6E3A1', highlight: '#D1F2CE' }, // Soft Green
+    { name: 'Yellow',main: '#F9E2AF', highlight: '#FDF6D6' }  // Cream Yellow
 ];
 
 // Game State
@@ -59,19 +58,16 @@ let gameState = {
     nextBubbleColor: null,
     projectiles: [],
     particles: [],
+    clouds: [],
     score: 0,
     level: 1,
     gameOver: true,
     angle: -Math.PI / 2, 
     isProcessing: false,
-    
-    // --- SURVIVAL & GRID VARIABLES ---
     framesSinceLastRow: 0,
     rowInterval: 600,       
     minRowInterval: 180,    
     difficultyStep: 10,
-    
-    // Global Grid Shift (0 or 1)
     gridShift: 0 
 };
 
@@ -79,41 +75,39 @@ let animationId;
 let mouseX = 0, mouseY = 0;
 
 // --- CLASSES ---
+
 class Cloud {
     constructor() {
-        this.reset(true); // true = randomize initial X position across screen
+        this.reset(true);
     }
 
     reset(randomX = false) {
         this.x = randomX ? Math.random() * canvas.width : canvas.width + 50;
-        this.y = Math.random() * (canvas.height * 0.6); // Only in top 60% of screen
-        this.speed = 0.2 + Math.random() * 0.3; // Slow drift
-        this.scale = 0.5 + Math.random() * 0.8; // Random sizes
-        this.opacity = 0.3 + Math.random() * 0.3;
+        this.y = Math.random() * (canvas.height * 0.7); 
+        this.speed = 0.1 + Math.random() * 0.2; 
+        this.size = 30 + Math.random() * 20; 
     }
 
     update() {
         this.x -= this.speed;
-        // If cloud goes off the left side, reset to the right
-        if (this.x < -100) {
-            this.reset(false);
-        }
+        if (this.x < -100) this.reset(false);
     }
 
     draw(ctx) {
-        ctx.save();
-        ctx.translate(this.x, this.y);
-        ctx.scale(this.scale, this.scale);
-        ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
-        
-        // Draw a fluffy cloud shape using 3 overlapping circles
+        // PIXEL CLOUD DRAWING (Using rects instead of circles)
+        ctx.fillStyle = "#ffffff";
         ctx.beginPath();
-        ctx.arc(0, 0, 30, 0, Math.PI * 2);
-        ctx.arc(25, -10, 35, 0, Math.PI * 2);
-        ctx.arc(50, 0, 30, 0, Math.PI * 2);
-        ctx.fill();
+        // Main block
+        ctx.fillRect(this.x, this.y, this.size * 2, this.size);
+        // Top bump
+        ctx.fillRect(this.x + this.size * 0.5, this.y - this.size * 0.5, this.size, this.size * 0.5);
+        // Side bumps
+        ctx.fillRect(this.x - this.size * 0.2, this.y + this.size * 0.2, this.size * 0.2, this.size * 0.6);
+        ctx.fillRect(this.x + this.size * 2, this.y + this.size * 0.2, this.size * 0.2, this.size * 0.6);
         
-        ctx.restore();
+        // Shadow (Pixel effect)
+        ctx.fillStyle = "rgba(0,0,0,0.05)";
+        ctx.fillRect(this.x + 5, this.y + this.size - 5, this.size * 2 - 10, 5);
     }
 }
 
@@ -122,33 +116,19 @@ class Bubble {
         this.r = r;
         this.c = c;
         this.colorIndex = colorIndex;
-        
-        // Only calculate grid position if it's actually ON the grid (row >= 0)
-        // Bubbles with r = -1 are "floating" (launcher, projectile, preview)
-        if (this.r >= 0) {
-            this.updatePos();
-        }
-        
-        this.popping = false;
+        if (this.r >= 0) this.updatePos();
         this.scale = 1;
     }
 
-    // Helper to refresh X/Y if grid shifts
     updatePos() {
-        // SAFETY CHECK: Never force position for floating bubbles
         if (this.r < 0) return;
-
         const pos = getHexPos(this.r, this.c);
         this.x = pos.x;
         this.y = pos.y;
     }
 
-    // In game.js, replace the entire Bubble.prototype.draw method:
-
     draw(context) {
         if(this.scale <= 0) return;
-
-        // Ensure visual position is up to date for GRID bubbles
         if (this.r >= 0) this.updatePos();
 
         context.save();
@@ -157,53 +137,30 @@ class Bubble {
 
         const color = BUBBLE_COLORS[this.colorIndex];
 
-        // --- HELPER: Convert Hex to RGBA for transparency control ---
-        const hexToRgba = (hex, alpha) => {
-            const r = parseInt(hex.slice(1, 3), 16);
-            const g = parseInt(hex.slice(3, 5), 16);
-            const b = parseInt(hex.slice(5, 7), 16);
-            return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-        };
-
-        // --- IMPROVED COLOR GRADIENT ---
-        // 1. We start the gradient at the absolute center (0) so the whole bubble has color
-        let grad = context.createRadialGradient(0, 0, 0, 0, 0, RADIUS);
-
-        // 0% (Center): Light tint of the MAIN color (was white previously)
-        // This ensures the center is not clear, but "tinted"
-        grad.addColorStop(0, hexToRgba(color.main, 0.2)); 
-
-        // 60% (Body): Stronger Main Color. This makes the bubble clearly Pink/Blue/etc.
-        grad.addColorStop(0.6, hexToRgba(color.main, 0.6));
-
-        // 85% (Edge Depth): Darker version of the color for volume
-        grad.addColorStop(0.85, hexToRgba(color.dark, 0.7));
-
-        // 100% (Rim): Sharp White edge for the "soap film" look
-        grad.addColorStop(1, 'rgba(255, 255, 255, 0.9)');
+        // --- PIXEL ART BUBBLE RENDERING ---
         
-        // ---------------------------
-
+        // 1. Outline (Darker version of main color)
+        context.fillStyle = 'rgba(0,0,0,0.15)'; 
         context.beginPath();
-        context.arc(0, 0, RADIUS, 0, Math.PI * 2);
-        context.fillStyle = grad;
+        context.arc(2, 2, RADIUS, 0, Math.PI*2); // Subtle shadow offset
         context.fill();
-
-        // --- REFLECTIONS (SHINE) ---
-        // Keep these pure white and sharp for the "wet" look
-        context.globalAlpha = 0.9;
         
-        // Main Reflection (Top Left)
-        context.fillStyle = '#ffffff'; 
+        // 2. Main Body (Solid Circle)
+        context.fillStyle = color.main;
         context.beginPath();
-        context.arc(-RADIUS * 0.4, -RADIUS * 0.4, RADIUS * 0.15, 0, Math.PI * 2);
+        context.arc(0, 0, RADIUS - 1, 0, Math.PI * 2);
         context.fill();
 
-        // Secondary Reflection (Bottom Right - smaller)
-        context.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        context.beginPath();
-        context.arc(RADIUS * 0.4, RADIUS * 0.4, RADIUS * 0.08, 0, Math.PI * 2);
-        context.fill();
+        // 3. Thick Outline (Simulating Pixel Art Stroke)
+        context.strokeStyle = "#fff";
+        context.lineWidth = 2;
+        context.stroke();
+
+        // 4. Pixel Highlight (Square Reflection)
+        context.fillStyle = '#ffffff';
+        context.fillRect(-RADIUS * 0.4, -RADIUS * 0.4, RADIUS * 0.3, RADIUS * 0.3); // Top-left shine
+        context.fillStyle = color.highlight;
+        context.fillRect(-RADIUS * 0.4 + 2, -RADIUS * 0.4 + 2, RADIUS * 0.1, RADIUS * 0.1); // Inner shine detail
 
         context.restore();
     }
@@ -234,7 +191,6 @@ class Projectile {
     }
 
     draw() {
-        // FIX: Use r=-1, c=-1 to tell Bubble class this is free-floating
         let tempBubble = new Bubble(-1, -1, this.colorIndex);
         tempBubble.x = this.x;
         tempBubble.y = this.y;
@@ -259,29 +215,21 @@ class Particle {
     draw() {
         ctx.globalAlpha = Math.max(0, this.life);
         ctx.fillStyle = this.color;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, 3, 0, Math.PI*2);
-        ctx.fill();
+        // Draw square particles for pixel effect
+        ctx.fillRect(this.x, this.y, 6, 6); 
         ctx.globalAlpha = 1.0;
     }
 }
 
 // --- CORE FUNCTIONS ---
 
-// Helper to determine if a row is effectively indented
 function isRowEffectiveOdd(r) {
     return (r + gameState.gridShift) % 2 !== 0;
 }
 
-// Convert Grid (Row, Col) to Pixels (X, Y)
 function getHexPos(r, c) {
     let x = c * DIAMETER + OFFSET_X;
-    
-    // Check effective indentation
-    if (isRowEffectiveOdd(r)) {
-        x += RADIUS; 
-    }
-    
+    if (isRowEffectiveOdd(r)) x += RADIUS; 
     let y = r * ROW_OFFSET + OFFSET_Y;
     return { x, y };
 }
@@ -292,7 +240,6 @@ function initGrid() {
         gameState.grid[r] = [];
         for (let c = 0; c < COLS; c++) {
             if (r < 5) {
-                // Check effective oddness for column limits
                 if (isRowEffectiveOdd(r) && c === COLS - 1) continue; 
                 gameState.grid[r][c] = new Bubble(r, c, Math.floor(Math.random() * BUBBLE_COLORS.length));
             } else {
@@ -305,26 +252,22 @@ function initGrid() {
 function startGame() {
     gameState.score = 0;
     gameState.level = 1;
-	// --- TRACKING CODE START ---
     window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({ 
-        'event': 'game_start',
-        'game_name': 'Bubble Pop'
-    });
-    // --- TRACKING CODE END ---
+    window.dataLayer.push({ 'event': 'game_start', 'game_name': 'Bubble Pop' });
+    
     gameState.gameOver = false;
     gameState.isProcessing = false;
     gameState.projectiles = [];
     gameState.particles = [];
 	
 	gameState.clouds = [];
-    for(let i = 0; i < 8; i++) { // Generate 8 clouds
+    for(let i = 0; i < 6; i++) { 
         gameState.clouds.push(new Cloud());
     }
     
     gameState.framesSinceLastRow = 0;
     gameState.rowInterval = 600; 
-    gameState.gridShift = 0; // Reset Shift
+    gameState.gridShift = 0;
     
     document.getElementById('overlay').classList.add('hidden');
     document.getElementById('submit-score-container').classList.add('hidden');
@@ -346,44 +289,24 @@ function addNewRow() {
             return;
         }
     }
-
-    // 1. Shift all bubbles down
     for (let r = ROWS - 2; r >= 0; r--) {
         for (let c = 0; c < COLS; c++) {
             let b = gameState.grid[r][c];
             gameState.grid[r+1][c] = b; 
-            
-            if (b) {
-                b.r = r + 1; 
-                // Position auto-updates in draw()
-            }
+            if (b) b.r = r + 1; 
         }
     }
-
-    // 2. TOGGLE GRID SHIFT
     gameState.gridShift = (gameState.gridShift + 1) % 2;
-
-    // 3. Create new top row
     gameState.grid[0] = []; 
     for (let c = 0; c < COLS; c++) {
         if (isRowEffectiveOdd(0) && c === COLS - 1) continue;
         gameState.grid[0][c] = new Bubble(0, c, Math.floor(Math.random() * BUBBLE_COLORS.length));
     }
-
-    if (gameState.rowInterval > gameState.minRowInterval) {
-        gameState.rowInterval -= gameState.difficultyStep;
-    }
-    
+    if (gameState.rowInterval > gameState.minRowInterval) gameState.rowInterval -= gameState.difficultyStep;
     gameState.framesSinceLastRow = 0;
     gameState.level++; 
-	// --- TRACKING CODE START ---
     window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({ 
-        'event': 'level_up',
-        'level_number': gameState.level,
-        'game_name': 'Bubble Pop'
-    });
-    // --- TRACKING CODE END ---
+    window.dataLayer.push({ 'event': 'level_up', 'level_number': gameState.level, 'game_name': 'Bubble Pop' });
     updateUI();
 }
 
@@ -394,7 +317,6 @@ function generateNextBubble() {
 
 function drawPreview() {
     pCtx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
-    // FIX: Use r=-1 to prevent grid snapping
     let tempBubble = new Bubble(-1, -1, gameState.nextBubbleColor);
     tempBubble.x = previewCanvas.width / 2;
     tempBubble.y = previewCanvas.height / 2;
@@ -407,21 +329,18 @@ function gameLoop() {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 	
-	// --- Draw Background Clouds ---
+	// Draw Clouds
     gameState.clouds.forEach(cloud => {
         cloud.update();
         cloud.draw(ctx);
     });
 
     gameState.framesSinceLastRow++;
-    
     let timerPct = gameState.framesSinceLastRow / gameState.rowInterval;
-    ctx.fillStyle = '#A0E7E5'; 
+    ctx.fillStyle = '#ff9ccb'; // Pink timer bar
     ctx.fillRect(0, 0, canvas.width * timerPct, 6); 
     
-    if (gameState.framesSinceLastRow > gameState.rowInterval) {
-        addNewRow();
-    }
+    if (gameState.framesSinceLastRow > gameState.rowInterval) addNewRow();
 
     // Draw Grid
     for (let r = 0; r < ROWS; r++) {
@@ -438,13 +357,12 @@ function gameLoop() {
         ctx.beginPath();
         ctx.moveTo(startX, startY);
         ctx.lineTo(startX + Math.cos(gameState.angle) * 60, startY + Math.sin(gameState.angle) * 60);
-        ctx.strokeStyle = 'rgba(255, 196, 214, 0.8)';
-        ctx.lineWidth = 3;
-        ctx.setLineDash([5, 5]);
+        ctx.strokeStyle = '#89DCEB';
+        ctx.lineWidth = 4;
+        ctx.setLineDash([8, 8]); // Pixelated dash
         ctx.stroke();
         ctx.setLineDash([]);
         
-        // FIX: Use r=-1 to keep it at launcher position
         let launcherBubble = new Bubble(-1, -1, gameState.nextBubbleColor);
         launcherBubble.x = startX;
         launcherBubble.y = startY;
@@ -465,41 +383,39 @@ function gameLoop() {
         if(p.life <= 0) gameState.particles.splice(i, 1);
     }
 
+    // Warning Line
     let limitY = (ROWS - 1) * ROW_OFFSET;
 	ctx.beginPath();
 	ctx.moveTo(0, limitY + RADIUS);
 	ctx.lineTo(canvas.width, limitY + RADIUS);
-	// NEW: Soft Dark Pink (Matches your "Pink" bubbles but darker)
-	ctx.strokeStyle = '#ff9bb9'; 
-	ctx.lineWidth = 3; // Made slightly thicker for better visibility
-    ctx.globalAlpha = 0.3;
+	ctx.strokeStyle = '#e74c3c'; 
+	ctx.lineWidth = 3; 
+    ctx.setLineDash([5, 5]);
     ctx.stroke();
+    ctx.setLineDash([]);
     ctx.globalAlpha = 1;
 	
-	// --- WATERMARK ---
+    // Watermark
     ctx.save();
-    ctx.font = '600 12px Quicksand, sans-serif'; // Matches website font
-    ctx.fillStyle = 'rgba(255, 255, 255, 1.0)';
+    ctx.font = '12px VT323, monospace'; 
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
     ctx.textAlign = 'left';
-    ctx.fillText('yunadata.github.io', 15, canvas.height - 15); // Bottom left padding
+    ctx.fillText('yunadata.github.io', 15, canvas.height - 15);
     ctx.restore();
 
     animationId = requestAnimationFrame(gameLoop);
 }
 
 // --- PHYSICS & LOGIC ---
-
 function checkCollision(p) {
     for (let r = 0; r < ROWS; r++) {
         for (let c = 0; c < COLS; c++) {
             let b = gameState.grid[r][c];
             if (b) {
-                // Ensure we check against current visual position
                 b.updatePos(); 
                 let dx = p.x - b.x;
                 let dy = p.y - b.y;
                 let dist = Math.sqrt(dx*dx + dy*dy);
-                
                 if (dist < DIAMETER - 5) { 
                     snapBubble(p);
                     return;
@@ -512,7 +428,6 @@ function checkCollision(p) {
 function snapBubble(p) {
     p.active = false;
     gameState.projectiles = []; 
-
     let bestDist = Infinity;
     let bestR = -1, bestC = -1;
 
@@ -520,10 +435,8 @@ function snapBubble(p) {
         for (let c = 0; c < COLS; c++) {
             if (!gameState.grid[r][c]) {
                 if (isRowEffectiveOdd(r) && c === COLS - 1) continue;
-
                 let pos = getHexPos(r, c);
                 let dist = Math.sqrt(Math.pow(p.x - pos.x, 2) + Math.pow(p.y - pos.y, 2));
-                
                 if (dist < bestDist) {
                     bestDist = dist;
                     bestR = r;
@@ -538,7 +451,6 @@ function snapBubble(p) {
             triggerGameOver();
             return;
         }
-
         let newBubble = new Bubble(bestR, bestC, p.colorIndex);
         gameState.grid[bestR][bestC] = newBubble;
         resolveMatches(bestR, bestC, p.colorIndex);
@@ -553,13 +465,11 @@ function resolveMatches(startR, startC, colorIndex) {
     let visited = new Set();
     let matches = [];
     let key = (r, c) => `${r},${c}`;
-
     visited.add(key(startR, startC));
 
     while(toVisit.length > 0) {
         let curr = toVisit.pop();
         matches.push(curr);
-
         let neighbors = getNeighbors(curr.r, curr.c);
         neighbors.forEach(n => {
             if (gameState.grid[n.r] && gameState.grid[n.r][n.c]) {
@@ -580,11 +490,9 @@ function resolveMatches(startR, startC, colorIndex) {
             gameState.grid[m.r][m.c] = null;
             gameState.score += 10;
         });
-        
         if (matches.length > 3) gameState.score += (matches.length - 3) * 20;
         dropFloatingBubbles();
     }
-    
     updateUI();
 }
 
@@ -603,7 +511,6 @@ function dropFloatingBubbles() {
     while(toVisit.length > 0) {
         let curr = toVisit.pop();
         let neighbors = getNeighbors(curr.r, curr.c);
-        
         neighbors.forEach(n => {
             if (gameState.grid[n.r] && gameState.grid[n.r][n.c]) {
                 let k = key(n.r, n.c);
@@ -634,7 +541,7 @@ function dropFloatingBubbles() {
 
     if (totalBubbles === 0) {
         gameState.score += 1000;
-        createExplosion(canvas.width/2, canvas.height/2, '#f1c40f'); 
+        createExplosion(canvas.width/2, canvas.height/2, '#F9E2AF'); 
         setTimeout(() => {
             if(!gameState.gameOver) addNewRow();
         }, 500);
@@ -643,23 +550,11 @@ function dropFloatingBubbles() {
 
 function getNeighbors(r, c) {
     let offsets;
-    
     if (!isRowEffectiveOdd(r)) {
-        // Effective EVEN (Left Aligned)
-        offsets = [
-            {r: -1, c: -1}, {r: -1, c: 0}, 
-            {r: 0, c: -1},  {r: 0, c: 1},  
-            {r: 1, c: -1},  {r: 1, c: 0}   
-        ];
+        offsets = [{r: -1, c: -1}, {r: -1, c: 0}, {r: 0, c: -1}, {r: 0, c: 1}, {r: 1, c: -1}, {r: 1, c: 0}];
     } else {
-        // Effective ODD (Right Aligned)
-        offsets = [
-            {r: -1, c: 0}, {r: -1, c: 1},
-            {r: 0, c: -1}, {r: 0, c: 1},
-            {r: 1, c: 0},  {r: 1, c: 1}
-        ];
+        offsets = [{r: -1, c: 0}, {r: -1, c: 1}, {r: 0, c: -1}, {r: 0, c: 1}, {r: 1, c: 0}, {r: 1, c: 1}];
     }
-
     let results = [];
     offsets.forEach(o => {
         let nr = r + o.r;
@@ -679,17 +574,15 @@ function createExplosion(x, y, color) {
 
 function triggerGameOver() {
     gameState.gameOver = true;
-	// --- TRACKING CODE START ---
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
         'event': 'game_complete',
-        'game_score': gameState.score, // Matches existing GTM variable
+        'game_score': gameState.score, 
         'game_name': 'Bubble Pop'
     });
-    // --- TRACKING CODE END ---
     document.getElementById('overlay').classList.remove('hidden');
     document.getElementById('overlay-title').innerText = "GAME OVER";
-    document.getElementById('overlay-desc').innerText = "The bubbles reached the bottom!";
+    document.getElementById('overlay-desc').innerText = "The bubbles filled the sky!";
     document.getElementById('start-btn').innerText = "PLAY AGAIN";
     document.getElementById('start-btn').classList.remove('hidden');
     
@@ -752,14 +645,12 @@ async function submitScore() {
                 score: gameState.score,
                 timestamp: Date.now()
             });
-			// --- TRACKING CODE START ---
             window.dataLayer = window.dataLayer || [];
             window.dataLayer.push({
-                'event': 'score_submission', // Standard event name for both games
+                'event': 'score_submission', 
                 'game_score': gameState.score,
                 'game_name': 'Bubble Pop'
             });
-            // --- TRACKING CODE END ---
             alert("Score Uploaded!");
         } else {
             alert("Score uploaded, but you didn't beat your high score!");
@@ -793,7 +684,7 @@ async function fetchLeaderboard() {
             html += `
             <div class="score-entry">
                 <span>#${rank} ${data.name}</span>
-                <span style="color:#FFC4D6; font-weight:bold;">${data.score}</span>
+                <span style="color:#FF9CCB; font-weight:bold;">${data.score}</span>
             </div>`;
             rank++;
         });
