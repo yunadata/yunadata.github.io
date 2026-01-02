@@ -274,7 +274,7 @@ canvas {
 
 .hidden { display: none !important; }
 
-/* --- Leaderboard (UPDATED WITH SCROLLBAR) --- */
+/* --- Leaderboard --- */
 #leaderboard-display {
     background: rgba(0,0,0,0.5);
     padding: 15px;
@@ -289,7 +289,6 @@ canvas {
     padding-right: 5px;
 }
 
-/* Custom Neon Scrollbar */
 #leaderboard-list::-webkit-scrollbar { width: 8px; }
 #leaderboard-list::-webkit-scrollbar-track { background: #1a152e; }
 #leaderboard-list::-webkit-scrollbar-thumb { 
@@ -469,7 +468,7 @@ footer a:hover { color: var(--primary) !important; }
     color: #000 !important;
 }
 
-/* --- MOBILE FIXES (CRITICAL UPDATE) --- */
+/* --- MOBILE SPECIFIC FIXES --- */
 @media (max-width: 900px) {
     #game-wrapper { 
         flex-direction: column; 
@@ -491,15 +490,26 @@ footer a:hover { color: var(--primary) !important; }
         border-radius: 4px; 
     }
     
-    /* FIX FOR OVERLAY OVERLAPPING UI */
-    #overlay {
-        position: fixed !important;  /* Detach from container */
-        top: 0; left: 0; right: 0; bottom: 0;
-        width: 100vw; height: 100vh;
-        z-index: 99999; /* Ensure it is on TOP of everything */
-        background: rgba(19, 15, 38, 0.98); /* Solid background to hide game behind */
-        overflow-y: auto; /* Allow scrolling if content is too tall */
-        justify-content: flex-start; /* Start from top */
-        padding-top: 50px;
+    /* The "Game Over" Overlay (triggered by JS class)
+       This fixes the screenshot issue where elements overlap.
+       It forces the end screen to be a full-screen popup.
+    */
+    #overlay.mode-game-over {
+        position: fixed !important; 
+        top: 0 !important; 
+        left: 0 !important; 
+        right: 0 !important; 
+        bottom: 0 !important;
+        width: 100vw !important; 
+        height: 100vh !important;
+        background: rgba(19, 15, 38, 0.98) !important; /* Solid BG covers everything */
+        z-index: 99999 !important;
+        overflow-y: auto !important; /* Allows scrolling if leaderboard is tall */
+        justify-content: flex-start !important;
+        padding-top: 50px !important;
     }
+    
+    /* Start Screen remains default (absolute inside container) 
+       so users can scroll down to read the manual. 
+    */
 }
