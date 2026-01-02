@@ -260,6 +260,7 @@ canvas {
     z-index: 10;
     color: white;
     text-align: center;
+    padding: 20px; /* Ensure content doesn't touch edges */
 }
 #overlay h1 { 
     font-family: 'Press Start 2P'; 
@@ -273,14 +274,32 @@ canvas {
 
 .hidden { display: none !important; }
 
-/* --- Leaderboard --- */
+/* --- Leaderboard (UPDATED WITH SCROLLBAR) --- */
 #leaderboard-display {
     background: rgba(0,0,0,0.5);
     padding: 15px;
     border: 2px solid #45326e;
     margin-bottom: 20px;
-    width: 320px;
+    width: 350px; /* Slightly wider for scrollbar */
 }
+
+/* Scrollbar Constraint & Logic */
+#leaderboard-list {
+    max-height: 200px; /* Constrain height to prevent overlay growing too tall */
+    overflow-y: auto;  /* Enable Vertical Scroll */
+    padding-right: 5px;
+}
+
+/* Custom Neon Scrollbar */
+#leaderboard-list::-webkit-scrollbar { width: 8px; }
+#leaderboard-list::-webkit-scrollbar-track { background: #1a152e; }
+#leaderboard-list::-webkit-scrollbar-thumb { 
+    background: var(--secondary); 
+    border-radius: 4px; 
+    border: 2px solid #1a152e;
+}
+#leaderboard-list::-webkit-scrollbar-thumb:hover { background: #fff; }
+
 .score-entry {
     display: flex;
     justify-content: space-between;
