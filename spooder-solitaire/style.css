@@ -1,13 +1,19 @@
 :root {
-    --bg-color: #FFFCF7;
-    --primary: #FFC4D6;      /* Pastel Pink */
-    --secondary: #CCD5FF;    /* Pastel Blue */
-    --accent: #E2C6FF;       /* Pastel Purple */
-    --text-color: #4A4A4A;
+    /* --- NEW COLOR PALETTE (Extracted from Cover Image) --- */
+    --bg-color: #FFF0F5;     /* Lavender Blush - matches the rug */
+    --primary: #FF6B97;      /* Vibrant Pink - matches the "Play" button */
+    --secondary: #2C2F4A;    /* Midnight Blue - matches the window view */
+    --accent: #FFD27F;       /* Gold/Amber - matches chandelier & sparkles */
+    
+    --text-color: #4A2828;   /* Deep Mahogany - matches the woodwork/fireplace */
+    
     --card-bg: #FFFFFF;
-    --card-back: #FFC4D6; 
+    --card-back: #F08CA6;    /* Dusty Rose - matches the curtains */
+    
     --green-felt: rgba(255, 255, 255, 0.4);
-    --shadow: 0 4px 15px rgba(0,0,0,0.1);
+    
+    /* Warmer shadow to match the room lighting */
+    --shadow: 0 4px 15px rgba(74, 40, 40, 0.15); 
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; -webkit-user-select: none; }
@@ -19,30 +25,30 @@ body {
     overflow-x: hidden; 
     min-height: 100vh;
     
-    /* NEW: Subtle polka/starfield texture */
+    /* NEW: Victorian/Damask Wallpaper Style Pattern */
     background-image: 
-        radial-gradient(#E2C6FF 1px, transparent 1px), 
-        radial-gradient(#FFC4D6 1px, transparent 1px);
-    background-position: 0 0, 25px 25px;
-    background-size: 50px 50px;
+        linear-gradient(45deg, #FFDEE9 25%, transparent 25%, transparent 75%, #FFDEE9 75%, #FFDEE9),
+        linear-gradient(45deg, #FFDEE9 25%, transparent 25%, transparent 75%, #FFDEE9 75%, #FFDEE9);
+    background-position: 0 0, 20px 20px;
+    background-size: 40px 40px;
 }
 
-/* NEW: Vignette for focus */
+/* Vignette for focus */
 body::after {
     content: "";
     position: fixed;
     top: 0; left: 0; width: 100vw; height: 100vh;
-    background: radial-gradient(transparent 60%, rgba(255,255,255,0.6) 100%);
+    background: radial-gradient(transparent 60%, rgba(255,240,245,0.8) 100%); /* Adjusted color */
     pointer-events: none;
     z-index: -1;
 }
 
-/* --- Reuse Blobs from Crystal Guard --- */
+/* --- Floating Decoration Blobs (Updated Colors) --- */
 .bg-decoration {
     position: fixed;
     width: 400px; height: 400px;
     border-radius: 50%;
-    filter: blur(80px); opacity: 0.3; z-index: -1;
+    filter: blur(80px); opacity: 0.25; z-index: -1;
     animation: float-blob 20s ease-in-out infinite;
 }
 .blob-1 { background: var(--primary); top: -100px; left: -100px; }
@@ -58,13 +64,14 @@ body::after {
 /* --- Nav --- */
 nav {
     padding: 1rem 2rem;
-    background: rgba(255,255,255,0.7);
+    background: rgba(255,255,255,0.1);
     backdrop-filter: blur(10px);
     position: sticky; top: 0; z-index: 100;
+    border-bottom: 2px solid rgba(74, 40, 40, 0.1);
 }
 .nav-container { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; }
-.logo { font-weight: 700; cursor: pointer; }
-.btn-small { text-decoration: none; color: var(--text-color); background: rgba(255,196,214,0.3); padding: 5px 15px; border-radius: 20px; font-size: 0.9rem; }
+.logo { font-weight: 700; cursor: pointer; color: var(--text-color); font-size: 1.0rem; }
+.btn-small { text-decoration: none; color: var(--text-color); background: rgba(255,107,151,0.2); padding: 5px 15px; border-radius: 20px; font-size: 0.9rem; font-weight: 600; }
 
 /* --- Game Layout --- */
 main {
@@ -81,15 +88,14 @@ main {
     max-width: 1200px;
     height: 85vh; 
     min-height: 600px; 
-    background: rgba(255,255,255,0.5);
+    background: rgba(255,255,255,0.6);
     border-radius: 20px;
-    /* Updated Shadow for depth */
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
+    box-shadow: 0 10px 30px rgba(74, 40, 40, 0.15); 
     display: flex; 
     flex-direction: column;
     overflow: hidden;
     backdrop-filter: blur(5px);
-    border: 1px solid rgba(255,255,255,0.8);
+    border: 2px solid white;
     position: relative;
     flex-shrink: 0; 
 }
@@ -101,45 +107,77 @@ main {
     font-size: 0.8rem;
     font-weight: 700;
     color: var(--text-color);
-    opacity: 0.1; /* Low opacity so it is subtle */
-    pointer-events: none; /* Ensures clicks pass through it if a card covers it */
+    opacity: 0.2; 
+    pointer-events: none; 
     z-index: 50;
 }
 
 /* Header */
 .game-header {
     padding: 15px 20px;
-    background: rgba(255,255,255,0.6);
+    background: rgba(255,255,255,0.7);
     display: flex; justify-content: space-between; align-items: center;
-    border-bottom: 1px solid rgba(255,255,255,0.5);
+    border-bottom: 2px solid rgba(255,255,255,0.8);
 }
 
-.game-title { font-size: 1.5rem; color: var(--text-color); margin-bottom: 5px; }
+.game-title { font-size: 1.5rem; color: var(--text-color); margin-bottom: 5px; font-weight: 800; }
 .game-title i { color: var(--primary); }
 
-.stats-bar { display: flex; gap: 20px; font-size: 0.9rem; font-weight: 600; }
-.stat .label { color: #888; font-size: 0.8rem; text-transform: uppercase; }
+.stats-bar { display: flex; gap: 20px; font-size: 0.9rem; font-weight: 700; color: var(--text-color); }
+.stat .label { color: #8C6A6A; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; }
 
 .header-right { display: flex; gap: 10px; }
 
-/* Buttons */
+/* --- Updated Buttons to Match Pixel Art Style --- */
 .btn-game {
-    border: none; padding: 8px 16px; border-radius: 20px;
-    cursor: pointer; font-family: 'Quicksand', sans-serif; font-weight: 600;
+    border: 2px solid var(--text-color); /* Pixel art outline */
+    padding: 8px 16px; 
+    border-radius: 12px;
+    cursor: pointer; 
+    font-family: 'Quicksand', sans-serif; 
+    font-weight: 700;
     transition: 0.2s;
+    box-shadow: 2px 2px 0px var(--text-color); /* Retro hard shadow */
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.85rem;
 }
-.btn-game.undo { background: #ffeaa7; color: #555; }
-.btn-game.restart { background: var(--primary); color: white; }
-.btn-game.leaderboard-btn { background: var(--secondary); color: white; }
-.btn-game:hover { transform: translateY(-2px); opacity: 0.9; }
 
-.btn-game.action {
+.btn-game:active {
+    transform: translate(2px, 2px);
+    box-shadow: none;
+}
+
+.btn-game.undo { 
+    background: #FFF8E1; /* Cream */
+    color: var(--text-color); 
+}
+
+.btn-game.restart { 
     background: var(--primary); 
-    color: white;               
+    color: white; 
+    border-color: #9E3555;
+    box-shadow: 2px 2px 0px #9E3555;
+}
+
+.btn-game.leaderboard-btn { 
+    background: var(--secondary); 
+    color: white; 
+    border-color: #1A1C30;
+    box-shadow: 2px 2px 0px #1A1C30;
+}
+
+/* Action/Play Button */
+.btn-game.action {
+    background: linear-gradient(to bottom, #FF8FAB, #FF6B97); 
+    color: white;  
+    border: 2px solid white;
+    outline: 2px solid var(--text-color);
+    box-shadow: 0 4px 10px rgba(255, 107, 151, 0.4);
 }
 .btn-game.action:hover {
-    opacity: 0.9;
     transform: translateY(-2px);
+    filter: brightness(1.05);
 }
 
 /* --- Board --- */
@@ -161,22 +199,22 @@ main {
 
 .stock-pile {
     width: 70px; height: 96px;
-    border: 2px dashed rgba(0,0,0,0.1);
+    border: 2px dashed rgba(74, 40, 40, 0.2);
     border-radius: 8px;
     position: relative;
     cursor: pointer;
     transition: transform 0.1s;
 }
 .stock-pile:active { transform: scale(0.95); }
-.stock-pile::after { content: 'Stock'; position: absolute; top: 105%; width: 100%; text-align: center; font-size: 10px; color: #aaa; }
+.stock-pile::after { content: 'Stock'; position: absolute; top: 105%; width: 100%; text-align: center; font-size: 10px; color: #8C6A6A; font-weight: 600;}
 
 .foundations-row {
     display: flex; gap: 10px;
 }
 .foundation-slot {
     width: 70px; height: 96px;
-    border: 2px solid rgba(0,0,0,0.05);
-    background: rgba(255,255,255,0.3);
+    border: 2px solid rgba(74, 40, 40, 0.1);
+    background: rgba(255,255,255,0.4);
     border-radius: 8px;
     position: relative;
 }
@@ -203,13 +241,12 @@ main {
     max-width: 80px; 
     aspect-ratio: 2.5 / 3.5;
     
-    /* NEW: Cardstock Feel */
-    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-    border: 1px solid rgba(0,0,0,0.1);
+    background: linear-gradient(135deg, #ffffff 0%, #FFF5F8 100%);
+    border: 1px solid rgba(74, 40, 40, 0.15);
     border-radius: 8px; 
     box-shadow: 
-        1px 1px 0px rgba(0,0,0,0.05),
-        2px 2px 3px rgba(0,0,0,0.1); 
+        1px 1px 0px rgba(74, 40, 40, 0.05),
+        2px 2px 3px rgba(74, 40, 40, 0.1); 
         
     position: absolute; 
     display: flex; flex-direction: column;
@@ -219,7 +256,6 @@ main {
     overflow: hidden;
 }
 
-/* Hover effect for interactivity */
 .card:hover {
     filter: brightness(1.02);
 }
@@ -227,11 +263,12 @@ main {
 /* NEW: Spooder Web Card Back */
 .card.face-down {
     background-color: var(--card-back);
+    /* Subtle geometric web pattern */
     background-image: 
-        radial-gradient(circle at 100% 100%, transparent 10px, rgba(255,255,255,0.4) 11px, rgba(255,255,255,0.4) 12px, transparent 13px),
-        radial-gradient(circle at 0% 0%, transparent 10px, rgba(255,255,255,0.4) 11px, rgba(255,255,255,0.4) 12px, transparent 13px),
-        radial-gradient(circle at 50% 50%, rgba(255,255,255,0.2) 20%, transparent 21%);
-    background-size: 20px 20px;
+        radial-gradient(circle at 50% 50%, rgba(255,255,255,0.3) 2px, transparent 2.5px),
+        repeating-linear-gradient(45deg, rgba(255,255,255,0.15) 0, rgba(255,255,255,0.15) 1px, transparent 1px, transparent 10px),
+        repeating-linear-gradient(-45deg, rgba(255,255,255,0.15) 0, rgba(255,255,255,0.15) 1px, transparent 1px, transparent 10px);
+    
     border: 2px solid white;
     box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
 }
@@ -245,7 +282,7 @@ main {
 
 .card-top { 
     text-align: left; 
-    font-weight: 700;
+    font-weight: 800;
     line-height: 1.1;
 }
 
@@ -255,18 +292,19 @@ main {
     left: 50%; 
     transform: translate(-50%, -50%); 
     font-size: 50px; 
-    opacity: 0.25; 
+    opacity: 0.2; 
     pointer-events: none;
     z-index: 0;
 }
-.suit-red { color: #ff6b6b; }
-.suit-black { color: #57606f; }
+/* Tweaked red to match the pink theme slightly better */
+.suit-red { color: #E05A80; } 
+.suit-black { color: #2C2F4A; }
 
 /* Dragging State */
 .card.dragging {
     z-index: 9999 !important;
     transform: scale(1.05);
-    box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+    box-shadow: 0 15px 30px rgba(74, 40, 40, 0.3);
     pointer-events: none; 
     opacity: 1;
 }
@@ -276,6 +314,7 @@ main {
     font-size: 24px;
     font-weight: bold;
 	opacity: 0.5;
+    color: var(--primary);
 }
 
 /* --- Animations --- */
@@ -291,7 +330,7 @@ main {
 /* --- Overlays --- */
 .overlay {
     position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(255,255,255,0.85);
+    background: rgba(255, 240, 245, 0.9);
     backdrop-filter: blur(5px);
     display: flex; justify-content: center; align-items: center;
     z-index: 1000;
@@ -300,26 +339,33 @@ main {
 
 .overlay-content {
     background: white; padding: 40px; border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(100,100,100,0.1);
+    box-shadow: 0 10px 40px rgba(74, 40, 40, 0.2);
     text-align: center; max-width: 500px; width: 90%;
+    border: 4px solid var(--primary);
 }
 
 .overlay-content h1, 
 .overlay-content h2 { 
-    color: var(--primary); 
+    color: var(--text-color); 
     margin-bottom: 10px; 
+    font-weight: 800;
 }
-.overlay-content p { color: #888; margin-bottom: 30px; }
+.overlay-content p { color: #8C6A6A; margin-bottom: 30px; font-weight: 600;}
 
 /* Difficulty Buttons */
 .difficulty-options { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
 .diff-btn {
-    background: #f8f9fa; border: 2px solid transparent;
+    background: #FFF5F8; border: 2px solid transparent;
     padding: 15px; border-radius: 12px; cursor: pointer;
     min-width: 100px; transition: 0.2s;
 	color: var(--text-color);
 }
-.diff-btn:hover { border-color: var(--primary); background: #fff5f8; transform: translateY(-5px); }
+.diff-btn:hover { 
+    border-color: var(--primary); 
+    background: #FFE6EE; 
+    transform: translateY(-5px); 
+    box-shadow: 0 5px 15px rgba(255, 107, 151, 0.2);
+}
 .diff-icon { font-size: 24px; margin-bottom: 5px; }
 
 .diff-btn h3 {
@@ -331,7 +377,6 @@ main {
 .overlay-content.large { 
     max-width: 550px; 
     padding: 30px; 
-    /* Make the modal taller to fit the new rows nicely */
     height: 600px;
     display: flex;
     flex-direction: column;
@@ -351,48 +396,46 @@ main {
     font-weight: 700; 
     font-size: 1rem;
     position: relative;
-    top: 2px; /* push down to overlap border */
+    top: 2px;
     transition: 0.3s;
 }
 .tab-btn:hover { color: var(--primary); }
 .tab-btn.active { 
     color: var(--primary); 
-    border-bottom: 2px solid var(--primary); 
+    border-bottom: 3px solid var(--primary); 
 }
 
 /* List Container */
 #leaderboard-list { 
-    flex: 1; /* Fill remaining height */
+    flex: 1; 
     overflow-y: auto; 
-    padding-right: 10px; /* Space for scrollbar */
+    padding-right: 10px; 
 }
 
-/* Custom Scrollbar for the list */
 #leaderboard-list::-webkit-scrollbar { width: 6px; }
 #leaderboard-list::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); border-radius: 3px; }
-#leaderboard-list::-webkit-scrollbar-thumb { background: var(--secondary); border-radius: 3px; }
+#leaderboard-list::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 3px; }
 
 /* --- Leaderboard Rows --- */
 .score-row {
     display: grid;
-    grid-template-columns: 50px 1fr 80px; /* Rank | Name+Details | Score */
+    grid-template-columns: 50px 1fr 80px; 
     align-items: center;
-    background: rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.8);
     margin-bottom: 10px;
     padding: 12px 15px;
     border-radius: 15px;
-    border: 1px solid rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(74, 40, 40, 0.1);
     transition: all 0.2s ease;
     box-shadow: 0 2px 5px rgba(0,0,0,0.02);
 }
 
 .score-row:hover {
     transform: translateY(-2px) scale(1.01);
-    background: rgba(255, 255, 255, 0.95);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    background: white;
+    box-shadow: 0 5px 15px rgba(74, 40, 40, 0.1);
 }
 
-/* Rank Column */
 .rank-col {
     font-weight: 800;
     font-size: 1.2rem;
@@ -400,7 +443,6 @@ main {
     text-align: center;
 }
 
-/* Player Info Column */
 .player-info {
     display: flex;
     flex-direction: column;
@@ -418,14 +460,13 @@ main {
 
 .player-meta {
     font-size: 0.75rem;
-    color: #95a5a6;
+    color: #8C6A6A;
     display: flex;
     gap: 12px;
 }
 
-.player-meta i { margin-right: 4px; color: var(--secondary); }
+.player-meta i { margin-right: 4px; color: var(--primary); }
 
-/* Score Column */
 .score-col {
     text-align: right;
     display: flex;
@@ -441,36 +482,36 @@ main {
 
 .sub-score {
     font-size: 0.7rem;
-    color: #b2bec3;
+    color: #8C6A6A;
     text-transform: uppercase;
     font-weight: 600;
 }
 
-/* --- Top 3 Special Styles --- */
+/* --- Top 3 Special Styles (Updated to Room Palette) --- */
 
-/* 1st Place: Pastel Gold */
+/* 1st Place: Gold (Chandelier) */
 .score-row.rank-1 {
-    background: linear-gradient(135deg, rgba(255, 248, 225, 0.9), rgba(255, 255, 255, 0.95));
-    border: 2px solid rgba(255, 236, 179, 1);
+    background: linear-gradient(135deg, #FFFDF5, #FFFFFF);
+    border: 2px solid var(--accent);
 }
-.rank-1 .rank-col { font-size: 1.6rem; text-shadow: 0 2px 0 rgba(0,0,0,0.1); filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.4)); }
-.rank-1 .main-score { color: #f1c40f; text-shadow: 1px 1px 0 rgba(0,0,0,0.1); }
+.rank-1 .rank-col { font-size: 1.6rem; color: #E0BC5C; text-shadow: 1px 1px 0 rgba(0,0,0,0.1); }
+.rank-1 .main-score { color: #E0BC5C; }
 
-/* 2nd Place: Pastel Silver */
+/* 2nd Place: Silver (Spider Web) */
 .score-row.rank-2 {
-    background: linear-gradient(135deg, rgba(245, 246, 250, 0.9), rgba(255, 255, 255, 0.95));
-    border: 2px solid rgba(220, 221, 225, 1);
+    background: linear-gradient(135deg, #F8FAFC, #FFFFFF);
+    border: 2px solid #CFD8DC;
 }
-.rank-2 .rank-col { font-size: 1.5rem; filter: drop-shadow(0 0 5px rgba(192, 192, 192, 0.4)); }
-.rank-2 .main-score { color: #7f8c8d; }
+.rank-2 .rank-col { font-size: 1.5rem; color: #90A4AE; }
+.rank-2 .main-score { color: #78909C; }
 
-/* 3rd Place: Pastel Bronze */
+/* 3rd Place: Bronze (Woodwork) */
 .score-row.rank-3 {
-    background: linear-gradient(135deg, rgba(255, 235, 238, 0.9), rgba(255, 255, 255, 0.95));
-    border: 2px solid rgba(255, 204, 188, 1);
+    background: linear-gradient(135deg, #FFF0EB, #FFFFFF);
+    border: 2px solid #E6B0AA;
 }
-.rank-3 .rank-col { font-size: 1.4rem; filter: drop-shadow(0 0 5px rgba(205, 127, 50, 0.3)); }
-.rank-3 .main-score { color: #e17055; }
+.rank-3 .rank-col { font-size: 1.4rem; color: #D4887A; }
+.rank-3 .main-score { color: #D4887A; }
 
 /* Input group */
 .input-group { display: flex; gap: 10px; justify-content: center; margin-bottom: 10px; }
@@ -478,7 +519,7 @@ input { padding: 10px; border: 1px solid #ddd; border-radius: 20px; font-family:
 input:focus {
     outline: none; 
     border: 2px solid var(--primary); 
-    box-shadow: 0 0 10px rgba(255, 196, 214, 0.5); 
+    box-shadow: 0 0 10px rgba(255, 107, 151, 0.3); 
 }
 
 /* --- How to Play Section --- */
@@ -486,13 +527,13 @@ input:focus {
     width: 100%;
     max-width: 1200px; 
     margin-top: 30px;
-    background: rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(10px);
     border-radius: 20px;
     padding: 30px;
     box-shadow: var(--shadow);
     text-align: center;
-    border: 1px solid rgba(255,255,255,0.6);
+    border: 2px solid white;
 }
 
 #how-to-play h2 {
@@ -512,12 +553,12 @@ input:focus {
 }
 
 .instruction-card {
-    background: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.85);
     padding: 25px;
     border-radius: 15px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 10px rgba(74, 40, 40, 0.05);
     transition: transform 0.3s;
-    border: 1px solid rgba(255,255,255,0.5);
+    border: 1px solid white;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -532,7 +573,7 @@ input:focus {
     font-size: 2.5rem;
     margin-bottom: 15px;
     color: var(--secondary); 
-    background: rgba(204, 213, 255, 0.2);
+    background: rgba(44, 47, 74, 0.1);
     padding: 15px;
     border-radius: 50%;
 }
@@ -541,11 +582,12 @@ input:focus {
     font-size: 1.2rem;
     margin-bottom: 10px;
     color: var(--text-color);
+    font-weight: 700;
 }
 
 .instruction-card p {
     font-size: 0.95rem;
-    color: #666;
+    color: #6D4C4C;
     line-height: 1.6;
 }
 
@@ -573,12 +615,13 @@ input:focus {
     width: auto;
     padding: 10px 30px;
     display: inline-block;
+    box-shadow: 2px 2px 0 var(--secondary);
 }
 .btn-game.replay:hover {
     background: var(--secondary);
     color: white;
     transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(204, 213, 255, 0.4);
+    box-shadow: none;
 }
 
 footer {
@@ -588,6 +631,7 @@ footer {
     color: var(--text-color);
     width: 100%;
     margin-top: 20px; 
+    opacity: 0.8;
 }
 
 /* --- Mobile Adjustments --- */
@@ -627,5 +671,13 @@ footer {
 	
     nav {
         position: static;
+        border-bottom: none;
     }
 }
+
+
+
+
+
+#btn-accept {
+    color: white !important;
