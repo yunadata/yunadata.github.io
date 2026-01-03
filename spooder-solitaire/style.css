@@ -106,7 +106,7 @@ main {
     left: 20px;
     font-size: 0.8rem;
     font-weight: 700;
-    color: var(--text-color);
+    color: var(--card-back);
     opacity: 0.2; 
     pointer-events: none; 
     z-index: 50;
