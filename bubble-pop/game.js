@@ -809,3 +809,14 @@ async function fetchLeaderboard() {
 window.startGame = startGame;
 window.submitScore = submitScore;
 window.restartGame = startGame;
+
+
+// --- 3. DYNAMIC FOOTER DATE ---
+const yearSpan = document.getElementById('copyright-year');
+if (yearSpan) {
+    const startYear = 2025;
+    const currentYear = new Date().getFullYear();
+    if (currentYear > startYear) {
+        yearSpan.textContent = `${startYear}–${currentYear}`;
+    }
+}
