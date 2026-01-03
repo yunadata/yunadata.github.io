@@ -341,7 +341,7 @@ main {
     background: white; padding: 40px; border-radius: 20px;
     box-shadow: 0 10px 40px rgba(74, 40, 40, 0.2);
     text-align: center; max-width: 500px; width: 90%;
-    border: 4px solid #9E3555;
+    border: 1px solid white;
 }
 
 .overlay-content h1, 
@@ -355,13 +355,13 @@ main {
 /* Difficulty Buttons */
 .difficulty-options { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
 .diff-btn {
-    background: #FFF5F8; border: 2px solid transparent;
+    background: #FFF5F8; border: 1px solid transparent;
     padding: 15px; border-radius: 12px; cursor: pointer;
     min-width: 100px; transition: 0.2s;
 	color: var(--text-color);
 }
 .diff-btn:hover { 
-    border-color: #9E3555; 
+    border-color: white; 
     background: #FFE6EE; 
     transform: translateY(-5px); 
     box-shadow: 0 5px 15px rgba(255, 107, 151, 0.2);
