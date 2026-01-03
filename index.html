@@ -23,6 +23,7 @@
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://yunadata.github.io/">
     <meta property="twitter:title" content="Yuna An Vu | Digital Analytics Portfolio">
+	<meta name="twitter:site" content="@YunaData">
     <meta property="twitter:description" content="Digital Analytics Student based in Sweden. I find patterns, solve problems, and create smarter user experiences.">
     <meta property="twitter:image" content="https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/me.webp">
 
@@ -340,45 +341,10 @@
     <footer>
 		<p>Made with 💖 by Yuna An Vu.</p>
 		<p>
-			&copy; 2025 | <a href="/privacy-policy.html" style="font-weight: 600;">Privacy Policy</a>
+			&copy; <span id="copyright-year">2025</span> | <a href="/privacy-policy.html" style="font-weight: 600;">Privacy Policy</a>
 		</p>
 	</footer>
 
-    <script>
-        const hamburger = document.querySelector(".hamburger");
-        const navLinks = document.querySelector(".nav-links");
-
-        hamburger.addEventListener("click", () => {
-            hamburger.classList.toggle("active");
-            navLinks.classList.toggle("active");
-        });
-
-        document.querySelectorAll(".nav-links li a").forEach(n => n.addEventListener("click", () => {
-            hamburger.classList.remove("active");
-            navLinks.classList.remove("active");
-        }));
-
-        // Scroll animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.card').forEach(card => {
-            card.style.opacity = '0';
-            card.style.transform = 'translateY(30px)';
-            card.style.transition = 'opacity 0.6s, transform 0.6s';
-            observer.observe(card);
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
