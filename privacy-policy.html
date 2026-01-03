@@ -23,7 +23,9 @@
     <meta property="twitter:card" content="summary">
     <meta property="twitter:url" content="https://yunadata.github.io/privacy-policy.html">
     <meta property="twitter:title" content="Privacy Policy | Yuna An Vu">
+	<meta name="twitter:site" content="@YunaData">
     <meta property="twitter:description" content="Transparent information on how your data is tracked and protected on my portfolio.">
+    <meta property="twitter:image" content="https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/me.webp">
 
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -86,28 +88,11 @@
         </section>
     </main>
 
-    <footer>
-        <p>Made with 💖 by Yuna An Vu.</p>
-        <p>&copy; 2025</p>
-    </footer>
+<footer>
+    <p>Made with 💖 by Yuna An Vu.</p>
+    <p>&copy; <span id="copyright-year">2025</span></p>
+</footer>
 
-    <script>
-        const hamburger = document.querySelector(".hamburger");
-        const navLinks = document.querySelector(".nav-links");
-
-        hamburger.addEventListener("click", () => {
-            hamburger.classList.toggle("active");
-            navLinks.classList.toggle("active");
-        });
-
-        // Simple animation trigger for the single card
-        const card = document.querySelector('.card');
-        if(card) {
-            setTimeout(() => {
-                card.style.opacity = '1';
-                card.style.transform = 'translateY(0)';
-            }, 100);
-        }
-    </script>
+<script src="script.js"></script>
 </body>
 </html>
