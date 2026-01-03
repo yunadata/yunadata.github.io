@@ -736,3 +736,15 @@ initBackground();
 ctx.drawImage(bgCanvas, 0, 0);
 let endPos = path[path.length-1];
 drawCrystal(endPos.x*TILE_SIZE + TILE_SIZE/2, endPos.y*TILE_SIZE + TILE_SIZE/2);
+
+
+
+// --- DYNAMIC FOOTER DATE ---
+const yearSpan = document.getElementById('copyright-year');
+if (yearSpan) {
+    const startYear = 2025;
+    const currentYear = new Date().getFullYear();
+    if (currentYear > startYear) {
+        yearSpan.textContent = `${startYear}–${currentYear}`;
+    }
+}
