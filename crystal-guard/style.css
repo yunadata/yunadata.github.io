@@ -472,9 +472,7 @@ footer a:hover { color: var(--primary) !important; }
 
 /* --- MOBILE SPECIFIC FIXES (TABLET & PHONE) --- */
 @media (max-width: 900px) {
-	nav {
-        position: static;
-    }
+	
     #game-wrapper { 
         flex-direction: column; 
         align-items: center; 
