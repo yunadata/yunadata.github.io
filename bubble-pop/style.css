@@ -158,7 +158,9 @@ canvas { display: block; max-width: 100%; height: auto; cursor: crosshair; }
     box-shadow: 0 5px 15px rgba(0,0,0,0.05);
 }
 #leaderboard-list {
-    max-height: 120px; overflow-y: auto; font-size: 0.9rem; text-align: left;
+    /* CHANGED: Increased from 120px to 160px to fit 5 items */
+    max-height: 160px; 
+    overflow-y: auto; font-size: 0.9rem; text-align: left;
 }
 .score-entry {
     display: flex; justify-content: space-between; padding: 5px 0;
