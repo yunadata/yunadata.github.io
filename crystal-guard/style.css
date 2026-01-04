@@ -20,39 +20,20 @@
 
 body {
     font-family: 'VT323', monospace; 
-    background-color: var(--bg-dark);
+    /* NEW: Add the background image here */
+    background: url('https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/crystal-guard-bg.webp') no-repeat center center fixed;
+    background-size: cover; /* Ensures it fills the screen */
+    
     color: var(--text-main);
     overflow-x: hidden;
     min-height: 100vh;
     font-size: 1.2rem; 
 }
 
-/* --- Animated Background --- */
-.stars, .twinkling {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    width: 100%; height: 100%;
-    display: block;
-}
-.stars {
-    background: #000 url(http://www.script-tutorials.com/demos/360/images/stars.png) repeat top center;
-    z-index: -2;
-}
-.twinkling {
-    background: transparent url(http://www.script-tutorials.com/demos/360/images/twinkling.png) repeat top center;
-    z-index: -1;
-    animation: move-twink-back 200s linear infinite;
-    opacity: 0.4;
-}
-@keyframes move-twink-back {
-    from {background-position:0 0;}
-    to {background-position:-10000px 5000px;}
-}
-
 /* --- Navigation --- */
 nav {
     padding: 1rem 2rem;
-    background: rgba(19, 15, 38, 0.95);
+    background: rgba(19, 15, 38, 0.5);
     border-bottom: 2px solid var(--primary);
     position: sticky;
     top: 0;
@@ -331,7 +312,7 @@ canvas {
 #how-to-play {
     width: 100%;
     max-width: 1150px;
-    background: var(--bg-panel);
+    background: rgba(36, 27, 66, 0.8);
     border: 4px solid #45326e;
     padding: 30px;
     text-align: center;
@@ -378,7 +359,7 @@ footer {
     text-align: center;
     padding: 20px;
     font-size: 1rem;
-    color: var(--text-dim);
+    color: var(--text-main);
     margin-top: 20px;
 }
 footer a:hover { color: var(--primary) !important; }
