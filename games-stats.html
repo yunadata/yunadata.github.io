@@ -61,10 +61,39 @@
 			width: 100%;
 		}
 
-		/* Optional: Scale down the logo slightly if it's too large */
+		/* Scale down the logo slightly if it's too large */
 		.logo {
 			font-size: 1.5rem !important; 
 		}
+		
+		
+		/* --- NEW: CUSTOM H1 STYLING --- */
+        /* This class makes the H1 look exactly like H2 on the regular pages */
+        h1.page-title {
+            /* 1. Reset the global H1 gradient/hero styles */
+            background: none; 
+            -webkit-text-fill-color: var(--text-color); 
+            
+            /* 2. Apply your global H2 styles (Centered + Positioning) */
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* 3. Re-create the H2 underline decoration */
+        h1.page-title::after {
+            content: '';
+            display: block;
+            width: 60%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 2px;
+            margin: 10px auto 0;
+        }
 	</style>
 </head>
 <body>
@@ -84,7 +113,7 @@
 
     <main>
         <section class="container" style="padding-top: 2rem;">
-            <h2 style="text-align: center; margin-bottom: 1rem;">Live Games Dashboard 📊</h2>
+            <h1 class="page-title">Live Games Dashboard 📊</h1>
             <p style="text-align: center; max-width: 600px; margin: 0 auto 2rem auto;">
                 Real-time data from players across the globe. This dashboard tracks Starts, Completions, and High Scores using <strong>GA4</strong>, <strong>GTM</strong>, and <strong>Looker Studio</strong>.
             </p>
