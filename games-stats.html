@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-KH2HGFPW');</script>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Live Game Stats | Yuna An Vu</title>
+    <meta name="title" content="Live Game Stats | Yuna An Vu">
+    <meta name="description" content="Real-time analytics dashboard for Bubble Pop and other portfolio games. View global high scores, player metrics, and data visualization powered by Looker Studio.">
+    <meta name="keywords" content="game analytics, player stats, looker studio dashboard, game data, bubble pop leaderboard, yuna an vu, data visualization">
+    <meta name="author" content="Yuna An Vu">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://yunadata.github.io/games-stats.html">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yunadata.github.io/games-stats.html">
+    <meta property="og:title" content="Live Game Stats | Yuna An Vu">
+    <meta property="og:description" content="Real-time analytics dashboard for Bubble Pop. View global high scores and data visualization powered by Looker Studio.">
+    <meta property="og:image" content="https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/bubble-pop.webp">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://yunadata.github.io/games-stats.html">
+    <meta property="twitter:title" content="Live Game Stats | Yuna An Vu">
+    <meta name="twitter:site" content="@YunaData">
+    <meta property="twitter:description" content="Real-time analytics dashboard for Bubble Pop. View global high scores and data visualization powered by Looker Studio.">
+    <meta property="twitter:image" content="https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/bubble-pop.webp">
+
+    <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/favicon.ico">
+
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+	
+	<style>
+		/* Force the nav to be slimmer to match the game template */
+		nav {
+			padding: 0 !important; /* Removes default large padding */
+			height: 70px !important; /* Sets a fixed, smaller height */
+			min-height: unset !important;
+			display: flex;
+			align-items: center;
+		}
+
+		.nav-container {
+			height: 100% !important;
+			padding: 0 2rem !important; /* Keeps the horizontal spacing neat */
+			max-width: 1200px;
+			margin: 0 auto;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			width: 100%;
+		}
+
+		/* Optional: Scale down the logo slightly if it's too large */
+		.logo {
+			font-size: 1.5rem !important; 
+		}
+	</style>
+</head>
+<body>
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KH2HGFPW"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+    <div class="bg-decoration blob-1"></div>
+    <div class="bg-decoration blob-2"></div>
+    <div class="bg-decoration blob-3"></div>
+
+    <nav>
+        <div class="nav-container">
+            <div class="logo" onclick="window.location.href='index.html'" style="cursor: pointer;">YunaData.</div>
+            <a href="index.html#games" class="btn-small">← Back to Portfolio</a>
+        </div>
+    </nav>
+
+    <main>
+        <section class="container" style="padding-top: 2rem;">
+            <h2 style="text-align: center; margin-bottom: 1rem;">Live Games Dashboard 📊</h2>
+            <p style="text-align: center; max-width: 600px; margin: 0 auto 2rem auto;">
+                Real-time data from players across the globe. This dashboard tracks Starts, Completions, and High Scores using <strong>GA4</strong>, <strong>GTM</strong>, and <strong>Looker Studio</strong>.
+            </p>
+
+            <div class="card" style="padding: 0; overflow: hidden; height: 1000px; position: relative; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+                
+                <div style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); color:#ccc; z-index:0;">
+                    Fetching Data...
+                </div>
+
+                <iframe 
+                    src="https://lookerstudio.google.com/embed/reporting/ae718f6b-d111-44c0-82a6-cce8c829144b/page/xQFkF" 
+                    width="100%" 
+                    height="100%" 
+                    frameborder="0" 
+                    style="border:0; position:relative; z-index:1; background: transparent;" 
+                    allowfullscreen 
+                    sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox">
+                </iframe>
+            </div>
+        </section>
+    </main>
+
+<footer>
+    <p>Made with 💖 by Yuna An Vu.</p>
+    <p>
+        &copy; <span id="copyright-year">2025</span> | <a href="https://yunadata.github.io/privacy-policy.html" style="font-weight: 600; text-decoration: none; color: inherit;">Privacy Policy</a>
+    </p>
+</footer>
+
+    <script type="module" src="game.js"></script>
+</body>
+</html>
