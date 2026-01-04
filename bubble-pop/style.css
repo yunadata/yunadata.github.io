@@ -259,3 +259,21 @@ footer { text-align: center; padding: 20px; font-size: 0.8rem; opacity: 0.7; }
         margin-top: 5px;
     }
 }
+
+
+
+
+/* --- Cookie Banner Fixes --- */
+#btn-reopen-settings {
+
+    /* White background with 80% opacity */
+    background-color: rgba(255, 255, 255, 0.3) !important; 
+    color: rgba(255, 255, 255, 0.8) !important; 
+    
+    /* Frosted glass effect */
+    backdrop-filter: blur(10px) !important; 
+    
+    /* Adds a soft shadow so the white button doesn't disappear */
+    box-shadow: 0 2px 10px rgba(74, 40, 40, 0.1) !important;
+}
+
