@@ -760,7 +760,7 @@ footer {
     transform: scale(1.03);
 }
 
-/* Optional: Adjust card padding slightly to accommodate images better */
+/* Adjust card padding slightly to accommodate images better */
 .project-card {
     padding-top: 1.5rem; 
 }
