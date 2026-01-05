@@ -6,12 +6,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const startYear = 2025;
         const currentYear = new Date().getFullYear();
         if (currentYear > startYear) {
-            // This updates the text to "2025–2026" automatically
+            // This updates the text to "2025–current year" automatically
             yearSpan.textContent = `${startYear}–${currentYear}`;
         }
     }
 
-    // --- 2. Hamburger Menu (Moved from your index.html) ---
+    // --- 2. Hamburger Menu (Moved from index.html) ---
     const hamburger = document.querySelector(".hamburger");
     const navLinks = document.querySelector(".nav-links");
 
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }));
     }
 
-    // --- 3. Scroll Animations (Moved from your index.html) ---
+    // --- 3. Scroll Animations (Moved from index.html) ---
     const observerOptions = {
         threshold: 0.1,
         rootMargin: '0px 0px -50px 0px'
