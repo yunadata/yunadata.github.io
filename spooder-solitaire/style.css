@@ -24,8 +24,8 @@
 html {
     /* Prevents the white "rubber band" effect */
     overscroll-behavior: none;
-    /* Keeps the rubber-band area pink */
-    background-color: var(--bg-color); 
+    /* Keeps the rubber-band area deeo mahogany */
+    background-color: var(--text-color); 
 }
 
 body {
