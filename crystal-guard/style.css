@@ -216,7 +216,7 @@ canvas {
     margin-top: auto;
     border-top: 2px dashed #45326e;
     padding-top: 15px;
-    display: none;
+    visibility: hidden;
 }
 
 /* --- Game Buttons --- */
