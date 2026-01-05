@@ -491,8 +491,6 @@ function gameLoop() {
 
     ctx.drawImage(bgCanvas, 0, 0);
 
-    let end = path[path.length-1];
-    drawCrystal(end.x*TILE_SIZE + TILE_SIZE/2, end.y*TILE_SIZE + TILE_SIZE/2);
 
     if(gameState.enemiesToSpawn > 0) {
         gameState.spawnTimer++;
@@ -511,6 +509,9 @@ function gameLoop() {
     }
 
     gameState.towers.forEach(t => { t.update(); t.draw(); });
+	
+	let end = path[path.length-1];
+    drawCrystal(end.x*TILE_SIZE + TILE_SIZE/2, end.y*TILE_SIZE + TILE_SIZE/2);
 
     gameState.enemies.sort((a,b) => a.y - b.y);
     for(let i = gameState.enemies.length - 1; i >= 0; i--) {
@@ -623,10 +624,10 @@ function updateUI() {
 
     const upPanel = document.getElementById('upgrade-panel');
     if(gameState.selectedTower) {
-        upPanel.style.display = 'block';
+        upPanel.style.visibility = 'visible';
         document.getElementById('upgrade-cost').innerText = gameState.selectedTower.getUpgradeCost();
     } else {
-        upPanel.style.display = 'none';
+        upPanel.style.visibility = 'hidden';
     }
 }
 
