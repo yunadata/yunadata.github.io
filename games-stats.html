@@ -94,6 +94,28 @@
             border-radius: 2px;
             margin: 10px auto 0;
         }
+		
+		/* --- DASHBOARD --- */
+		.dashboard-container {
+			width: 100%;
+			/* This calculates the height automatically based on width */
+			/* 1200 and 880 are the old desktop dimensions. Change these numbers if Looker Studio canvas size changes. */
+			aspect-ratio: 1200 / 898; 
+			
+			padding: 0;
+			overflow: hidden;
+			position: relative;
+			border-radius: 16px;
+			box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+		}
+
+		/* On very tall/narrow mobile screens, I want a minimum height */
+		@media (max-width: 768px) {
+			.dashboard-container {
+				/* ensures it doesn't get TOO tiny on small phones */
+				min-height: 400px; 
+			}
+		}
 	</style>
 </head>
 <body>
@@ -118,7 +140,7 @@
                 Global player data for the latest 28 days. Updates typically take one day to sync. This dashboard tracks Starts, Completions, and High Scores using <strong>GA4</strong>, <strong>GTM</strong>, and <strong>Looker Studio</strong>.
             </p>
 
-            <div class="card" style="padding: 0; overflow: hidden; height: 880px; position: relative; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+            <div class="card dashboard-container">
                 
                 <div style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); color:#ccc; z-index:0;">
                     Fetching Data...
