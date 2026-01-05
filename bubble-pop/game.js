@@ -143,7 +143,7 @@ class Bubble {
         this.y = pos.y;
     }
 
-    // In game.js, replace the entire Bubble.prototype.draw method:
+    // replaced the entire Bubble.prototype.draw method:
 
     draw(context) {
         if(this.scale <= 0) return;
@@ -166,7 +166,7 @@ class Bubble {
         };
 
         // --- IMPROVED COLOR GRADIENT ---
-        // 1. We start the gradient at the absolute center (0) so the whole bubble has color
+        // 1. Start the gradient at the absolute center (0) so the whole bubble has color
         let grad = context.createRadialGradient(0, 0, 0, 0, 0, RADIUS);
 
         // 0% (Center): Light tint of the MAIN color (was white previously)
