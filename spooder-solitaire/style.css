@@ -22,35 +22,38 @@
 
 
 html {
-    /* Prevents the white "rubber band" effect */
-    overscroll-behavior: none;
-    /* Keeps the rubber-band area deeo mahogany */
-    background-color: var(--text-color); 
+    /* completely disables the 'rubber band' bounce effect on the page */
+    overscroll-behavior: none; 
+    height: 100%;
 }
 
 body {
     font-family: 'Quicksand', sans-serif;
-    
-    /* CHANGED: Must be transparent so we can see the ::before image behind it */
-    background-color: transparent; 
-    
     color: var(--text-color);
+    
+    /* Ensure body takes full height but doesn't overflow unnecessarily */
     min-height: 100vh;
     min-height: -webkit-fill-available;
     
-    /* Safe area padding */
+    /* --- THE FIX: SAFE AREA PADDING --- */
+    /* This pushes the ACTUAL content (game, buttons) inward, so it isn't covered by the notch or home bar. */
     padding-top: env(safe-area-inset-top);
     padding-bottom: env(safe-area-inset-bottom);
-    
-    overflow-x: hidden; 
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+
+    /* Make body transparent so we see the fixed image behind it */
+    background-color: transparent; 
+    overflow-x: hidden;
 }
 
+/* --- Fixed Background Wallpaper --- */
 body::before {
     content: "";
     position: fixed; 
+    /* Anchors the image to the very edge of the VIEWPORT, ignoring safe areas */
     top: 0; left: 0; right: 0; bottom: 0;
     
-    /* CHANGED: -1 is safer than -2 for visibility */
     z-index: -1; 
     
     background-image: url('https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/spooder-solitaire-bg.webp');
@@ -58,10 +61,8 @@ body::before {
     background-size: cover; 
     background-repeat: no-repeat;
     
-    /* ADDED: Applies the pink color to this layer too (prevents white flashes while loading) */
+    /* This ensures no white flash if image loads slowly */
     background-color: var(--bg-color);
-    
-    will-change: transform; 
 }
 
 
