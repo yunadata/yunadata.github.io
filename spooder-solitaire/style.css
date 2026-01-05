@@ -651,7 +651,7 @@ footer {
         gap: 5px;            /* Reduce gap between columns */
     }
 
-    /* Optional: Scale down text slightly to fit better */
+    /* Scale down text slightly to fit better */
     .rank-col { font-size: 1rem; }
     .main-score { font-size: 1rem; }
     .player-name { font-size: 0.9rem; }
@@ -718,7 +718,7 @@ footer {
     color: white !important;
 }
 
-/* Optional: Ensure the text stays white on hover */
+/* Ensure the text stays white on hover */
 #btn-accept:hover {
     color: white !important;
 }
