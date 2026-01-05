@@ -213,7 +213,7 @@ function createCardElement(cardObj, colIndex, cardIndex) {
 
 function dealRow() {
     // Rules: Cannot deal if any column is empty (Strict Rule)
-    // We will be lenient for this web version unless desired? 
+    // We will be lenient for this web version... for now.
     // Let's implement strict rule but warn user or just block.
     // const hasEmpty = gameState.columns.some(c => c.length === 0);
     // if(hasEmpty) { alert("Cannot deal with empty columns!"); return; }
