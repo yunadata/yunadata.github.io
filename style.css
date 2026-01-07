@@ -779,19 +779,22 @@ footer {
 
 
 
-
-
-/* --- Hero Speech Bubble --- */
+/* --- Hero Speech Bubble (Glassmorphism Version) --- */
 .speech-bubble {
     position: absolute;
-    /* Adjusted Position: Lower and further right */
-    top: 80px;     /* Was 20px */
-    right: -170px; /* Was -80px */
+    right: 100%; 
+    top: 40px;
+    margin-right: 25px;
     
-    background: var(--white);
+    /* GLASS EFFECT START */
+    background: rgba(255, 255, 255, 0.7); /* 70% opacity like the nav */
+    backdrop-filter: blur(10px); /* Blurs the background behind it */
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Subtle border for definition */
+    /* GLASS EFFECT END */
+
     padding: 15px 20px;
     border-radius: 15px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); /* Softer shadow */
     z-index: 10;
     width: max-content;
     max-width: 220px;
@@ -799,7 +802,6 @@ footer {
     line-height: 1.4;
     text-align: center;
     
-    /* Animation settings */
     opacity: 0;
     animation: 
         pop-in 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1s forwards, 
@@ -810,20 +812,21 @@ footer {
 .speech-bubble::after {
     content: '';
     position: absolute;
-    /* Position: Left side of the bubble */
-    left: -12px;
+    right: -12px;
     top: 50%;
     transform: translateY(-50%);
-    /* Draw the triangle */
+    
     width: 0; 
     height: 0; 
     border-top: 10px solid transparent;
     border-bottom: 10px solid transparent; 
-    border-right: 12px solid var(--white); /* Points left */
-    /* Add a slight drop shadow to the tail to match the bubble */
-    filter: drop-shadow(-2px 2px 2px rgba(0,0,0,0.05));
+    /* Match the RGBA color of the bubble background */
+    border-left: 12px solid rgba(255, 255, 255, 0.7); 
+    
+    filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.05));
 }
 
+/* Text Styles */
 .speech-bubble p {
     margin: 0;
     color: var(--text-color);
@@ -854,33 +857,34 @@ footer {
 }
 
 /* --- Mobile Responsiveness --- */
-@media (max-width: 768px) {
+/* Updated to 1068px */
+@media (max-width: 1068px) {
     .speech-bubble {
         right: auto;
-        left: 50%; /* Center horizontally */
-        top: -75px; /* Move above the image */
-        /* We need a specific animation for mobile to handle the centering transform */
+        margin-right: 0;
+        left: 50%; 
+        top: -75px; 
+        
         animation: 
             pop-in-mobile 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1s forwards, 
             float-bubble-mobile 3s ease-in-out infinite 1.6s;
     }
 
-    /* Change tail to point DOWN on mobile */
     .speech-bubble::after {
+        right: auto;
         left: 50%;
         top: auto;
-        bottom: -10px; /* Hang off the bottom */
-        transform: translateX(-50%); /* Center the tail */
+        bottom: -10px;
+        transform: translateX(-50%);
         
-        /* Redraw triangle to point down */
-        border-right: 10px solid transparent;
         border-left: 10px solid transparent;
-        border-top: 12px solid var(--white); 
+        border-right: 10px solid transparent;
+        /* Match RGBA color */
+        border-top: 12px solid rgba(255, 255, 255, 0.7); 
         border-bottom: none;
-        filter: none; /* Simplify shadow on mobile */
+        filter: none;
     }
 
-    /* Mobile-specific animations (to keep it centered) */
     @keyframes pop-in-mobile {
         0% { opacity: 0; transform: translateX(-50%) scale(0.5) translateY(20px); }
         100% { opacity: 1; transform: translateX(-50%) scale(1) translateY(0); }
