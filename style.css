@@ -771,3 +771,123 @@ footer {
 #games .project-image {
     height: 216px;
 }
+
+
+
+
+
+
+
+
+
+
+/* --- Hero Speech Bubble --- */
+.speech-bubble {
+    position: absolute;
+    /* Adjusted Position: Lower and further right */
+    top: 80px;     /* Was 20px */
+    right: -170px; /* Was -80px */
+    
+    background: var(--white);
+    padding: 15px 20px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    z-index: 10;
+    width: max-content;
+    max-width: 220px;
+    font-size: 0.95rem;
+    line-height: 1.4;
+    text-align: center;
+    
+    /* Animation settings */
+    opacity: 0;
+    animation: 
+        pop-in 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1s forwards, 
+        float-bubble 3s ease-in-out infinite 1.6s;
+}
+
+/* The "Tail" Triangle */
+.speech-bubble::after {
+    content: '';
+    position: absolute;
+    /* Position: Left side of the bubble */
+    left: -12px;
+    top: 50%;
+    transform: translateY(-50%);
+    /* Draw the triangle */
+    width: 0; 
+    height: 0; 
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent; 
+    border-right: 12px solid var(--white); /* Points left */
+    /* Add a slight drop shadow to the tail to match the bubble */
+    filter: drop-shadow(-2px 2px 2px rgba(0,0,0,0.05));
+}
+
+.speech-bubble p {
+    margin: 0;
+    color: var(--text-color);
+}
+
+.speech-bubble a {
+    color: var(--primary);
+    font-weight: 700;
+    font-size: 0.9rem;
+    display: inline-block;
+    margin-top: 4px;
+}
+
+.speech-bubble a:hover {
+    color: #ff8fa3;
+    text-decoration: underline;
+}
+
+/* --- Animations --- */
+@keyframes pop-in {
+    0% { opacity: 0; transform: scale(0.5) translateY(20px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes float-bubble {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+/* --- Mobile Responsiveness --- */
+@media (max-width: 768px) {
+    .speech-bubble {
+        right: auto;
+        left: 50%; /* Center horizontally */
+        top: -75px; /* Move above the image */
+        /* We need a specific animation for mobile to handle the centering transform */
+        animation: 
+            pop-in-mobile 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1s forwards, 
+            float-bubble-mobile 3s ease-in-out infinite 1.6s;
+    }
+
+    /* Change tail to point DOWN on mobile */
+    .speech-bubble::after {
+        left: 50%;
+        top: auto;
+        bottom: -10px; /* Hang off the bottom */
+        transform: translateX(-50%); /* Center the tail */
+        
+        /* Redraw triangle to point down */
+        border-right: 10px solid transparent;
+        border-left: 10px solid transparent;
+        border-top: 12px solid var(--white); 
+        border-bottom: none;
+        filter: none; /* Simplify shadow on mobile */
+    }
+
+    /* Mobile-specific animations (to keep it centered) */
+    @keyframes pop-in-mobile {
+        0% { opacity: 0; transform: translateX(-50%) scale(0.5) translateY(20px); }
+        100% { opacity: 1; transform: translateX(-50%) scale(1) translateY(0); }
+    }
+
+    @keyframes float-bubble-mobile {
+        0%, 100% { transform: translateX(-50%) translateY(0); }
+        50% { transform: translateX(-50%) translateY(-8px); }
+    }
+}
