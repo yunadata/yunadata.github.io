@@ -479,7 +479,10 @@ function startGame() {
     updateUI();
     
     window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({ 'event': 'game_start' });
+    window.dataLayer.push({ 
+    'event': 'game_start',
+    'game_name': 'Crystal Guard' 
+});
     
     if(gameLoopId) cancelAnimationFrame(gameLoopId);
     initBackground();
@@ -664,7 +667,11 @@ function endGame() {
     document.getElementById('submit-score-container').classList.remove('hidden');
     document.getElementById('final-score').innerText = gameState.score;
     window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({ 'event': 'game_complete', 'game_score': gameState.score });
+    window.dataLayer.push({ 
+		'event': 'game_complete', 
+		'game_name': 'Crystal Guard',
+		'game_score': gameState.score 
+	});
     fetchLeaderboard();
 }
 
@@ -694,10 +701,11 @@ async function submitScore() {
         
         // --- GA4 FIX: Actually sending the event now ---
         window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push({ 
-            'event': 'score_submission', 
-            'score': newScore 
-        });
+       window.dataLayer.push({ 
+			'event': 'score_submission',
+			'game_name': 'Crystal Guard',
+			'score': newScore 
+		});
 
         document.getElementById('submit-score-container').classList.add('hidden');
         fetchLeaderboard();
