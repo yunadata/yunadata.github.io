@@ -11,7 +11,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <title>Live Fragrance Trends | Yuna An Vu</title>
+    <meta name="title" content="Live Fragrance Trends | Yuna An Vu">
     <meta name="description" content="Automated trend discovery engine tracking viral perfume trends using Python and GitHub Actions.">
+    
+    <meta name="keywords" content="python ETL, github actions, google trends API, data analytics portfolio, hobby project, fragrance collector, perfume trends, automation, data engineering, yuna an vu">
+    <meta name="author" content="Yuna An Vu">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://yunadata.github.io/fragrance-trends.html">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yunadata.github.io/fragrance-trends.html">
+    <meta property="og:title" content="Live Fragrance Trends | Yuna An Vu">
+    <meta property="og:description" content="Automated trend discovery engine tracking viral perfume trends using Python and GitHub Actions.">
+    <meta property="og:image" content="https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/fragrance-trends-dashboard-screenshot.webp">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://yunadata.github.io/fragrance-trends.html">
+    <meta property="twitter:title" content="Live Fragrance Trends | Yuna An Vu">
+    <meta name="twitter:site" content="@YunaData">
+    <meta property="twitter:description" content="Automated trend discovery engine tracking viral perfume trends using Python and GitHub Actions.">
+    <meta property="twitter:image" content="https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/fragrance-trends-dashboard-screenshot.webp">
     <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/favicon.ico">
 
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
@@ -22,6 +43,35 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
 
     <style>
+        /* --- SLIM NAV OVERRIDES --- */
+        nav {
+            padding: 0 !important; 
+            height: 70px !important; 
+            min-height: unset !important;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-container {
+            height: 100% !important;
+            padding: 0 2rem !important; 
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .logo {
+            font-size: 1.5rem !important; 
+        }
+
+        /* --- PAGE TITLE STYLING --- */
+        h1.page-title {
+            text-align: center;
+        }
+
         /* --- Dashboard Specific Styles --- */
         .dashboard-header {
             display: flex;
@@ -149,13 +199,13 @@
     <nav>
         <div class="nav-container">
             <div class="logo" onclick="window.location.href='index.html'" style="cursor: pointer;">YunaData.</div>
-            <a href="index.html#projects" class="btn-small">← Back to Projects</a>
+            <a href="index.html#portfolio" class="btn-small">← Back to Projects</a>
         </div>
     </nav>
 
     <main>
         <section class="container" style="padding-top: 2rem;">
-            <h1 class="page-title"><center>Live Fragrance Trend Scanner</center></h1>
+            <h1 class="page-title">Live Fragrance Trend Scanner</h1>
             
             <p style="text-align: center; max-width: 700px; margin: 0 auto 3rem auto; color: #555;">
                 This dashboard tracks rising consumer interests in real-time. It uses a <strong>Python ETL pipeline</strong> running on <strong>GitHub Actions</strong> to scan Google Search data every 24 hours, identifying "Breakout" trends before they hit the mainstream.
@@ -192,9 +242,11 @@
     </main>
 
     <footer>
-        <p>Made with 💖 by Yuna An Vu.</p>
-        <p>&copy; <span id="copyright-year">2025</span></p>
-    </footer>
+		<p>Made with 💖 by Yuna An Vu.</p>
+		<p>
+			&copy; <span id="copyright-year">2026</span> | <a href="privacy-policy.html" style="font-weight: 600;">Privacy Policy</a>
+		</p>
+	</footer>
 
     <script src="script.js"></script>
     <script>
