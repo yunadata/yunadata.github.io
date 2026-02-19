@@ -640,6 +640,32 @@ footer {
         width: 250px;
         height: 250px;
     }
+	
+	
+	
+	/* --- Blog Post Mobile Fixes --- */
+    
+    /* Reduce the outer container padding */
+    .container {
+        padding: 2rem 1rem; 
+    }
+
+    /* Override the 3rem inline padding on the article card */
+    .container article {
+        padding: 1.5rem !important; 
+        border-radius: 15px !important; /* Slightly smaller border radius for mobile */
+    }
+
+    /* Scale down the large inline headings for mobile readability */
+    .container article h1 {
+        font-size: 1.8rem !important; 
+    }
+
+    .container article h2 {
+        font-size: 1.5rem !important;
+        margin-top: 2rem !important;
+        margin-bottom: 1.5rem !important;
+    }
 }
 
 
