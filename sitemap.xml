@@ -13,10 +13,22 @@
       <priority>0.5</priority>
    </url>
    <url>
-      <loc>https://yunadata.github.io/blog</loc>
+      <loc>https://yunadata.github.io/blog/</loc>
       <lastmod>2026-02-19</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
+   </url>
+   <url>
+      <loc>https://yunadata.github.io/blog/interactive-portfolio-games-analytics.html</loc>
+      <lastmod>2026-02-19</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.7</priority>
+   </url>
+   <url>
+      <loc>https://yunadata.github.io/blog/google-analytics-certification.html</loc>
+      <lastmod>2026-02-19</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.7</priority>
    </url>
    <url>
       <loc>https://yunadata.github.io/games-stats.html</loc>
