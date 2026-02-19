@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-KH2HGFPW');</script>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Building an Automated Fragrance Trend Tracker | Yuna An Vu</title>
+    <meta name="title" content="Building an Automated Fragrance Trend Tracker | Yuna An Vu">
+    <meta name="description" content="As a fragrance collector, I wanted to track real-time scent trends. I built an automated Python ETL pipeline using GitHub Actions to scan Google Search data daily.">
+    
+    <meta name="keywords" content="python ETL, github actions, google trends API, data analytics portfolio, hobby project, fragrance collector, perfume trends, automation, data engineering, yuna an vu">
+    <meta name="author" content="Yuna An Vu">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://yunadata.github.io/blog/automated-fragrance-trend-tracker.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://yunadata.github.io/blog/automated-fragrance-trend-tracker.html">
+    <meta property="og:title" content="Building an Automated Fragrance Trend Tracker | Yuna An Vu">
+    <meta property="og:description" content="As a fragrance collector, I wanted to track real-time scent trends. I built an automated Python ETL pipeline using GitHub Actions to scan Google Search data daily.">
+    <meta property="og:image" content="https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/fragrance-trends-dashboard.webp">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://yunadata.github.io/blog/automated-fragrance-trend-tracker.html">
+    <meta property="twitter:title" content="Building an Automated Fragrance Trend Tracker | Yuna An Vu">
+    <meta name="twitter:site" content="@YunaData">
+    <meta property="twitter:description" content="As a fragrance collector, I wanted to track real-time scent trends. I built an automated Python ETL pipeline using GitHub Actions to scan Google Search data daily.">
+    <meta property="twitter:image" content="https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/fragrance-trends-dashboard.webp">
+    <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/favicon.ico">
+
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KH2HGFPW"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+    <div class="bg-decoration blob-1"></div>
+    <div class="bg-decoration blob-2"></div>
+    <div class="bg-decoration blob-3"></div>
+
+    <nav>
+        <div class="nav-container">
+            <div class="logo" onclick="window.location.href='../index.html'">YunaData.</div>
+            <ul class="nav-links">
+                <li><a href="../index.html#about">About</a></li>
+                <li><a href="../index.html#portfolio">Projects</a></li>
+                <li><a href="../index.html#games">Games</a></li>
+                <li><a href="../blog" class="highlight">Blog</a></li>
+                <li><a href="../index.html#contact" class="btn-nav">Contact</a></li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="container">
+            <article style="max-width: 800px; margin: 0 auto; background: var(--white); padding: 3rem; border-radius: 20px; box-shadow: var(--shadow);">
+                
+                <div style="text-align: center; margin-bottom: 2rem;">
+                    <div class="skills" style="justify-content: center; margin-bottom: 1rem;">
+                        <span>Analytics & Tracking</span>
+                        <span>Hobby Project</span>
+                        <span>Data Engineering & Automation</span>
+                    </div>
+                    <h1 style="font-size: 2.5rem; line-height: 1.3;">Building an Automated Fragrance Trend Tracker</h1>
+                    <p class="subtitle" style="margin-bottom: 1rem; color: #999; font-weight: 600; text-transform: uppercase; font-size: 0.85rem;">Published on 2026-02-19</p>
+                </div>
+
+                <img src="https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/blog/fragrance-trends-dashboard-screenshot.webp" 
+                     alt="Screenshot of the live fragrance trends dashboard" 
+                     style="width: 100%; height: auto; border-radius: 12px; margin-bottom: 2.5rem; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+
+                <div style="font-size: 1.1rem; line-height: 1.8; color: var(--text-color);">
+                    <p style="margin-bottom: 1.5rem;">
+                        Outside of digital analytics, I am a fragrance collector. I love tracking new releases, discovering scents, and seeing which specific scent notes are suddenly capturing everyone's attention online.
+                    </p>
+                    
+                    <p style="margin-bottom: 1.5rem;">
+                        However, the perfume industry is notoriously secretive with its data. As a curious person, I wanted to know what was trending <em>right now</em>—not six months ago in an outdated market report. I realized that the best indicator of real-time consumer interest is search behavior. If a specific note like "marshmallow creme" or a niche Arabian perfume starts going viral on TikTok, search intent spikes almost instantly.
+                    </p>
+
+                    <p style="margin-bottom: 2rem;">
+                        So, I decided to turn my hobby into a small data engineering project and build my own <strong>Market Intelligence Dashboard</strong>.
+                    </p>
+
+                    <h3 style="color: var(--text-color); margin-bottom: 1rem; font-size: 1.5rem;">The Goal: A Self-Updating Trend Scanner</h3>
+                    <p style="margin-bottom: 1.5rem;">
+                        I didn't want a static analysis that required me to manually pull reports. I wanted a fully automated pipeline that would wake up every day, scan the internet for "breakout" fragrance terms, and update a live dashboard on my portfolio without me lifting a finger.
+                    </p>
+
+                    <h3 style="color: var(--text-color); margin-bottom: 1rem; font-size: 1.5rem;">The Tech Stack</h3>
+                    <p style="margin-bottom: 1rem;">To build this "headless" data architecture, I used:</p>
+                    <ul style="list-style-type: disc; padding-left: 2rem; margin-bottom: 2rem;">
+                        <li style="margin-bottom: 0.8rem;"><strong>Python & Pytrends:</strong> I have a script to query Google Trends data, specifically looking for related queries classified as "breakout" (meaning search volume has surged by over 5000% recently). It scans broad terms like "perfume," "cologne," etc. to cast a wide net.</li>
+                        <li style="margin-bottom: 0.8rem;"><strong>GitHub Actions (ETL Automation):</strong> This is the engine. I set up a YAML workflow that spins up a virtual environment every 24 hours at 09:00 UTC, installs the necessary Python libraries, runs my script to fetch fresh data, and commits the results directly to a CSV file right in my repository.</li>
+                        <li style="margin-bottom: 0.8rem;"><strong>JavaScript & HTML (Frontend):</strong> My portfolio page fetches that raw CSV data dynamically using PapaParse and renders it into an easy-to-read "Live Trending Now" leaderboard.</li>
+                    </ul>
+
+                    <h3 style="color: var(--text-color); margin-bottom: 1rem; font-size: 1.5rem;">The Result</h3>
+                    <p style="margin-bottom: 1.5rem;">
+                        It might be a small hobby project, but seeing real-time data flow automatically is quite satisfying. The scanner has already proven its worth by picking up on new viral trends for me to check out. 
+                    </p>
+
+                    <p style="margin-bottom: 2.5rem;">
+                        It was a fun learning experience to bridge the gap between frontend tracking and backend data pipeline engineering!
+                    </p>
+
+                    <div style="text-align: center; margin-top: 2rem;">
+                        <a href="../fragrance-trends.html" class="btn-nav" style="font-size: 1.1rem; padding: 0.8rem 2rem;">View The Live Dashboard →</a>
+                    </div>
+                </div>
+                
+            <div style="text-align: center; margin-top: 4rem; padding-top: 2rem; border-top: 1px solid rgba(0,0,0,0.05);">
+                    <a href="../blog" class="btn-small">← Back to Blog</a>
+                </div>
+            </article>
+        </section>
+    </main>
+
+    <footer>
+        <p>Made with 💖 by Yuna An Vu.</p>
+        <p>
+            &copy; <span id="copyright-year">2025</span> | <a href="../privacy-policy.html" style="font-weight: 600;">Privacy Policy</a>
+        </p>
+    </footer>
+
+    <script src="../script.js"></script>
+</body>
+</html>
