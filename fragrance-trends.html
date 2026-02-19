@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-KH2HGFPW');</script>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Live Fragrance Trends | Yuna An Vu</title>
+    <meta name="description" content="Automated trend discovery engine tracking viral perfume trends using Python and GitHub Actions.">
+    <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/favicon.ico">
+
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="style.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+
+    <style>
+        /* --- Dashboard Specific Styles --- */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .status-badge {
+            background: rgba(92, 184, 92, 0.1);
+            color: #5cb85c;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #5cb85c;
+            border-radius: 50%;
+            display: inline-block;
+            animation: blink 2s infinite;
+        }
+
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0.4; }
+            100% { opacity: 1; }
+        }
+
+        /* The List Items */
+        .trend-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background 0.2s;
+        }
+
+        .trend-item:last-child {
+            border-bottom: none;
+        }
+
+        .trend-item:hover {
+            background-color: #fafafa;
+        }
+
+        .trend-rank {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #eee;
+            margin-right: 1rem;
+            min-width: 30px;
+        }
+
+        .trend-info h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.2rem;
+            color: var(--text-color);
+        }
+
+        .trend-meta {
+            font-size: 0.85rem;
+            color: #888;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .category-tag {
+            background: #f0f2ff;
+            color: #5d5dff;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .growth-badge {
+            text-align: right;
+        }
+
+        .growth-score {
+            font-weight: 700;
+            font-size: 1.2rem;
+            display: block;
+        }
+
+        .growth-label {
+            font-size: 0.75rem;
+            color: #999;
+        }
+
+        /* Color classes for scores */
+        .score-high { color: #d9534f; } /* Red/Hot for Breakout */
+        .score-med { color: #5cb85c; }  /* Green for steady growth */
+
+        /* Search Link */
+        .search-icon {
+            color: #ccc;
+            margin-left: 10px;
+            transition: color 0.2s;
+        }
+        .trend-item:hover .search-icon {
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KH2HGFPW"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+    <div class="bg-decoration blob-1"></div>
+    <div class="bg-decoration blob-2"></div>
+    <div class="bg-decoration blob-3"></div>
+
+    <nav>
+        <div class="nav-container">
+            <div class="logo" onclick="window.location.href='index.html'" style="cursor: pointer;">YunaData.</div>
+            <a href="index.html#projects" class="btn-small">← Back to Projects</a>
+        </div>
+    </nav>
+
+    <main>
+        <section class="container" style="padding-top: 2rem;">
+            <h1 class="page-title"><center>Live Fragrance Trend Scanner</center></h1>
+            
+            <p style="text-align: center; max-width: 700px; margin: 0 auto 3rem auto; color: #555;">
+                This dashboard tracks rising consumer interests in real-time. It uses a <strong>Python ETL pipeline</strong> running on <strong>GitHub Actions</strong> to scan Google Search data every 24 hours, identifying "Breakout" trends before they hit the mainstream.
+            </p>
+
+            <div class="card" style="max-width: 800px; margin: 0 auto; padding: 0; overflow: hidden;">
+                
+                <div style="padding: 1.5rem; border-bottom: 1px solid #eee; background: #fff;">
+                    <div class="dashboard-header" style="margin-bottom: 0;">
+                        <div>
+                            <h2 style="margin: 0; font-size: 1.5rem; text-align: left; transform: none; left: auto; display: block;">
+                                Top Rising Scents
+                            </h2>
+                            <span style="font-size: 0.9rem; color: #888;" id="last-updated">Updating...</span>
+                        </div>
+                        <div class="status-badge">
+                            <span class="status-dot"></span> Live Pipeline
+                        </div>
+                    </div>
+                </div>
+
+                <div id="trend-list" style="min-height: 200px;">
+                    <div style="text-align: center; padding: 3rem; color: #ccc;">
+                        <i class="fas fa-circle-notch fa-spin fa-2x"></i>
+                        <p style="margin-top: 1rem;">Fetching latest trends...</p>
+                    </div>
+                </div>
+                
+                <div style="padding: 1rem; background: #f9f9f9; text-align: center; font-size: 0.85rem; color: #888; border-top: 1px solid #eee;">
+                    Data Source: Google Trends (US) • Updates Daily at 09:00 UTC
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Made with 💖 by Yuna An Vu.</p>
+        <p>&copy; <span id="copyright-year">2025</span></p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // --- DASHBOARD LOGIC ---
+        const CSV_URL = 'https://raw.githubusercontent.com/yunadata/scent-tracker/main/discovered_trends.csv';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initDashboard();
+        });
+
+        function initDashboard() {
+            Papa.parse(CSV_URL, {
+                download: true,
+                header: true,
+                skipEmptyLines: true,
+                complete: function(results) {
+                    renderDashboard(results.data);
+                },
+                error: function(err) {
+                    console.error("Error:", err);
+                    document.getElementById('trend-list').innerHTML = 
+                        '<div style="padding: 2rem; text-align: center; color: #d9534f;">Failed to load data. Please check console.</div>';
+                }
+            });
+        }
+
+        function renderDashboard(data) {
+            const listContainer = document.getElementById('trend-list');
+            const dateLabel = document.getElementById('last-updated');
+
+            // 1. Clean Data (remove empty rows)
+            let validData = data.filter(row => row.trend_name && row.growth_score);
+
+            if (validData.length === 0) {
+                listContainer.innerHTML = '<div style="padding:2rem; text-align:center;">No trends found.</div>';
+                return;
+            }
+
+            // 2. Sort by Date (Newest first), then by Score (Highest first)
+            validData.sort((a, b) => {
+                // Compare dates first
+                const dateA = new Date(a.date);
+                const dateB = new Date(b.date);
+                if (dateB - dateA !== 0) return dateB - dateA;
+                
+                // If dates are same, compare scores
+                return parseInt(b.growth_score) - parseInt(a.growth_score);
+            });
+
+            // 3. Get the most recent date available in the file
+            const latestDate = validData[0].date;
+            dateLabel.textContent = `Latest Data: ${latestDate}`;
+
+            // 4. Filter to show ONLY the top items from the latest date
+            // (Or you can show top 10 regardless of date, but usually "Today's Top" is better)
+            const todaysTrends = validData.filter(row => row.date === latestDate).slice(0, 10);
+
+            // 5. Build HTML
+            let html = '';
+            todaysTrends.forEach((trend, index) => {
+                const score = parseInt(trend.growth_score);
+                const isBreakout = score >= 5000;
+                
+                // Styling based on score
+                const scoreClass = isBreakout ? 'score-high' : 'score-med';
+                const scoreText = isBreakout ? '<i class="fas fa-fire"></i> Breakout' : `+${score}%`;
+                
+                // Search URL
+                const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(trend.trend_name)}`;
+
+                html += `
+                <div class="trend-item" onclick="window.open('${searchUrl}', '_blank')" style="cursor: pointer;">
+                    <div style="display: flex; align-items: center;">
+                        <div class="trend-rank">#${index + 1}</div>
+                        <div class="trend-info">
+                            <h3>
+                                ${trend.trend_name} 
+                                <i class="fas fa-external-link-alt search-icon" style="font-size: 0.7em;"></i>
+                            </h3>
+                            <div class="trend-meta">
+                                <span class="category-tag">${trend.seed_term}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="growth-badge">
+                        <span class="growth-score ${scoreClass}">${scoreText}</span>
+                        <span class="growth-label">24h Growth</span>
+                    </div>
+                </div>
+                `;
+            });
+
+            listContainer.innerHTML = html;
+        }
+    </script>
+</body>
+</html>
