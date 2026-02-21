@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-KH2HGFPW');</script>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Using Data to Fix Game Engagement | Yuna An Vu</title>
+    <meta name="title" content="Using Data to Fix Game Engagement | Yuna An Vu">
+    <meta name="description" content="After analyzing my live Looker Studio dashboard, I noticed low score submissions on my arcade games. Here is the quick UX tweak I used to fix it.">
+    
+    <meta name="keywords" content="game analytics, UX optimization, google tag manager, GA4, looker studio, data driven design, yuna an vu, portfolio arcade">
+    <meta name="author" content="Yuna An Vu">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://yunadata.github.io/blog/using-data-to-fix-game-engagement.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://yunadata.github.io/blog/using-data-to-fix-game-engagement.html">
+    <meta property="og:title" content="Using Data to Fix Game Engagement | Yuna An Vu">
+    <meta property="og:description" content="After analyzing my live Looker Studio dashboard, I noticed low score submissions on my arcade games. Here is the quick UX tweak I used to fix it.">
+    <meta property="og:image" content="https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/blog/live-game-stats-dashboard-section-game-popularity.webp">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://yunadata.github.io/blog/using-data-to-fix-game-engagement.html">
+    <meta property="twitter:title" content="Using Data to Fix Game Engagement | Yuna An Vu">
+    <meta name="twitter:site" content="@YunaData">
+    <meta property="twitter:description" content="After analyzing my live Looker Studio dashboard, I noticed low score submissions on my arcade games. Here is the quick UX tweak I used to fix it.">
+    <meta property="twitter:image" content="https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/blog/live-game-stats-dashboard-section-game-popularity.webp">
+    <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/favicon.ico">
+
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body class="blog-post-page">
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KH2HGFPW"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+    <div class="bg-decoration blob-1"></div>
+    <div class="bg-decoration blob-2"></div>
+    <div class="bg-decoration blob-3"></div>
+
+    <nav>
+        <div class="nav-container">
+            <div class="logo" onclick="window.location.href='../index.html'">YunaData.</div>
+            <ul class="nav-links">
+                <li><a href="../index.html#about">About</a></li>
+                <li><a href="../index.html#portfolio">Projects</a></li>
+                <li><a href="../index.html#games">Games</a></li>
+                <li><a href="../blog" class="highlight">Blog</a></li>
+                <li><a href="../index.html#contact" class="btn-nav">Contact</a></li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="container">
+            <article style="max-width: 800px; margin: 0 auto; background: var(--white); padding: 3rem; border-radius: 20px; box-shadow: var(--shadow);">
+                
+                <div style="text-align: center; margin-bottom: 2.0rem;">
+					<h1 style="font-size: 2.5rem; line-height: 1.3; margin-bottom: 1rem;">Using Data to Fix Game Engagement</h1>
+					
+					<p style="margin: 0; color: #BFBFBF; font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.6;">
+						<span>Published on 2026-02-21</span>
+						<span style="margin: 0 10px; color: #ddd;">|</span>
+						<span style="color: #BFBFBF;">Analytics & Tracking &bull; UX Optimization &bull; Web Development</span>
+					</p>
+				</div>
+
+                <img src="https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/blog/live-game-stats-dashboard-section-game-popularity.webp" 
+                     alt="A screenshot of my Live Game Stats Looker Studio dashboard showing completion rates and score submissions across my portfolio games." 
+                     style="width: 100%; height: auto; border-radius: 12px; margin-bottom: 2.5rem; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+
+                <div style="font-size: 1.1rem; line-height: 1.8; color: var(--text-color);">
+                    <p style="margin-bottom: 1.5rem;">
+                        One of the best parts about having custom GA4 tracking on your own portfolio is getting to see exactly how users interact with your work. Recently, I was analyzing my <a href="../games-stats.html" style="color: var(--primary); font-weight: 600;">Live Games Dashboard</a> and noticed an interesting behavioral trend.
+                    </p>
+                    
+                    <p style="margin-bottom: 1.5rem;">
+                        Players were successfully completing rounds of <em>Bubble Pop</em> and <em>Crystal Guard</em>, but they weren't submitting their scores to the database. In fact, looking at the data, the vast majority of my score submissions were coming almost exclusively from <em>Spooder Solitaire</em>.
+                    </p>
+
+                    <h3 style="color: var(--text-color); margin-bottom: 1rem; margin-top: 2rem; font-size: 1.5rem;">The Hypothesis & The Fix</h3>
+                    <p style="margin-bottom: 1.5rem;">
+                        I did some thinking (wow, rare moment! :P) and realized the issue: in <em>Bubble Pop</em> and <em>Crystal Guard</em>, the leaderboard was automatically displayed on the "Game Over" screen <strong>before</strong> the player had to decide whether or not to submit their own score. 
+                    </p>
+
+                    <p style="margin-bottom: 1.5rem;">
+                        Because they could already see what the top scores were, there was no mystery or incentive to submit their own name if they didn't beat the top players. 
+                    </p>
+
+                    <p style="margin-bottom: 2.5rem;">
+                        <strong>The solution was simple:</strong> I dove into the JavaScript for both games and delayed the leaderboard fetch. Now, the leaderboard acts as a "reward" that is only revealed <em>after</em> a player submits their score. It's a small, data-driven tweak, but I'm excited to watch the dashboard this week to see if score submission rates improve!
+                    </p>
+
+                    <div style="text-align: center; margin-top: 2rem;">
+                        <a href="../index.html#games" class="btn-nav" style="font-size: 1.1rem; padding: 0.8rem 2rem;">Test the update & play a game! →</a>
+                    </div>
+					
+					<div style="border-top: 1px dashed rgba(0,0,0,0.1); padding-top: 1.5rem;">
+                        <p style="margin-bottom: 0; font-style: italic; font-size: 0.95rem; color: #888;">
+                            <strong>PS:</strong> I also fixed a bug that caused the "next bubble" screen in Bubble Pop to display the incorrect bubble. It now really displays the next bubble! 🫧
+                        </p>
+                    </div>
+                </div>
+                
+            <div style="text-align: center; margin-top: 4rem; padding-top: 2rem; border-top: 1px solid rgba(0,0,0,0.05);">
+                    <a href="../blog" class="btn-small">← Back to Blog</a>
+                </div>
+            </article>
+        </section>
+    </main>
+
+    <footer>
+        <p>Made with 💖 by Yuna An Vu.</p>
+        <p>
+            &copy; <span id="copyright-year">2026</span> | <a href="../privacy-policy.html" style="font-weight: 600;">Privacy Policy</a>
+        </p>
+    </footer>
+
+    <script src="../script.js"></script>
+</body>
+</html>
