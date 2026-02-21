@@ -709,7 +709,7 @@ function triggerGameOver() {
     document.getElementById('submit-score-container').classList.remove('hidden');
     document.getElementById('final-score').innerText = gameState.score;
     
-    fetchLeaderboard();
+    // fetchLeaderboard(); <-- REMOVED: Wait until score is submitted
 }
 
 function updateUI() {
