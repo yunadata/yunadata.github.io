@@ -56,6 +56,7 @@ const BUBBLE_COLORS = [
 let gameState = {
     grid: [], 
     activeBubble: null,
+	currentBubbleColor: null,
     nextBubbleColor: null,
     projectiles: [],
     particles: [],
@@ -332,6 +333,9 @@ function startGame() {
     document.getElementById('start-btn').classList.add('hidden');
     updateUI();
 
+	gameState.currentBubbleColor = null;
+    gameState.nextBubbleColor = null;
+	
     initGrid();
     generateNextBubble();
     
@@ -388,6 +392,15 @@ function addNewRow() {
 }
 
 function generateNextBubble() {
+    // If nextBubbleColor exists, shift it to current. 
+    // Otherwise (first launch), pick a random color for current.
+    if (gameState.nextBubbleColor !== null) {
+        gameState.currentBubbleColor = gameState.nextBubbleColor;
+    } else {
+        gameState.currentBubbleColor = Math.floor(Math.random() * BUBBLE_COLORS.length);
+    }
+    
+    // Generate the actual "next" bubble for the preview panel
     gameState.nextBubbleColor = Math.floor(Math.random() * BUBBLE_COLORS.length);
     drawPreview();
 }
@@ -445,7 +458,7 @@ function gameLoop() {
         ctx.setLineDash([]);
         
         // FIX: Use r=-1 to keep it at launcher position
-        let launcherBubble = new Bubble(-1, -1, gameState.nextBubbleColor);
+        let launcherBubble = new Bubble(-1, -1, gameState.currentBubbleColor); // bruh this better work
         launcherBubble.x = startX;
         launcherBubble.y = startY;
         launcherBubble.draw(ctx);
@@ -722,7 +735,7 @@ canvas.addEventListener('mousedown', (e) => {
     if (gameState.gameOver || gameState.isProcessing || gameState.projectiles.length > 0) return;
     let startX = canvas.width / 2;
     let startY = canvas.height - 30;
-    gameState.projectiles.push(new Projectile(startX, startY, gameState.angle, gameState.nextBubbleColor));
+    gameState.projectiles.push(new Projectile(startX, startY, gameState.angle, gameState.currentBubbleColor));
     gameState.isProcessing = true;
 });
 
