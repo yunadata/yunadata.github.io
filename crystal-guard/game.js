@@ -672,7 +672,7 @@ function endGame() {
 		'game_name': 'Crystal Guard',
 		'game_score': gameState.score 
 	});
-    fetchLeaderboard();
+    // fetchLeaderboard(); <-- REMOVED: Wait until score is submitted
 }
 
 async function submitScore() {
