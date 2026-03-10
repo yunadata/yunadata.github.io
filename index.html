@@ -31,29 +31,182 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 
-    <script type="application/ld+json">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
     {
-      "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "Yuna An Vu",
+      "@type": "ProfilePage",
+      "@id": "https://yunadata.github.io/#webpage",
       "url": "https://yunadata.github.io/",
-      "image": "https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/me.webp",
+      "name": "Yuna An Vu | Digital Analytics Portfolio",
+      "description": "Portfolio of Yuna An Vu, a Digital Analytics student in Sweden. Specializing in GA4, GTM, SQL, and data visualization.",
+      "about": { "@id": "https://yunadata.github.io/#person" }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://yunadata.github.io/#person",
+      "name": "Yuna An Vu",
       "jobTitle": "Digital Analytics Student",
-      "worksFor": {
-        "@type": "Organization",
-        "name": "Medieinstitutet"
-      },
-      "sameAs": [
-        "https://www.linkedin.com/in/yunav/",
-        "https://github.com/yunadata"
-      ],
+      "description": "Digital Analytics Student based in Sweden. I find patterns, solve problems, and create smarter user experiences.",
+      "image": "https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/me.webp",
+      "email": "yunaanv@outlook.com",
+      "url": "https://yunadata.github.io/",
       "address": {
         "@type": "PostalAddress",
         "addressLocality": "Sjöbo",
         "addressCountry": "Sweden"
-      }
+      },
+      "alumniOf": {
+        "@type": "EducationalOrganization",
+        "name": "Medieinstitutet"
+      },
+      "knowsLanguage": ["Swedish", "English", "Vietnamese"],
+      "knowsAbout": ["Digital Analytics", "SQL", "GA4", "GTM", "Looker Studio", "WordPress", "Ahrefs", "HTML", "CSS", "Adobe Creative Suite", "3D Modeling"],
+      "hasCredential": [
+        {
+          "@type": "EducationalOccupationalCredential",
+          "credentialCategory": "Certificate",
+          "name": "Certified in Ahrefs’ Marketing Platform",
+          "url": "https://ahrefs.com/academy/certificate/1f7c36ef38064b1095b97188978dcbf4"
+        },
+        {
+          "@type": "EducationalOccupationalCredential",
+          "credentialCategory": "Certificate",
+          "name": "Certified in Google Analytics 4",
+          "url": "https://skillshop.credential.net/073c5e5f-c4df-40d4-a32a-e4d6b77bcee9#acc.zidtGN5H"
+        }
+      ],
+      "sameAs": [
+        "https://www.linkedin.com/in/yunav/",
+        "https://github.com/yunadata",
+        "https://x.com/YunaData"
+      ]
+    },
+    {
+      "@type": "ItemList",
+      "@id": "https://yunadata.github.io/#portfolio",
+      "name": "Digital Analytics Projects",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "item": {
+            "@type": "CreativeWork",
+            "name": "Live Fragrance Trends",
+            "description": "An automated ETL pipeline built with Python and GitHub Actions. It scans Google search intent daily to discover breakout consumer trends before they hit mainstream.",
+            "url": "https://yunadata.github.io/fragrance-trends.html",
+            "author": { "@id": "https://yunadata.github.io/#person" }
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "item": {
+            "@type": "CreativeWork",
+            "name": "WP Portfolio & Tracking",
+            "description": "Built on the Twenty Twenty-Five theme, topped with custom HTML5, CSS, JS, & PHP. Features full tracking (GTM, GA4, Hotjar, Smartlook) and a custom GDPR cookie banner.",
+            "url": "https://www.yunasportfolio.com/",
+            "author": { "@id": "https://yunadata.github.io/#person" }
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "item": {
+            "@type": "CreativeWork",
+            "name": "Hotel Booking Analytics",
+            "description": "A hotel website with a booking ecommerce flow. I implemented GTM and GA4 events to track the user journey and purchase behavior.",
+            "url": "https://hotel.yunasportfolio.com/",
+            "author": { "@id": "https://yunadata.github.io/#person" }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "ItemList",
+      "@id": "https://yunadata.github.io/#games",
+      "name": "Browser Games",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "item": {
+            "@type": "VideoGame",
+            "name": "Crystal Guard",
+            "description": "Defend the crystal! A browser-based Tower Defense game built with JavaScript.",
+            "url": "https://yunadata.github.io/crystal-guard/",
+            "author": { "@id": "https://yunadata.github.io/#person" }
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "item": {
+            "@type": "VideoGame",
+            "name": "Bubble Pop",
+            "description": "Pop your way to the top! A cute bubbly match-3 puzzle game featuring satisfying physics.",
+            "url": "https://yunadata.github.io/bubble-pop/",
+            "author": { "@id": "https://yunadata.github.io/#person" }
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "item": {
+            "@type": "VideoGame",
+            "name": "Spooder Solitaire",
+            "description": "Clear the webs! A browser-based cute twist on Classic Spider Solitaire with 3 difficulty modes.",
+            "url": "https://yunadata.github.io/spooder-solitaire/",
+            "author": { "@id": "https://yunadata.github.io/#person" }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "ItemList",
+      "@id": "https://yunadata.github.io/#blog",
+      "name": "Latest Blog Entries",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "item": {
+            "@type": "BlogPosting",
+            "headline": "My First Internship Day at MetaGruppen",
+            "datePublished": "2026-03-02",
+            "url": "https://yunadata.github.io/blog/first-day-metagruppen.html",
+            "author": { "@id": "https://yunadata.github.io/#person" }
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "item": {
+            "@type": "BlogPosting",
+            "headline": "Using Data to Fix Game Engagement",
+            "datePublished": "2026-02-21",
+            "url": "https://yunadata.github.io/blog/using-data-to-fix-game-engagement.html",
+            "author": { "@id": "https://yunadata.github.io/#person" }
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "item": {
+            "@type": "BlogPosting",
+            "headline": "Building an Automated Fragrance Trend Tracker",
+            "datePublished": "2026-02-19",
+            "url": "https://yunadata.github.io/blog/automated-fragrance-trend-tracker.html",
+            "author": { "@id": "https://yunadata.github.io/#person" }
+          }
+        }
+      ]
     }
-    </script>
+  ]
+}
+</script>
+
 </head>
 <body>
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KH2HGFPW"
@@ -72,11 +225,11 @@
                 <li><a href="blog">Blog</a></li>
                 <li><a href="#contact" class="btn-nav">Contact</a></li>
             </ul>
-            <div class="hamburger">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </div>
+            <button class="hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="primary-navigation">
+				<span class="bar"></span>
+				<span class="bar"></span>
+				<span class="bar"></span>
+			</button>
         </div>
     </nav>
 
@@ -170,103 +323,106 @@
         </section>
 
         <section id="portfolio" class="container">
-            <h2>My Projects 📂</h2>
-            <div class="grid">
+			<h2>My Projects 📂</h2>
+			<div class="grid">
 			
-			
-			
-				<div class="card project-card">
-					<img src="https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/fragrance-trends-dashboard.webp" 
-						 alt="Live Fragrance Trends Dashboard built with Python and GitHub Actions" 
-						 width="318" 
-						 height="200"
-						 loading="lazy"
-						 class="project-image">
+				<article class="card project-card">
+					<a href="fragrance-trends.html" tabindex="-1" aria-hidden="true">
+						<img src="https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/fragrance-trends-dashboard.webp" 
+							 alt="Live Fragrance Trends Dashboard built with Python and GitHub Actions" 
+							 width="318" 
+							 height="200"
+							 loading="lazy"
+							 class="project-image">
+					</a>
 						 
 					<h3>Live Fragrance Trends</h3>
 					<p>An automated ETL pipeline built with Python and GitHub Actions. It scans Google search intent daily to discover breakout consumer trends before they hit mainstream.</p>
-					<a href="fragrance-trends.html" class="btn-small">View Dashboard →</a>
-				</div>
+					<a href="fragrance-trends.html" class="btn-small" aria-label="View Dashboard: Live Fragrance Trends">View Dashboard →</a>
+				</article>
 			
-				<div class="card project-card">
-					<img src="https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/wordpress-analytics-portfolio.webp" 
-						 alt="WordPress Portfolio Website with GA4 and GTM Tracking" 
-						 width="318" 
-						 height="200"
-						 loading="lazy"
-						 class="project-image">
+				<article class="card project-card">
+					<a href="https://www.yunasportfolio.com/" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true">
+						<img src="https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/wordpress-analytics-portfolio.webp" 
+							 alt="WordPress Portfolio Website with GA4 and GTM Tracking" 
+							 width="318" 
+							 height="200"
+							 loading="lazy"
+							 class="project-image">
+					</a>
 					
 					<h3>WP Portfolio & Tracking</h3>
 					<p>Built on the "Twenty Twenty-Five" theme, topped with custom HTML5, CSS, JS, & PHP. Features full tracking (GTM, GA4, Hotjar, Smartlook) and a custom GDPR cookie banner.</p>
-					<a href="https://www.yunasportfolio.com/" target="_blank" rel="noopener noreferrer" class="btn-small">Visit Site →</a>
-				</div>
+					<a href="https://www.yunasportfolio.com/" target="_blank" rel="noopener noreferrer" class="btn-small" aria-label="Visit Site: WP Portfolio & Tracking">Visit Site →</a>
+				</article>
 
-				<div class="card project-card">
-					<img src="https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/hotel-booking-analytics.webp" 
-						 alt="Hotel Booking Website with Ecommerce Analytics" 
-						 width="318" 
-						 height="200"
-						 loading="lazy"
-						 class="project-image">
+				<article class="card project-card">
+					<a href="https://hotel.yunasportfolio.com/" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true">
+						<img src="https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/hotel-booking-analytics.webp" 
+							 alt="Hotel Booking Website with Ecommerce Analytics" 
+							 width="318" 
+							 height="200"
+							 loading="lazy"
+							 class="project-image">
+					</a>
 						 
 					<h3>Hotel Booking Analytics</h3>
 					<p>A hotel website with a booking ecommerce flow. I implemented GTM and GA4 events to track the user journey and purchase behavior.</p>
-					<a href="https://hotel.yunasportfolio.com/" target="_blank" rel="noopener noreferrer" class="btn-small">View Project →</a>
-				</div>
+					<a href="https://hotel.yunasportfolio.com/" target="_blank" rel="noopener noreferrer" class="btn-small" aria-label="View Project: Hotel Booking Analytics">View Project →</a>
+				</article>
 
-				
 			</div>
-        </section>
+		</section>
 		
 		
 		
 		<section id="games" class="container">
-            <h2>My Games 🎮</h2>
-            <div class="grid">
-                <div class="card project-card">
-                    <a href="crystal-guard/">
-                    <img src="https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/crystal-guard.webp" 
-                         alt="Crystal Guard - Tower Defense Game" 
-                         width="318" 
-                         height="216"
-                         loading="lazy"
-                         class="project-image">
-                    </a>
-                    <h3>Crystal Guard</h3>
-                    <p>Defend the crystal! A browser-based Tower Defense game built with JavaScript.</p>
-                    <a href="crystal-guard/" class="btn-small">Play Now 🕹️</a>
-                </div>
-                
-                <div class="card project-card">
-                    <a href="bubble-pop/">
-                    <img src="https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/bubble-pop.webp" 
-                         alt="Bubble Pop - Aesthetic Puzzle Game" 
-                         width="318" 
-                         height="216"
-                         loading="lazy"
-                         class="project-image">
-                    </a>
-                    <h3>Bubble Pop</h3>
-                    <p>Pop your way to the top! A cute bubbly match-3 puzzle game featuring satisfying physics.</p>
-                    <a href="bubble-pop/" class="btn-small">Play Now 🕹️</a>
-                </div>
-                
-                <div class="card project-card">
-                    <a href="spooder-solitaire/">
-                    <img src="https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/spooder-solitaire.webp" 
-                         alt="Spooder Solitaire - Spider Solitaire Game" 
-                         width="318" 
-                         height="216"
-                         loading="lazy"
-                         class="project-image">
-                    </a>
-                    <h3>Spooder Solitaire</h3>
-                    <p>Clear the webs! A browser-based cute twist on Classic Spider Solitaire with 3 difficulty modes.</p>
-                    <a href="spooder-solitaire/" class="btn-small">Play Now 🕹️</a>
-                </div>
-            </div>
+			<h2>My Games 🎮</h2>
+			<div class="grid">
+				<div class="card project-card">
+					<a href="crystal-guard/" tabindex="-1" aria-hidden="true">
+					<img src="https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/crystal-guard.webp" 
+						 alt="Crystal Guard - Tower Defense Game" 
+						 width="318" 
+						 height="216"
+						 loading="lazy"
+						 class="project-image">
+					</a>
+					<h3>Crystal Guard</h3>
+					<p>Defend the crystal! A browser-based Tower Defense game built with JavaScript.</p>
+					<a href="crystal-guard/" class="btn-small" aria-label="Play Crystal Guard">Play Now 🕹️</a>
+				</div>
+				
+				<div class="card project-card">
+					<a href="bubble-pop/" tabindex="-1" aria-hidden="true">
+					<img src="https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/bubble-pop.webp" 
+						 alt="Bubble Pop - Aesthetic Puzzle Game" 
+						 width="318" 
+						 height="216"
+						 loading="lazy"
+						 class="project-image">
+					</a>
+					<h3>Bubble Pop</h3>
+					<p>Pop your way to the top! A cute bubbly match-3 puzzle game featuring satisfying physics.</p>
+					<a href="bubble-pop/" class="btn-small" aria-label="Play Bubble Pop">Play Now 🕹️</a>
+				</div>
+				
+				<div class="card project-card">
+					<a href="spooder-solitaire/" tabindex="-1" aria-hidden="true">
+					<img src="https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/spooder-solitaire.webp" 
+						 alt="Spooder Solitaire - Spider Solitaire Game" 
+						 width="318" 
+						 height="216"
+						 loading="lazy"
+						 class="project-image">
+					</a>
+					<h3>Spooder Solitaire</h3>
+					<p>Clear the webs! A browser-based cute twist on Classic Spider Solitaire with 3 difficulty modes.</p>
+					<a href="spooder-solitaire/" class="btn-small" aria-label="Play Spooder Solitaire">Play Now 🕹️</a>
+				</div>
+			</div>
 
-            <div class="card contact-card" style="margin-top: 2rem; padding: 2rem;">
+			<div class="card contact-card" style="margin-top: 2rem; padding: 2rem;">
 				<p style="font-size: 1.1rem; margin-bottom: 0.5rem;">
 					<strong>📊 Behind the Fun</strong>
 				</p>
@@ -279,57 +435,57 @@
 				</p>
 				<a href="games-stats.html" class="btn-nav">View Games Stats Dashboard</a>
 			</div>
-        </section>
+		</section>
 		
 		
 
         <section id="blog" class="container">
-            <h2>Latest Blog Entries 📝</h2>
-            
-            <div class="grid">
-                
-				<div class="card blog-post">
-					<a href="blog/first-day-metagruppen.html">
+			<h2>Latest Blog Entries 📝</h2>
+			
+			<div class="grid">
+				
+				<article class="card blog-post">
+					<a href="blog/first-day-metagruppen.html" tabindex="-1" aria-hidden="true">
 						<img src="https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/blog/first-day-seo-internship-metagruppen.webp" 
 							 alt="My First Internship Day at MetaGruppen" 
 							 class="blog-image">
 					</a>
-					<span class="date">2026-03-02</span>
+					<time class="date" datetime="2026-03-02">2026-03-02</time>
 					<h3>My First Internship Day at MetaGruppen</h3>
 					<p>Read about the first day of my LIA 1 internship at MetaGruppen, getting hands-on with their custom SEO tool MetaRanking and practical internal linking strategies.</p>
-					<a href="blog/first-day-metagruppen.html" class="btn-blog">Read Article →</a>
-				</div>
+					<a href="blog/first-day-metagruppen.html" class="btn-blog" aria-label="Read Article: My First Internship Day at MetaGruppen">Read Article →</a>
+				</article>
 				
-				<div class="card blog-post">
-					<a href="blog/using-data-to-fix-game-engagement.html">
+				<article class="card blog-post">
+					<a href="blog/using-data-to-fix-game-engagement.html" tabindex="-1" aria-hidden="true">
 						<img src="https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/blog/live-game-stats-dashboard-section-game-popularity.webp" 
 							 alt="Using Data to Fix Game Engagement" 
 							 class="blog-image">
 					</a>
-					<span class="date">2026-02-21</span>
+					<time class="date" datetime="2026-02-21">2026-02-21</time>
 					<h3>Using Data to Fix Game Engagement</h3>
 					<p>After analyzing my live Looker Studio dashboard, I noticed low score submissions on my arcade games. Here is the quick UX tweak I used to fix it.</p>
-					<a href="blog/using-data-to-fix-game-engagement.html" class="btn-blog">Read Article →</a>
-				</div>
+					<a href="blog/using-data-to-fix-game-engagement.html" class="btn-blog" aria-label="Read Article: Using Data to Fix Game Engagement">Read Article →</a>
+				</article>
 				
-				<div class="card blog-post">
-					<a href="blog/automated-fragrance-trend-tracker.html">
+				<article class="card blog-post">
+					<a href="blog/automated-fragrance-trend-tracker.html" tabindex="-1" aria-hidden="true">
 						<img src="https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/blog/fragrance-trends-dashboard-screenshot.webp" 
 							 alt="Building an Automated Fragrance Trend Tracker" 
 							 class="blog-image">
 					</a>
-					<span class="date">2026-02-19</span>
+					<time class="date" datetime="2026-02-19">2026-02-19</time>
 					<h3>Building an Automated Fragrance Trend Tracker</h3>
 					<p>I combined my passion for perfume with Python. Learn how I built an automated ETL pipeline using GitHub Actions to scan Google Search data for viral trends every day.</p>
-					<a href="blog/automated-fragrance-trend-tracker.html" class="btn-blog">Read Article →</a>
-				</div>
+					<a href="blog/automated-fragrance-trend-tracker.html" class="btn-blog" aria-label="Read Article: Building an Automated Fragrance Trend Tracker">Read Article →</a>
+				</article>
 
-            </div>
+			</div>
 
-            <div style="text-align: center; margin-top: 3rem;">
+			<div style="text-align: center; margin-top: 3rem;">
 				<a href="blog" class="btn-nav">View All Posts 📚</a>
 			</div>
-        </section>
+		</section>
 		
 		
 
