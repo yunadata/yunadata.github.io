@@ -11,21 +11,30 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- 2. Hamburger Menu (Moved from index.html) ---
-    const hamburger = document.querySelector(".hamburger");
-    const navLinks = document.querySelector(".nav-links");
+	// --- 2. Hamburger Menu (Moved from index.html & A11y Upgraded) ---
+		const hamburger = document.querySelector(".hamburger");
+		const navLinks = document.querySelector(".nav-links");
 
-    if (hamburger && navLinks) {
-        hamburger.addEventListener("click", () => {
-            hamburger.classList.toggle("active");
-            navLinks.classList.toggle("active");
-        });
+		if (hamburger && navLinks) {
+			hamburger.addEventListener("click", () => {
+				// Toggle visual classes
+				hamburger.classList.toggle("active");
+				navLinks.classList.toggle("active");
+				
+				// Toggle screen reader accessibility state
+				const isExpanded = hamburger.classList.contains("active");
+				hamburger.setAttribute("aria-expanded", isExpanded);
+			});
 
-        document.querySelectorAll(".nav-links li a").forEach(n => n.addEventListener("click", () => {
-            hamburger.classList.remove("active");
-            navLinks.classList.remove("active");
-        }));
-    }
+			// Close menu when a link is clicked
+			document.querySelectorAll(".nav-links li a").forEach(n => n.addEventListener("click", () => {
+				hamburger.classList.remove("active");
+				navLinks.classList.remove("active");
+				
+				// Reset screen reader accessibility state
+				hamburger.setAttribute("aria-expanded", "false");
+			}));
+		}
 
     // --- 3. Scroll Animations (Moved from index.html) ---
     const observerOptions = {
