@@ -73,6 +73,13 @@ a {
     transition: 0.3s;
 }
 
+/* Focus states for accessibility */
+a:focus-visible, button:focus-visible {
+    outline: 2px dashed var(--primary);
+    outline-offset: 4px;
+    border-radius: 4px;
+}
+
 ul {
     list-style: none;
 }
@@ -546,6 +553,17 @@ footer {
 .hamburger {
     display: none;
     cursor: pointer;
+    /* --- NEW RESETS FOR <button> --- */
+    background: transparent;
+    border: none;
+    padding: 0;
+}
+
+/* Accessibility bonus: A nice focus ring for keyboard users */
+.hamburger:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 6px;
+    border-radius: 4px;
 }
 
 .bar {
@@ -737,6 +755,26 @@ footer {
 .card:hover .blog-image {
     transform: scale(1.02);
     transition: 0.8s;
+}
+
+
+
+/* --- Image Link Wrapper Fix (Corrected) --- */
+.card > a[aria-hidden="true"] {
+    display: block;
+    border-radius: 12px;
+    overflow: hidden; /* Keeps the zoom hover effect cleanly contained */
+    margin-bottom: 1rem;
+    /* Move the shadow HERE so it doesn't get clipped */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
+}
+
+/* Remove the bottom margin and shadow from the images themselves */
+.card > a[aria-hidden="true"] .blog-image,
+.card > a[aria-hidden="true"] .project-image {
+    margin-bottom: 0;
+    display: block;
+    box-shadow: none; 
 }
 
 
