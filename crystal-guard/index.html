@@ -38,18 +38,30 @@
       "name": "Crystal Guard",
       "url": "https://yunadata.github.io/crystal-guard/",
       "image": "https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/crystal-guard.webp",
-      "description": "A browser-based Neon Tower Defense game where players build towers to defend a prism from waves of shadow enemies.",
-      "genre": "Strategy",
+      "description": "A browser-based Neon Tower Defense game where players build towers to defend a prism from waves of shadow enemies. Features a global leaderboard.",
+      "genre": ["Strategy", "Tower Defense", "Retro", "Arcade"],
       "gamePlatform": "Web Browser",
+      "operatingSystem": "Any",
+      "applicationCategory": "Game",
+      "playMode": "SinglePlayer",
       "author": {
         "@type": "Person",
         "name": "Yuna An Vu",
         "url": "https://yunadata.github.io/"
       },
+      "publisher": {
+        "@type": "Organization",
+        "name": "YunaData",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/me.webp"
+        }
+      },
       "offers": {
         "@type": "Offer",
         "price": "0",
-        "priceCurrency": "USD"
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock"
       }
     }
     </script>
@@ -63,8 +75,8 @@
 
     <nav>
         <div class="nav-container">
-            <div class="logo" onclick="window.location.href='../index.html'">YUNADATA <span class="blink">_</span></div>
-            <a href="../index.html#games" class="btn-small">EXIT REALM</a>
+            <div class="logo" onclick="window.location.href='../index.html'" tabindex="0" role="link" aria-label="Return to YunaData Home">YUNADATA <span class="blink">_</span></div>
+            <a href="../index.html#games" class="btn-small" aria-label="Return to Games Portfolio">EXIT REALM</a>
         </div>
     </nav>
 
@@ -73,7 +85,9 @@
             
             <div id="game-wrapper">
                 <div class="canvas-container">
-                    <canvas id="gameCanvas" width="800" height="600"></canvas>
+                    <canvas id="gameCanvas" width="800" height="600" aria-label="Crystal Guard Game Board" role="img">
+                        Your browser does not support the HTML5 canvas tag. Please upgrade your browser to play Crystal Guard.
+                    </canvas>
                     
                     <div id="overlay">
                         <h1 id="overlay-title">CRYSTAL GUARD</h1>
@@ -81,12 +95,12 @@
                         
                         <div id="leaderboard-display" class="hidden">
                             <h3>LEGENDS 🏆</h3>
-                            <div id="leaderboard-list">Loading...</div>
+                            <div id="leaderboard-list" aria-live="polite">Loading...</div>
                         </div>
     
                         <div id="submit-score-container" class="hidden">
                             <p class="final-score-text">SCORE: <span id="final-score">0</span></p>
-                            <input type="text" id="player-name" placeholder="ENTER NAME" maxlength="10">
+                            <input type="text" id="player-name" placeholder="ENTER NAME" maxlength="10" aria-label="Enter your name for the leaderboard">
                             <button class="btn-game action" onclick="submitScore()">UPLOAD</button>
                         </div>
     
@@ -98,36 +112,36 @@
                     <h2>COMMANDS</h2>
                     
                     <div class="stats-grid">
-                        <div class="stat-box"><span>WAVE</span> <span id="wave-display" class="neon-text">1</span></div>
-                        <div class="stat-box"><span>SCORE</span> <span id="score-display" class="neon-text">0</span></div>
-                        <div class="stat-box gold"><span>GOLD</span> <span id="gold-display" class="gold-text">100</span></div>
-                        <div class="stat-box lives"><span>PRISM</span> <span id="lives-display" class="life-text">20</span></div>
+                        <div class="stat-box"><span>WAVE</span> <span id="wave-display" class="neon-text" aria-live="polite">1</span></div>
+                        <div class="stat-box"><span>SCORE</span> <span id="score-display" class="neon-text" aria-live="polite">0</span></div>
+                        <div class="stat-box gold"><span>GOLD</span> <span id="gold-display" class="gold-text" aria-live="polite">100</span></div>
+                        <div class="stat-box lives"><span>PRISM</span> <span id="lives-display" class="life-text" aria-live="polite">20</span></div>
                     </div>
     
                     <hr>
                     <div class="section-title">- SUMMON TOWER -</div>
                     
                     <div class="tower-select">
-                        <div class="tower-btn active" onclick="selectTowerType('archer')" id="btn-archer">
+                        <button class="tower-btn active" onclick="selectTowerType('archer')" id="btn-archer" aria-label="Select Archer Tower">
                             <div class="t-name">ARCHER</div>
                             <div class="t-cost">50g</div>
                             <div class="t-info">Single</div>
-                        </div>
-                        <div class="tower-btn" onclick="selectTowerType('mage')" id="btn-mage">
+                        </button>
+                        <button class="tower-btn" onclick="selectTowerType('mage')" id="btn-mage" aria-label="Select Mage Tower">
                             <div class="t-name">MAGE</div>
                             <div class="t-cost">100g</div>
                             <div class="t-info">Slow</div>
-                        </div>
-                        <div class="tower-btn" onclick="selectTowerType('cannon')" id="btn-cannon">
+                        </button>
+                        <button class="tower-btn" onclick="selectTowerType('cannon')" id="btn-cannon" aria-label="Select Blaster Tower">
                             <div class="t-name">BLASTER</div>
                             <div class="t-cost">150g</div>
                             <div class="t-info">Area Dmg</div>
-                        </div>
-                        <div class="tower-btn" onclick="selectTowerType('support')" id="btn-support">
+                        </button>
+                        <button class="tower-btn" onclick="selectTowerType('support')" id="btn-support" aria-label="Select Beacon Tower">
                             <div class="t-name">BEACON</div>
                             <div class="t-cost">200g</div>
                             <div class="t-info">Buff</div>
-                        </div>
+                        </button>
                     </div>
     
                     <div id="upgrade-panel">
@@ -146,19 +160,19 @@
                 <h2>MANUAL</h2>
                 <div class="instructions-grid">
                     <div class="instruction-card">
-                        <i class="fas fa-mouse-pointer icon"></i>
+                        <i class="fas fa-mouse-pointer icon" aria-hidden="true"></i>
                         <h3>BUILD</h3>
                         <p>Click dark tiles to summon defenses. Click existing towers to upgrade.</p>
                     </div>
                     
                     <div class="instruction-card">
-                        <i class="fas fa-skull icon"></i>
+                        <i class="fas fa-skull icon" aria-hidden="true"></i>
                         <h3>DEFEND</h3>
                         <p>Shadow blobs are attacking the Prism. Don't let them touch it.</p>
                     </div>
 
                     <div class="instruction-card">
-                        <i class="fas fa-bolt icon"></i>
+                        <i class="fas fa-bolt icon" aria-hidden="true"></i>
                         <h3>POWER</h3>
                         <p><strong>Mages</strong> freeze enemies. <strong>Blasters</strong> hit groups. Use <strong>Beacons</strong> to boost range.</p>
                     </div>
