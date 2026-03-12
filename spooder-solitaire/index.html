@@ -38,27 +38,34 @@
 	<script type="application/ld+json">
 	{
 	  "@context": "https://schema.org",
-	  "@type": "SoftwareApplication",
+	  "@type": "VideoGame",
 	  "name": "Spooder Solitaire",
 	  "url": "https://yunadata.github.io/spooder-solitaire/",
+	  "image": "https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/spooder-solitaire.webp",
+	  "description": "A cute, Victorian-inspired twist on the classic Spider Solitaire. Features global leaderboards, multiple difficulty modes (1, 2, and 4 suits), and a relaxing aesthetic.",
+	  "genre": ["Card Game", "Solitaire", "Casual", "Puzzle"],
+	  "gamePlatform": "Web Browser",
+	  "operatingSystem": "Any",
+	  "applicationCategory": "Game",
+	  "playMode": "SinglePlayer",
 	  "author": {
 		"@type": "Person",
 		"name": "Yuna An Vu",
-		"url": "https://yunadata.github.io"
+		"url": "https://yunadata.github.io/"
 	  },
-	  "description": "A cute, Victorian-inspired twist on the classic Spider Solitaire. Features global leaderboards, multiple difficulty modes (1, 2, and 4 suits), and a relaxing aesthetic.",
-	  "applicationCategory": "Game",
-	  "genre": "Card Game",
-	  "operatingSystem": "Web Browser",
+	  "publisher": {
+		"@type": "Organization",
+		"name": "YunaData",
+		"logo": {
+		  "@type": "ImageObject",
+		  "url": "https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/me.webp"
+		}
+	  },
 	  "offers": {
 		"@type": "Offer",
 		"price": "0",
-		"priceCurrency": "USD"
-	  },
-	  "aggregateRating": {
-		"@type": "AggregateRating",
-		"ratingValue": "5",
-		"ratingCount": "1"
+		"priceCurrency": "USD",
+		"availability": "https://schema.org/InStock"
 	  }
 	}
 	</script>
@@ -71,8 +78,8 @@
 
     <nav>
         <div class="nav-container">
-            <div class="logo" onclick="window.location.href='../index.html'">YunaData.</div>
-            <a href="../index.html#games" class="btn-small">← Back to Portfolio</a>
+            <div class="logo" onclick="window.location.href='../index.html'" tabindex="0" role="link" aria-label="Return to YunaData Home">YunaData.</div>
+            <a href="../index.html#games" class="btn-small" aria-label="Return to Games Portfolio">← Back to Portfolio</a>
         </div>
     </nav>
 
@@ -81,30 +88,30 @@
             
             <div class="game-header">
                 <div class="header-left">
-                    <h1 class="game-title"><i class="fas fa-spider"></i> Spooder Solitaire</h1>
+                    <h1 class="game-title"><i class="fas fa-spider" aria-hidden="true"></i> Spooder Solitaire</h1>
                     <div class="stats-bar">
-                        <div class="stat"><span class="label">Score:</span> <span id="score">500</span></div>
-                        <div class="stat"><span class="label">Moves:</span> <span id="moves">0</span></div>
-                        <div class="stat"><span class="label">Time:</span> <span id="timer">00:00</span></div>
+                        <div class="stat"><span class="label">Score:</span> <span id="score" aria-live="polite">500</span></div>
+                        <div class="stat"><span class="label">Moves:</span> <span id="moves" aria-live="polite">0</span></div>
+                        <div class="stat"><span class="label">Time:</span> <span id="timer" aria-live="polite">00:00</span></div>
                     </div>
                 </div>
                 
                 <div class="header-right">
-                    <button class="btn-game undo" id="btn-undo" title="Undo Move (-10 pts)"><i class="fas fa-undo"></i></button>
-                    <button class="btn-game restart" onclick="showStartScreen()"><i class="fas fa-redo"></i> New Game</button>
-                    <button class="btn-game leaderboard-btn" onclick="toggleLeaderboardModal()"><i class="fas fa-trophy"></i></button>
+                    <button class="btn-game undo" id="btn-undo" title="Undo Move (-10 pts)" aria-label="Undo Last Move"><i class="fas fa-undo" aria-hidden="true"></i></button>
+                    <button class="btn-game restart" onclick="showStartScreen()" aria-label="Start New Game"><i class="fas fa-redo" aria-hidden="true"></i> New Game</button>
+                    <button class="btn-game leaderboard-btn" onclick="toggleLeaderboardModal()" aria-label="View Leaderboard"><i class="fas fa-trophy" aria-hidden="true"></i></button>
                 </div>
             </div>
 
             <div id="game-board">
                 <div class="top-row">
-                    <div id="stock-container" class="stock-pile">
+                    <div id="stock-container" class="stock-pile" aria-label="Draw new cards">
                         </div>
-                    <div id="foundations" class="foundations-row">
+                    <div id="foundations" class="foundations-row" aria-label="Completed card foundations">
                         </div>
                 </div>
                 
-                <div id="tableau" class="tableau-grid">
+                <div id="tableau" class="tableau-grid" aria-label="Game board">
                     </div>
             </div>
 
@@ -114,17 +121,17 @@
                     <p>Choose your fate, tiny spider.</p>
                     <div class="difficulty-options">
                         <button class="diff-btn" onclick="startGame(1)">
-                            <div class="diff-icon">♠️</div>
+                            <div class="diff-icon" aria-hidden="true">♠️</div>
                             <h3>Easy</h3>
                             <p>1 Suit (Spades)</p>
                         </button>
                         <button class="diff-btn" onclick="startGame(2)">
-                            <div class="diff-icon">♠️♥️</div>
+                            <div class="diff-icon" aria-hidden="true">♠️♥️</div>
                             <h3>Medium</h3>
                             <p>2 Suits</p>
                         </button>
                         <button class="diff-btn" onclick="startGame(4)">
-                            <div class="diff-icon">♠️♥️♣️♦️</div>
+                            <div class="diff-icon" aria-hidden="true">♠️♥️♣️♦️</div>
                             <h3>Hard</h3>
                             <p>4 Suits</p>
                         </button>
@@ -142,7 +149,7 @@
                     </div>
                     
                     <div class="input-group">
-                        <input type="text" id="player-name" placeholder="Enter Name" maxlength="15">
+                        <input type="text" id="player-name" placeholder="Enter Name" maxlength="15" aria-label="Enter your name for the leaderboard">
                         <button class="btn-game action" onclick="submitScore()">Save Score</button>
                     </div>
                     <button class="btn-game replay" onclick="showStartScreen()">Play Again</button>
@@ -153,16 +160,16 @@
                 <div class="overlay-content large">
                     <div class="modal-header">
                         <h2>Wall of Fame 🏆</h2>
-                        <button class="close-btn" onclick="toggleLeaderboardModal()">×</button>
+                        <button class="close-btn" onclick="toggleLeaderboardModal()" aria-label="Close Leaderboard">×</button>
                     </div>
                     
-                    <div class="tabs">
-						<button id="tab-1" class="tab-btn active" onclick="loadLeaderboard(1, this)">1 Suit</button>
-						<button id="tab-2" class="tab-btn" onclick="loadLeaderboard(2, this)">2 Suits</button>
-						<button id="tab-4" class="tab-btn" onclick="loadLeaderboard(4, this)">4 Suits</button>
+                    <div class="tabs" role="tablist">
+						<button id="tab-1" class="tab-btn active" role="tab" onclick="loadLeaderboard(1, this)">1 Suit</button>
+						<button id="tab-2" class="tab-btn" role="tab" onclick="loadLeaderboard(2, this)">2 Suits</button>
+						<button id="tab-4" class="tab-btn" role="tab" onclick="loadLeaderboard(4, this)">4 Suits</button>
 					</div>
 
-                    <div id="leaderboard-list">
+                    <div id="leaderboard-list" aria-live="polite">
                         <div class="loader">Loading...</div>
                     </div>
                 </div>
@@ -172,24 +179,23 @@
 
         </div>
 		
-		
 		<section id="how-to-play">
 			<h2>🕸️ How to Play 🕸️</h2>
 			<div class="instructions-grid">
 				<div class="instruction-card">
-					<i class="fas fa-hand-sparkles icon"></i>
+                    <i class="fas fa-hand-sparkles icon" aria-hidden="true"></i>
 					<h3>The Goal</h3>
 					<p>Arrange cards in descending order from <strong>King to Ace</strong>. When a full run of the <strong>same suit</strong> is built (e.g., ♠️K to ♠️A), it clears from the board!</p>
 				</div>
 				
 				<div class="instruction-card">
-					<i class="fas fa-ghost icon"></i>
+					<i class="fas fa-ghost icon" aria-hidden="true"></i>
 					<h3>Moving Cards</h3>
 					<p>You can stack any lower card on a higher one (e.g., 6 on 7). <br><strong>But beware!</strong> You can only drag <em>groups</em> of cards if they match suits.</p>
 				</div>
 
 				<div class="instruction-card">
-					<i class="fas fa-gem icon"></i>
+					<i class="fas fa-gem icon" aria-hidden="true"></i>
 					<h3>Scoring</h3>
 					<ul class="scoring-list">
 						<li><strong>Start:</strong> 500 Points</li>
@@ -200,7 +206,6 @@
 				</div>
 			</div>
 		</section>
-
 
     </main>
 
