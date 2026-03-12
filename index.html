@@ -10,21 +10,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <title>Yuna An Vu | Digital Analytics Portfolio</title>
-    <meta name="description" content="Portfolio of Yuna An Vu, a Digital Analytics student in Sweden. Specializing in GA4, GTM, SQL, and data visualization to create smarter user experiences.">
+    <meta name="description" content="Portfolio of Yuna An Vu, Digital Analytics student in Sweden. Specializing in GA4, GTM, SQL, data visualization & web design for smarter user experiences.">
     <link rel="canonical" href="https://yunadata.github.io/">
     <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/favicon.ico">
 
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://yunadata.github.io/">
     <meta property="og:title" content="Yuna An Vu | Digital Analytics Portfolio">
-    <meta property="og:description" content="Digital Analytics Student based in Sweden. I find patterns, solve problems, and create smarter user experiences.">
+    <meta property="og:description" content="Digital Analytics Student based in Sweden. I find patterns, solve problems, design websites, and create smarter user experiences.">
     <meta property="og:image" content="https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/social-media-preview-game-worlds.webp">
 
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://yunadata.github.io/">
     <meta property="twitter:title" content="Yuna An Vu | Digital Analytics Portfolio">
-	<meta name="twitter:site" content="@YunaData">
-    <meta property="twitter:description" content="Digital Analytics Student based in Sweden. I find patterns, solve problems, and create smarter user experiences.">
+    <meta name="twitter:site" content="@YunaData">
+    <meta property="twitter:description" content="Digital Analytics Student based in Sweden. I find patterns, solve problems, design websites, and create smarter user experiences.">
     <meta property="twitter:image" content="https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/social-media-preview-game-worlds.webp">
 
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
@@ -36,45 +36,89 @@
   "@context": "https://schema.org",
   "@graph": [
     {
+      "@type": "WebSite",
+      "@id": "https://yunadata.github.io/#website",
+      "url": "https://yunadata.github.io/",
+      "name": "YunaData Portfolio",
+      "description": "Portfolio of Yuna An Vu, Digital Analytics student in Sweden.",
+      "publisher": { "@id": "https://yunadata.github.io/#person" },
+      "inLanguage": "en"
+    },
+    {
       "@type": "ProfilePage",
       "@id": "https://yunadata.github.io/#webpage",
       "url": "https://yunadata.github.io/",
       "name": "Yuna An Vu | Digital Analytics Portfolio",
       "description": "Portfolio of Yuna An Vu, a Digital Analytics student in Sweden. Specializing in GA4, GTM, SQL, and data visualization.",
-      "about": { "@id": "https://yunadata.github.io/#person" }
+      "isPartOf": { "@id": "https://yunadata.github.io/#website" },
+      "about": { "@id": "https://yunadata.github.io/#person" },
+      "primaryImageOfPage": {
+        "@type": "ImageObject",
+        "@id": "https://yunadata.github.io/#primaryimage",
+        "url": "https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/me.webp",
+        "caption": "Yuna An Vu - Digital Analytics Student"
+      }
     },
     {
       "@type": "Person",
       "@id": "https://yunadata.github.io/#person",
       "name": "Yuna An Vu",
+      "givenName": "Yuna An",
+      "familyName": "Vu",
       "jobTitle": "Digital Analytics Student",
-      "description": "Digital Analytics Student based in Sweden. I find patterns, solve problems, and create smarter user experiences.",
-      "image": "https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/me.webp",
-      "email": "yunaanv@outlook.com",
+      "description": "Digital Analytics Student based in Sweden. I find patterns, solve problems, design websites, and create smarter user experiences.",
+      "image": { "@id": "https://yunadata.github.io/#primaryimage" },
+      "email": "mailto:yunaanv@outlook.com",
       "url": "https://yunadata.github.io/",
       "address": {
         "@type": "PostalAddress",
         "addressLocality": "Sjöbo",
-        "addressCountry": "Sweden"
+        "addressCountry": "SE"
       },
       "alumniOf": {
         "@type": "EducationalOrganization",
         "name": "Medieinstitutet"
       },
-      "knowsLanguage": ["Swedish", "English", "Vietnamese"],
-      "knowsAbout": ["Digital Analytics", "SQL", "GA4", "GTM", "Looker Studio", "WordPress", "Ahrefs", "HTML", "CSS", "Adobe Creative Suite", "3D Modeling"],
+      "knowsLanguage": [
+        { "@type": "Language", "name": "Swedish", "alternateName": "sv" },
+        { "@type": "Language", "name": "English", "alternateName": "en" },
+        { "@type": "Language", "name": "Vietnamese", "alternateName": "vi" }
+      ],
+      "knowsAbout": [
+        "Digital Analytics", "Web Design", "SQL", "Google Analytics 4 (GA4)", "Google Tag Manager (GTM)", 
+        "Looker Studio", "WordPress", "Ahrefs", "HTML5", "CSS3", "JavaScript", "Python", "ETL", "SEO", "Adobe Creative Suite", "3D Modeling"
+      ],
       "hasCredential": [
         {
           "@type": "EducationalOccupationalCredential",
           "credentialCategory": "Certificate",
           "name": "Certified in Ahrefs’ Marketing Platform",
-          "url": "https://ahrefs.com/academy/certificate/1f7c36ef38064b1095b97188978dcbf4"
+          "url": "https://ahrefs.com/academy/certificate/1f7c36ef38064b1095b97188978dcbf4",
+          "recognizedBy": {
+            "@type": "Organization",
+            "name": "Ahrefs",
+            "sameAs": "https://ahrefs.com/"
+          }
         },
         {
           "@type": "EducationalOccupationalCredential",
           "credentialCategory": "Certificate",
           "name": "Certified in Google Analytics 4",
-          "url": "https://skillshop.credential.net/073c5e5f-c4df-40d4-a32a-e4d6b77bcee9#acc.zidtGN5H"
+          "url": "https://skillshop.credential.net/073c5e5f-c4df-40d4-a32a-e4d6b77bcee9#acc.zidtGN5H",
+          "recognizedBy": {
+            "@type": "Organization",
+            "name": "Google",
+            "sameAs": "https://www.google.com/"
+          }
+        }
+      ],
+      "seeks": [
+        {
+          "@type": "Demand",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Summer jobs and internships in Digital Analytics"
+          }
         }
       ],
       "sameAs": [
@@ -94,8 +138,10 @@
           "item": {
             "@type": "CreativeWork",
             "name": "Live Fragrance Trends",
-            "description": "An automated ETL pipeline built with Python and GitHub Actions. It scans Google search intent daily to discover breakout consumer trends before they hit mainstream.",
+            "description": "An automated ETL pipeline built with Python and GitHub Actions. It scans Google search intent daily to discover breakout consumer trends.",
             "url": "https://yunadata.github.io/fragrance-trends.html",
+            "image": "https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/fragrance-trends-dashboard.webp",
+            "keywords": "Python, GitHub Actions, ETL, Google Search Data, Data Visualization",
             "author": { "@id": "https://yunadata.github.io/#person" }
           }
         },
@@ -105,8 +151,10 @@
           "item": {
             "@type": "CreativeWork",
             "name": "WP Portfolio & Tracking",
-            "description": "Built on the Twenty Twenty-Five theme, topped with custom HTML5, CSS, JS, & PHP. Features full tracking (GTM, GA4, Hotjar, Smartlook) and a custom GDPR cookie banner.",
+            "description": "Built on the Twenty Twenty-Five theme, topped with custom HTML5, CSS, JS, & PHP. Features full tracking (GTM, GA4, Hotjar, Smartlook).",
             "url": "https://www.yunasportfolio.com/",
+            "image": "https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/wordpress-analytics-portfolio.webp",
+            "keywords": "WordPress, GTM, GA4, Hotjar, Smartlook, GDPR, PHP",
             "author": { "@id": "https://yunadata.github.io/#person" }
           }
         },
@@ -118,6 +166,8 @@
             "name": "Hotel Booking Analytics",
             "description": "A hotel website with a booking ecommerce flow. I implemented GTM and GA4 events to track the user journey and purchase behavior.",
             "url": "https://hotel.yunasportfolio.com/",
+            "image": "https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/hotel-booking-analytics.webp",
+            "keywords": "Ecommerce Analytics, GA4, GTM, User Journey Tracking",
             "author": { "@id": "https://yunadata.github.io/#person" }
           }
         }
@@ -136,6 +186,11 @@
             "name": "Crystal Guard",
             "description": "Defend the crystal! A browser-based Tower Defense game built with JavaScript.",
             "url": "https://yunadata.github.io/crystal-guard/",
+            "image": "https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/crystal-guard.webp",
+            "genre": "Tower Defense",
+            "playMode": "SinglePlayer",
+            "applicationCategory": "Browser Game",
+            "keywords": "JavaScript, Web Game, Tower Defense",
             "author": { "@id": "https://yunadata.github.io/#person" }
           }
         },
@@ -147,6 +202,11 @@
             "name": "Bubble Pop",
             "description": "Pop your way to the top! A cute bubbly match-3 puzzle game featuring satisfying physics.",
             "url": "https://yunadata.github.io/bubble-pop/",
+            "image": "https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/bubble-pop.webp",
+            "genre": "Puzzle",
+            "playMode": "SinglePlayer",
+            "applicationCategory": "Browser Game",
+            "keywords": "Match-3, Physics Game, JavaScript Puzzle",
             "author": { "@id": "https://yunadata.github.io/#person" }
           }
         },
@@ -158,6 +218,11 @@
             "name": "Spooder Solitaire",
             "description": "Clear the webs! A browser-based cute twist on Classic Spider Solitaire with 3 difficulty modes.",
             "url": "https://yunadata.github.io/spooder-solitaire/",
+            "image": "https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/spooder-solitaire.webp",
+            "genre": "Card Game",
+            "playMode": "SinglePlayer",
+            "applicationCategory": "Browser Game",
+            "keywords": "Spider Solitaire, Card Game, JavaScript",
             "author": { "@id": "https://yunadata.github.io/#person" }
           }
         }
@@ -176,6 +241,7 @@
             "headline": "My First Internship Day at MetaGruppen",
             "datePublished": "2026-03-02",
             "url": "https://yunadata.github.io/blog/first-day-metagruppen.html",
+            "image": "https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/blog/first-day-seo-internship-metagruppen.webp",
             "author": { "@id": "https://yunadata.github.io/#person" }
           }
         },
@@ -187,6 +253,7 @@
             "headline": "Using Data to Fix Game Engagement",
             "datePublished": "2026-02-21",
             "url": "https://yunadata.github.io/blog/using-data-to-fix-game-engagement.html",
+            "image": "https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/blog/live-game-stats-dashboard-section-game-popularity.webp",
             "author": { "@id": "https://yunadata.github.io/#person" }
           }
         },
@@ -198,6 +265,7 @@
             "headline": "Building an Automated Fragrance Trend Tracker",
             "datePublished": "2026-02-19",
             "url": "https://yunadata.github.io/blog/automated-fragrance-trend-tracker.html",
+            "image": "https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/blog/fragrance-trends-dashboard-screenshot.webp",
             "author": { "@id": "https://yunadata.github.io/#person" }
           }
         }
@@ -260,8 +328,10 @@
             <h2>About Me 🌸</h2>
             <div class="card">
                 <p>I am a curious future <strong>Digital Analyst</strong> currently studying at <strong>Medieinstitutet</strong>. My journey is a mix of creativity and logic! I started in <strong>Architecture & Visualization</strong>, moved into <strong>IT Support</strong> (where I was "Star of the Month"! 🌟), and now I combine those skills to analyze data.</p>
-                <p>I have international experience working in <strong>Portugal</strong> and <strong>Ireland</strong>, so I adapt quickly to new environments.</p>
-                <p><strong>Languages:</strong> Swedish, English, Vietnamese.</p>
+                
+                <p>I have international experience working in <strong>Portugal</strong> and <strong>Ireland</strong>, so I adapt quickly to new environments. When I'm not digging into data, my favorite hobby is <strong>web design</strong>!</p>
+                
+                <br><p><strong>Languages:</strong> Swedish, English, Vietnamese.</p>
                 
                 <div class="skills">
 					<span>📊 SQL</span>
