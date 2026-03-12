@@ -38,35 +38,62 @@
 	<script type="application/ld+json">
 	{
 	  "@context": "https://schema.org",
-	  "@type": "VideoGame",
-	  "name": "Spooder Solitaire",
-	  "url": "https://yunadata.github.io/spooder-solitaire/",
-	  "image": "https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/spooder-solitaire.webp",
-	  "description": "A cute, Victorian-inspired twist on the classic Spider Solitaire. Features global leaderboards, multiple difficulty modes (1, 2, and 4 suits), and a relaxing aesthetic.",
-	  "genre": ["Card Game", "Solitaire", "Casual", "Puzzle"],
-	  "gamePlatform": "Web Browser",
-	  "operatingSystem": "Any",
-	  "applicationCategory": "Game",
-	  "playMode": "SinglePlayer",
-	  "author": {
-		"@type": "Person",
-		"name": "Yuna An Vu",
-		"url": "https://yunadata.github.io/"
-	  },
-	  "publisher": {
-		"@type": "Organization",
-		"name": "YunaData",
-		"logo": {
-		  "@type": "ImageObject",
-		  "url": "https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/me.webp"
+	  "@graph": [
+		{
+		  "@type": "WebPage",
+		  "@id": "https://yunadata.github.io/spooder-solitaire/#webpage",
+		  "url": "https://yunadata.github.io/spooder-solitaire/",
+		  "name": "Spooder Solitaire | Cute Aesthetic Card Game",
+		  "description": "Play Spooder Solitaire, a free aesthetic card game. A cute twist on Classic Spider Solitaire with global leaderboards and 3 difficulty modes.",
+		  "isPartOf": { "@id": "https://yunadata.github.io/#website" },
+		  "breadcrumb": { "@id": "https://yunadata.github.io/spooder-solitaire/#breadcrumb" },
+		  "primaryImageOfPage": {
+			"@type": "ImageObject",
+			"url": "https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/spooder-solitaire.webp"
+		  }
+		},
+		{
+		  "@type": "BreadcrumbList",
+		  "@id": "https://yunadata.github.io/spooder-solitaire/#breadcrumb",
+		  "itemListElement": [
+			{
+			  "@type": "ListItem",
+			  "position": 1,
+			  "name": "Home",
+			  "item": "https://yunadata.github.io/"
+			},
+			{
+			  "@type": "ListItem",
+			  "position": 2,
+			  "name": "Spooder Solitaire",
+			  "item": "https://yunadata.github.io/spooder-solitaire/"
+			}
+		  ]
+		},
+		{
+		  "@type": "VideoGame",
+		  "@id": "https://yunadata.github.io/spooder-solitaire/#game",
+		  "mainEntityOfPage": { "@id": "https://yunadata.github.io/spooder-solitaire/#webpage" },
+		  "name": "Spooder Solitaire",
+		  "description": "A cute, Victorian-inspired twist on the classic Spider Solitaire. Features global leaderboards, multiple difficulty modes (1, 2, and 4 suits), and a relaxing aesthetic.",
+		  "genre": ["Card Game", "Solitaire", "Casual", "Puzzle"],
+		  "url": "https://yunadata.github.io/spooder-solitaire/",
+		  "image": "https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/spooder-solitaire.webp",
+		  "author": { "@id": "https://yunadata.github.io/#person" },
+		  "publisher": { "@id": "https://yunadata.github.io/#person" },
+		  "gamePlatform": "Web Browser",
+		  "operatingSystem": "Any",
+		  "applicationCategory": "Browser Game",
+		  "playMode": "SinglePlayer",
+		  "offers": {
+			"@type": "Offer",
+			"price": "0",
+			"priceCurrency": "USD",
+			"availability": "https://schema.org/InStock"
+		  },
+		  "keywords": "Spider Solitaire, Cozy Game, Cute Solitaire, Aesthetic Games, Free Card Game, Browser Game, YunaData"
 		}
-	  },
-	  "offers": {
-		"@type": "Offer",
-		"price": "0",
-		"priceCurrency": "USD",
-		"availability": "https://schema.org/InStock"
-	  }
+	  ]
 	}
 	</script>
 </head>
