@@ -155,44 +155,44 @@
 
                     <h3 style="font-size: 1.5rem; margin-top: 2rem; margin-bottom: 1rem;">Summary of My Cookie Banner’s Compliance Status</h3>
 
-                    <table>
-                        <thead>
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 2rem; border: 1px solid #ddd;">
+                        <thead style="background-color: #f9f9f9;">
                             <tr>
-                                <td><strong>Requirement</strong></td>
-                                <td><strong>Status</strong></td>
-                                <td><strong>How it’s handled</strong></td>
+                                <th style="border: 1px solid #ddd; padding: 12px; text-align: left;"><strong>Requirement</strong></th>
+                                <th style="border: 1px solid #ddd; padding: 12px; text-align: center;"><strong>Status</strong></th>
+                                <th style="border: 1px solid #ddd; padding: 12px; text-align: left;"><strong>How it’s handled</strong></th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td><strong>Prior Consent</strong></td>
-                                <td>✅</td>
-                                <td>Default consent is set to “Denied” immediately; GA4 trigger is blocked until update.</td>
+                                <td style="border: 1px solid #ddd; padding: 12px;"><strong>Prior Consent</strong></td>
+                                <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">✅</td>
+                                <td style="border: 1px solid #ddd; padding: 12px;">Default consent is set to “Denied” immediately; GA4 trigger is blocked until update.</td>
                             </tr>
                             <tr>
-                                <td><strong>Revocability</strong></td>
-                                <td>✅</td>
-                                <td>The sticky “Cookie Settings” button allows users to change choice anytime.</td>
+                                <td style="border: 1px solid #ddd; padding: 12px;"><strong>Revocability</strong></td>
+                                <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">✅</td>
+                                <td style="border: 1px solid #ddd; padding: 12px;">The sticky “Cookie Settings” button allows users to change choice anytime.</td>
                             </tr>
                             <tr>
-                                <td><strong>Persistence</strong></td>
-                                <td>✅</td>
-                                <td><code>localStorage</code> remembers the choice so users aren’t asked on every page.</td>
+                                <td style="border: 1px solid #ddd; padding: 12px;"><strong>Persistence</strong></td>
+                                <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">✅</td>
+                                <td style="border: 1px solid #ddd; padding: 12px;"><code>localStorage</code> remembers the choice so users aren’t asked on every page.</td>
                             </tr>
                             <tr>
-                                <td><strong>Granularity</strong></td>
-                                <td>✅</td>
-                                <td>All Google storage types (Ad, Analytics, etc.) are mapped to the decision.</td>
+                                <td style="border: 1px solid #ddd; padding: 12px;"><strong>Granularity</strong></td>
+                                <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">✅</td>
+                                <td style="border: 1px solid #ddd; padding: 12px;">All Google storage types (Ad, Analytics, etc.) are mapped to the decision.</td>
                             </tr>
                             <tr>
-                                <td><strong>Zero Plugins</strong></td>
-                                <td>✅</td>
-                                <td>100% native GTM code.</td>
+                                <td style="border: 1px solid #ddd; padding: 12px;"><strong>Zero Plugins</strong></td>
+                                <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">✅</td>
+                                <td style="border: 1px solid #ddd; padding: 12px;">100% native GTM code.</td>
                             </tr>
                             <tr>
-                                <td><strong>Custom Styling</strong></td>
-                                <td>✅</td>
-                                <td>CSS is isolated in a dedicated tag (no inline styles), fully responsive, and loads at “Initialization” to prevent layout shifts.</td>
+                                <td style="border: 1px solid #ddd; padding: 12px;"><strong>Custom Styling</strong></td>
+                                <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">✅</td>
+                                <td style="border: 1px solid #ddd; padding: 12px;">CSS is isolated in a dedicated tag (no inline styles), fully responsive, and loads at “Initialization” to prevent layout shifts.</td>
                             </tr>
                         </tbody>
                     </table>
@@ -203,21 +203,21 @@
 
                     <h3 style="font-size: 1.5rem; margin-top: 2rem; margin-bottom: 1rem;"><strong>Prerequisites</strong></h3>
 
-                    <ul style="margin-bottom: 1.5rem; padding-left: 1.5rem;">
-                        <li>You have a Google Tag Manager account installed on your WordPress site.</li>
-                        <li>You have a Google Analytics 4 (GA4) property.</li>
-                        <li>You are logged into your GTM Workspace.</li>
+                    <ul style="margin-bottom: 1.5rem; padding-left: 2rem; list-style-type: disc;">
+                        <li style="margin-bottom: 0.5rem;">You have a Google Tag Manager account installed on your WordPress site.</li>
+                        <li style="margin-bottom: 0.5rem;">You have a Google Analytics 4 (GA4) property.</li>
+                        <li style="margin-bottom: 0.5rem;">You are logged into your GTM Workspace.</li>
                     </ul>
 
                     <h3 style="font-size: 1.5rem; margin-top: 2rem; margin-bottom: 1rem;"><strong>Step 1: Create the Consent Logic Tag</strong></h3>
 
                     <p style="margin-bottom: 1.5rem;">This script handles the banner display, saving user choices, and telling Google’s servers whether they are allowed to track data.</p>
 
-                    <ol style="margin-bottom: 1.5rem; padding-left: 1.5rem;">
-                        <li>Go to <strong>Tags</strong> &gt; <strong>New</strong>.</li>
-                        <li>Click <strong>Tag Configuration</strong> and select <strong>Custom HTML</strong>.</li>
-                        <li>Name the tag: <code>CMP - Consent Banner &amp; Logic</code>.</li>
-                        <li>Copy and paste the code below into the HTML box.</li>
+                    <ol style="margin-bottom: 1.5rem; padding-left: 2rem;">
+                        <li style="margin-bottom: 0.5rem;">Go to <strong>Tags</strong> &gt; <strong>New</strong>.</li>
+                        <li style="margin-bottom: 0.5rem;">Click <strong>Tag Configuration</strong> and select <strong>Custom HTML</strong>.</li>
+                        <li style="margin-bottom: 0.5rem;">Name the tag: <code>CMP - Consent Banner &amp; Logic</code>.</li>
+                        <li style="margin-bottom: 0.5rem;">Copy and paste the code below into the HTML box.</li>
                     </ol>
 
 <pre style="background: #f4f4f4; padding: 15px; border-radius: 8px; overflow-x: auto; margin-bottom: 1.5rem;"><code>&lt;script&gt;
@@ -357,9 +357,9 @@
   })();
 &lt;/script&gt;</code></pre>
 
-                    <ol start="5" style="margin-bottom: 1.5rem; padding-left: 1.5rem;">
-                        <li><strong>Triggering:</strong> Click the trigger box and select <strong>Consent Initialization – All Pages</strong>.
-                            <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                    <ol start="5" style="margin-bottom: 1.5rem; padding-left: 2rem;">
+                        <li style="margin-bottom: 0.5rem;"><strong>Triggering:</strong> Click the trigger box and select <strong>Consent Initialization – All Pages</strong>.
+                            <ul style="margin-top: 0.5rem; padding-left: 2rem; list-style-type: circle;">
                                 <li><em>Note: This is critical. It ensures the defaults are set before anything else loads.</em></li>
                             </ul>
                         </li>
@@ -370,16 +370,16 @@
 
                     <p style="margin-bottom: 1.5rem;">We need a special trigger that only fires <strong>after</strong> consent is confirmed.</p>
 
-                    <ol style="margin-bottom: 1.5rem; padding-left: 1.5rem;">
-                        <li>Go to <strong>Triggers</strong> &gt; <strong>New</strong>.</li>
-                        <li>Click <strong>Trigger Configuration</strong>.</li>
-                        <li>Select <strong>Custom Event</strong>.</li>
-                        <li><strong>Event Name: </strong><code>cookie_consent_update</code>
-                            <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                    <ol style="margin-bottom: 1.5rem; padding-left: 2rem;">
+                        <li style="margin-bottom: 0.5rem;">Go to <strong>Triggers</strong> &gt; <strong>New</strong>.</li>
+                        <li style="margin-bottom: 0.5rem;">Click <strong>Trigger Configuration</strong>.</li>
+                        <li style="margin-bottom: 0.5rem;">Select <strong>Custom Event</strong>.</li>
+                        <li style="margin-bottom: 0.5rem;"><strong>Event Name: </strong><code>cookie_consent_update</code>
+                            <ul style="margin-top: 0.5rem; padding-left: 2rem; list-style-type: circle;">
                                 <li><em>Note: Must match exactly (case sensitive).</em></li>
                             </ul>
                         </li>
-                        <li><strong>Trigger Name:</strong> <code>Custom Event - Cookie Consent Update</code>.</li>
+                        <li style="margin-bottom: 0.5rem;"><strong>Trigger Name:</strong> <code>Custom Event - Cookie Consent Update</code>.</li>
                         <li>Click <strong>Save</strong>.</li>
                     </ol>
 
@@ -387,17 +387,17 @@
 
                     <p style="margin-bottom: 1.5rem;">Now we must tell GA4 and other page-load tags to wait for the trigger we just created.</p>
 
-                    <ol style="margin-bottom: 1.5rem; padding-left: 1.5rem;">
-                        <li>Open your <strong>Google Tag</strong> (your main GA4 configuration).</li>
-                        <li>Scroll to <strong>Triggering</strong>.</li>
-                        <li><strong>Remove:</strong> <code>Initialization - All Pages</code> (or <code>All Pages</code>).</li>
-                        <li><strong>Add:</strong> <code>Custom Event - Cookie Consent Update</code>.</li>
+                    <ol style="margin-bottom: 1.5rem; padding-left: 2rem;">
+                        <li style="margin-bottom: 0.5rem;">Open your <strong>Google Tag</strong> (your main GA4 configuration).</li>
+                        <li style="margin-bottom: 0.5rem;">Scroll to <strong>Triggering</strong>.</li>
+                        <li style="margin-bottom: 0.5rem;"><strong>Remove:</strong> <code>Initialization - All Pages</code> (or <code>All Pages</code>).</li>
+                        <li style="margin-bottom: 0.5rem;"><strong>Add:</strong> <code>Custom Event - Cookie Consent Update</code>.</li>
                         <li>Click <strong>Save</strong>.</li>
                     </ol>
 
                     <p style="margin-bottom: 1.5rem;"><strong>Repeat this for any other tag that fires on page load</strong> (t.ex. if you also have a tag like “GA4 event all pages initialization” tag).</p>
 
-                    <ul style="margin-bottom: 1.5rem; padding-left: 1.5rem;">
+                    <ul style="margin-bottom: 1.5rem; padding-left: 2rem; list-style-type: disc;">
                         <li><em>Do NOT change event-based tags like “Add to Cart” or “Button Click”. Those are fine as they are.</em></li>
                     </ul>
 
@@ -407,20 +407,20 @@
 
                     <p style="margin-bottom: 1.5rem;">(This prevents a situation where a tag might accidentally fire due to a trigger mix-up. It ensures that a Marketing tag <strong>never</strong> fires if the user only consented to Analytics. This is good to have in place in case you decide to upgrade the cookie banner in the future to have more settings.)</p>
 
-                    <ol style="margin-bottom: 1.5rem; padding-left: 1.5rem;">
-                        <li>Open your <strong>Google Tag</strong> (or any other tracking tag like Facebook Pixel/Google Ads).</li>
-                        <li>Click on <strong>Advanced Settings</strong> to expand it.</li>
-                        <li>Scroll down to <strong>Consent Settings</strong>.</li>
-                        <li>Select <strong>Require additional consent for tag to fire</strong>.</li>
+                    <ol style="margin-bottom: 1.5rem; padding-left: 2rem;">
+                        <li style="margin-bottom: 0.5rem;">Open your <strong>Google Tag</strong> (or any other tracking tag like Facebook Pixel/Google Ads).</li>
+                        <li style="margin-bottom: 0.5rem;">Click on <strong>Advanced Settings</strong> to expand it.</li>
+                        <li style="margin-bottom: 0.5rem;">Scroll down to <strong>Consent Settings</strong>.</li>
+                        <li style="margin-bottom: 0.5rem;">Select <strong>Require additional consent for tag to fire</strong>.</li>
                         <li>In the field that appears, type the Consent Type that matches the tag’s purpose.</li>
                     </ol>
 
                     <p style="margin-bottom: 1.5rem;"><strong>Common Mappings:</strong></p>
 
-                    <ul style="margin-bottom: 1.5rem; padding-left: 1.5rem;">
-                        <li><strong>Google Analytics (GA4):</strong> Type <code>analytics_storage</code></li>
-                        <li><strong>Google Ads / Remarketing:</strong> Type <code>ad_storage</code> (and often <code>ad_personalization</code>)</li>
-                        <li><strong>Chat Widgets / UX Tools:</strong> Type <code>functionality_storage</code></li>
+                    <ul style="margin-bottom: 1.5rem; padding-left: 2rem; list-style-type: disc;">
+                        <li style="margin-bottom: 0.5rem;"><strong>Google Analytics (GA4):</strong> Type <code>analytics_storage</code></li>
+                        <li style="margin-bottom: 0.5rem;"><strong>Google Ads / Remarketing:</strong> Type <code>ad_storage</code> (and often <code>ad_personalization</code>)</li>
+                        <li style="margin-bottom: 0.5rem;"><strong>Chat Widgets / UX Tools:</strong> Type <code>functionality_storage</code></li>
                         <li><strong>Personalization Tools:</strong> Type <code>personalization_storage</code></li>
                     </ul>
 
@@ -428,23 +428,23 @@
 
                     <h3 style="font-size: 1.5rem; margin-top: 2rem; margin-bottom: 1rem;"><strong>Step 4: Verify with Preview Mode</strong></h3>
 
-                    <ol style="margin-bottom: 1.5rem; padding-left: 1.5rem;">
-                        <li>Click <strong>Preview</strong> in the top right of GTM.</li>
-                        <li>Enter your website URL and click <strong>Connect</strong>.</li>
-                        <li><strong>Scenario A (New User):</strong>
-                            <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
-                                <li>The Banner should appear at the bottom.</li>
-                                <li>In the GTM Debugger, your “Google Tag” should <strong>NOT</strong> have fired yet.</li>
-                                <li>Click <strong>Accept</strong>.</li>
-                                <li>The Banner disappears.</li>
+                    <ol style="margin-bottom: 1.5rem; padding-left: 2rem;">
+                        <li style="margin-bottom: 0.5rem;">Click <strong>Preview</strong> in the top right of GTM.</li>
+                        <li style="margin-bottom: 0.5rem;">Enter your website URL and click <strong>Connect</strong>.</li>
+                        <li style="margin-bottom: 0.5rem;"><strong>Scenario A (New User):</strong>
+                            <ul style="margin-top: 0.5rem; padding-left: 2rem; list-style-type: circle;">
+                                <li style="margin-bottom: 0.5rem;">The Banner should appear at the bottom.</li>
+                                <li style="margin-bottom: 0.5rem;">In the GTM Debugger, your “Google Tag” should <strong>NOT</strong> have fired yet.</li>
+                                <li style="margin-bottom: 0.5rem;">Click <strong>Accept</strong>.</li>
+                                <li style="margin-bottom: 0.5rem;">The Banner disappears.</li>
                                 <li>In the GTM Debugger, your “Google Tag” should now <strong>Fire</strong> on the event <code>cookie_consent_update</code>.</li>
                             </ul>
                         </li>
                         <li><strong>Scenario B (Returning User):</strong>
-                            <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
-                                <li>Reload the page.</li>
-                                <li>The Banner should remain hidden.</li>
-                                <li>A small “Cookie Settings” button should appear in the bottom left.</li>
+                            <ul style="margin-top: 0.5rem; padding-left: 2rem; list-style-type: circle;">
+                                <li style="margin-bottom: 0.5rem;">Reload the page.</li>
+                                <li style="margin-bottom: 0.5rem;">The Banner should remain hidden.</li>
+                                <li style="margin-bottom: 0.5rem;">A small “Cookie Settings” button should appear in the bottom left.</li>
                                 <li>Your “Google Tag” should fire automatically because the script remembered your choice.</li>
                             </ul>
                         </li>
@@ -454,9 +454,9 @@
 
                     <p style="margin-bottom: 1.5rem;">If the preview works correctly:</p>
 
-                    <ol style="margin-bottom: 1.5rem; padding-left: 1.5rem;">
-                        <li>Click <strong>Submit</strong> in the top right corner.</li>
-                        <li>Add a version name (e.g., “Added Custom Cookie Banner”).</li>
+                    <ol style="margin-bottom: 1.5rem; padding-left: 2rem;">
+                        <li style="margin-bottom: 0.5rem;">Click <strong>Submit</strong> in the top right corner.</li>
+                        <li style="margin-bottom: 0.5rem;">Add a version name (e.g., “Added Custom Cookie Banner”).</li>
                         <li>Click <strong>Publish</strong>.</li>
                     </ol>
 
@@ -472,10 +472,10 @@
 
                     <h4 style="font-size: 1.25rem; margin-top: 2rem; margin-bottom: 1rem;"><strong>Step 1: Create the Dedicated CSS Tag</strong></h4>
 
-                    <ol style="margin-bottom: 1.5rem; padding-left: 1.5rem;">
-                        <li>Go to <strong>Tags</strong> &gt; <strong>New</strong>.</li>
-                        <li><strong>Tag Configuration:</strong> Select <strong>Custom HTML</strong>.</li>
-                        <li><strong>Name the tag:</strong> <code>Style - Custom Cookie Banner CSS</code>.</li>
+                    <ol style="margin-bottom: 1.5rem; padding-left: 2rem;">
+                        <li style="margin-bottom: 0.5rem;">Go to <strong>Tags</strong> &gt; <strong>New</strong>.</li>
+                        <li style="margin-bottom: 0.5rem;"><strong>Tag Configuration:</strong> Select <strong>Custom HTML</strong>.</li>
+                        <li style="margin-bottom: 0.5rem;"><strong>Name the tag:</strong> <code>Style - Custom Cookie Banner CSS</code>.</li>
                         <li>Paste the following CSS into the HTML box (and edit the CSS styling to your liking):</li>
                     </ol>
 
@@ -594,9 +594,9 @@
 
 &lt;/style&gt;</code></pre>
 
-                    <ol start="5" style="margin-bottom: 1.5rem; padding-left: 1.5rem;">
-                        <li><strong>Triggering:</strong> Click the trigger box and select <strong>Initialization – All Pages</strong>.
-                            <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                    <ol start="5" style="margin-bottom: 1.5rem; padding-left: 2rem;">
+                        <li style="margin-bottom: 0.5rem;"><strong>Triggering:</strong> Click the trigger box and select <strong>Initialization – All Pages</strong>.
+                            <ul style="margin-top: 0.5rem; padding-left: 2rem; list-style-type: circle;">
                                 <li><em>Why Initialization?</em> CSS should load as early as possible so the banner doesn’t appear unstyled (FOUC). This tag has no tracking function, so it’s safe to fire early.</li>
                             </ul>
                         </li>
@@ -607,9 +607,9 @@
 
                     <p style="margin-bottom: 1.5rem;">Now you need to remove <strong>ALL</strong> the inline <code>style="..."</code> attributes from the <code>CMP - Consent Banner &amp; Logic</code> tag.</p>
 
-                    <ol style="margin-bottom: 1.5rem; padding-left: 1.5rem;">
-                        <li>Open the <strong><code>CMP - Consent Banner &amp; Logic</code></strong> Custom HTML Tag.</li>
-                        <li>Find the <code>bannerHTML</code> and <code>reopenBtnHTML</code> variables.</li>
+                    <ol style="margin-bottom: 1.5rem; padding-left: 2rem;">
+                        <li style="margin-bottom: 0.5rem;">Open the <strong><code>CMP - Consent Banner &amp; Logic</code></strong> Custom HTML Tag.</li>
+                        <li style="margin-bottom: 0.5rem;">Find the <code>bannerHTML</code> and <code>reopenBtnHTML</code> variables.</li>
                         <li><strong>Delete every <code>style="..."</code> attribute</strong> from the HTML strings, leaving only the structural HTML and IDs.</li>
                     </ol>
 
