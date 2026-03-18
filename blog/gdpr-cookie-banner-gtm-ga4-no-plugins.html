@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-KH2HGFPW');</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Tutorial: GTM GDPR-compliant Cookie Banner without Plugins | Yuna An Vu</title>
+    <meta name="title" content="Tutorial: GTM GDPR-compliant Cookie Banner without Plugins | Yuna An Vu">
+    <meta name="description" content="Learn how to build a fast, GDPR-compliant, zero-plugin cookie banner using only Google Tag Manager (GTM) and Google Analytics 4 (GA4).">
+    <meta name="keywords" content="GDPR, Cookie Banner, Google Tag Manager, GTM, GA4, Analytics, Consent Mode, Web Development">
+    <meta name="author" content="Yuna An Vu">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://yunadata.github.io/blog/tutorial-gtm-gdpr-compliant-cookie-banner-without-plugins.html">
+
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://yunadata.github.io/blog/tutorial-gtm-gdpr-compliant-cookie-banner-without-plugins.html">
+    <meta property="og:title" content="Tutorial: GTM GDPR-compliant Cookie Banner without Plugins | Yuna An Vu">
+    <meta property="og:description" content="Learn how to build a fast, GDPR-compliant, zero-plugin cookie banner using only Google Tag Manager (GTM) and Google Analytics 4 (GA4).">
+    <meta property="og:image" content="https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/blog/tutorial-simple-GDPR-compliant-cookie-banner-without-plugins.webp">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://yunadata.github.io/blog/tutorial-gtm-gdpr-compliant-cookie-banner-without-plugins.html">
+    <meta property="twitter:title" content="Tutorial: GTM GDPR-compliant Cookie Banner without Plugins | Yuna An Vu">
+    <meta name="twitter:site" content="@YunaData">
+    <meta property="twitter:description" content="Learn how to build a fast, GDPR-compliant, zero-plugin cookie banner using only Google Tag Manager (GTM) and Google Analytics 4 (GA4).">
+    <meta property="twitter:image" content="https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/blog/tutorial-simple-GDPR-compliant-cookie-banner-without-plugins.webp">
+    
+    <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/favicon.ico">
+
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../style.css">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Person",
+          "@id": "https://yunadata.github.io/#person",
+          "name": "Yuna An Vu",
+          "url": "https://yunadata.github.io/"
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://yunadata.github.io/blog/tutorial-gtm-gdpr-compliant-cookie-banner-without-plugins.html#webpage",
+          "url": "https://yunadata.github.io/blog/tutorial-gtm-gdpr-compliant-cookie-banner-without-plugins.html",
+          "name": "Tutorial: GTM GDPR-compliant Cookie Banner without Plugins | Yuna An Vu",
+          "description": "Learn how to build a fast, GDPR-compliant, zero-plugin cookie banner using only Google Tag Manager (GTM) and Google Analytics 4 (GA4).",
+          "isPartOf": { "@id": "https://yunadata.github.io/#website" },
+          "breadcrumb": { "@id": "https://yunadata.github.io/blog/tutorial-gtm-gdpr-compliant-cookie-banner-without-plugins.html#breadcrumb" }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://yunadata.github.io/blog/tutorial-gtm-gdpr-compliant-cookie-banner-without-plugins.html#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://yunadata.github.io/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Blog",
+              "item": "https://yunadata.github.io/blog/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Tutorial: GTM GDPR-compliant Cookie Banner without Plugins",
+              "item": "https://yunadata.github.io/blog/tutorial-gtm-gdpr-compliant-cookie-banner-without-plugins.html"
+            }
+          ]
+        },
+        {
+          "@type": "BlogPosting",
+          "@id": "https://yunadata.github.io/blog/tutorial-gtm-gdpr-compliant-cookie-banner-without-plugins.html#article",
+          "isPartOf": { "@id": "https://yunadata.github.io/blog/tutorial-gtm-gdpr-compliant-cookie-banner-without-plugins.html#webpage" },
+          "mainEntityOfPage": { "@id": "https://yunadata.github.io/blog/tutorial-gtm-gdpr-compliant-cookie-banner-without-plugins.html#webpage" },
+          "headline": "Tutorial: GTM GDPR-compliant Cookie Banner without Plugins",
+          "description": "Learn how to build a fast, GDPR-compliant, zero-plugin cookie banner using only Google Tag Manager (GTM) and Google Analytics 4 (GA4).",
+          "image": {
+            "@type": "ImageObject",
+            "url": "https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/blog/tutorial-simple-GDPR-compliant-cookie-banner-without-plugins.webp",
+            "caption": "A cute pastel-style illustration of a laptop screen displaying a custom GDPR cookie banner with 'Accept' and 'Reject' buttons, floating above a background of Google Tag Manager and Google Analytics 4 interfaces."
+          },
+          "author": { "@id": "https://yunadata.github.io/#person" },
+          "publisher": { "@id": "https://yunadata.github.io/#person" },
+          "datePublished": "2025-12-18T08:00:00+01:00",
+          "dateModified": "2025-12-18T08:00:00+01:00",
+          "inLanguage": "en",
+          "articleSection": ["Analytics & Tracking", "Data Privacy / GDPR"],
+          "keywords": ["GDPR", "Cookie Banner", "Google Tag Manager", "GTM", "GA4", "Analytics", "Consent Mode", "Web Development"]
+        }
+      ]
+    }
+    </script>
+</head>
+
+<body class="blog-post-page">
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KH2HGFPW"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <div class="bg-decoration blob-1"></div>
+    <div class="bg-decoration blob-2"></div>
+    <div class="bg-decoration blob-3"></div>
+
+    <nav>
+        <div class="nav-container">
+            <div class="logo" onclick="window.location.href='../index.html'">YunaData.</div>
+            <ul class="nav-links">
+                <li><a href="../index.html#about">About</a></li>
+                <li><a href="../index.html#portfolio">Projects</a></li>
+                <li><a href="../index.html#games">Games</a></li>
+                <li><a href="../blog" class="highlight" aria-current="page">Blog</a></li>
+                <li><a href="../index.html#contact" class="btn-nav">Contact</a></li>
+            </ul>
+            <button class="hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="primary-navigation">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+        </div>
+    </nav>
+
+    <main>
+        <section class="container">
+            <article style="max-width: 800px; margin: 0 auto; background: var(--white); padding: 3rem; border-radius: 20px; box-shadow: var(--shadow);">
+                
+                <div style="text-align: center; margin-bottom: 2.0rem;">
+                    <h1 style="font-size: 2.5rem; line-height: 1.3; margin-bottom: 1rem;">Tutorial: GTM GDPR-compliant Cookie Banner without Plugins</h1>
+                    
+                    <p style="margin: 0; color: #BFBFBF; font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.6;">
+                        <span>Published on <time datetime="2025-12-18">2025-12-18</time></span>
+                        <span style="margin: 0 10px; color: #ddd;">|</span>
+                        <span style="color: #BFBFBF;">Analytics & Tracking &bull; Data Privacy / GDPR &bull; Website Development</span>
+                    </p>
+                </div>
+
+                <img src="https://raw.githubusercontent.com/yunadata/yunadata.github.io/refs/heads/main/blog/tutorial-simple-GDPR-compliant-cookie-banner-without-plugins.webp" 
+                     alt="A cute pastel-style illustration of a laptop screen displaying a custom GDPR cookie banner with 'Accept' and 'Reject' buttons, floating above a background of Google Tag Manager and Google Analytics 4 interfaces." 
+                     style="width: 100%; height: auto; border-radius: 12px; margin-bottom: 2.5rem; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+
+                <div style="font-size: 1.1rem; line-height: 1.8; color: var(--text-color);">
+                    
+                    <p style="margin-bottom: 1.5rem;">I previously used CookieBot, Complianz etc. on my <a href="https://hotel.yunasportfolio.com" target="_blank" rel="noreferrer noopener">Project Hotel</a> (WordPress) website, and while it did the job, I didn’t want to rely on third-party plugins forever. I decided to go for a custom solution using only Google’s native tools. The result is a fast, compliant, and no-plugin cookie banner that gives me full control. Here is the exact code and setup I used to make it work.</p>
+
+                    <h3 style="font-size: 1.5rem; margin-top: 2rem; margin-bottom: 1rem;">Summary of My Cookie Banner’s Compliance Status</h3>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <td><strong>Requirement</strong></td>
+                                <td><strong>Status</strong></td>
+                                <td><strong>How it’s handled</strong></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Prior Consent</strong></td>
+                                <td>✅</td>
+                                <td>Default consent is set to “Denied” immediately; GA4 trigger is blocked until update.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Revocability</strong></td>
+                                <td>✅</td>
+                                <td>The sticky “Cookie Settings” button allows users to change choice anytime.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Persistence</strong></td>
+                                <td>✅</td>
+                                <td><code>localStorage</code> remembers the choice so users aren’t asked on every page.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Granularity</strong></td>
+                                <td>✅</td>
+                                <td>All Google storage types (Ad, Analytics, etc.) are mapped to the decision.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Zero Plugins</strong></td>
+                                <td>✅</td>
+                                <td>100% native GTM code.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Custom Styling</strong></td>
+                                <td>✅</td>
+                                <td>CSS is isolated in a dedicated tag (no inline styles), fully responsive, and loads at “Initialization” to prevent layout shifts.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3 style="font-size: 1.5rem; margin-top: 2rem; margin-bottom: 1rem;"><strong>Guide to building your GDPR-compliant cookie banner using only Google Tag Manager (GTM) and Google Analytics 4 (GA4)</strong></h3>
+
+                    <p style="margin-bottom: 1.5rem;">This setup uses Basic Consent Mode (Strict Blocking). This means no tracking tags will fire until your visitor explicitly clicks “Accept.”</p>
+
+                    <h3 style="font-size: 1.5rem; margin-top: 2rem; margin-bottom: 1rem;"><strong>Prerequisites</strong></h3>
+
+                    <ul style="margin-bottom: 1.5rem; padding-left: 1.5rem;">
+                        <li>You have a Google Tag Manager account installed on your WordPress site.</li>
+                        <li>You have a Google Analytics 4 (GA4) property.</li>
+                        <li>You are logged into your GTM Workspace.</li>
+                    </ul>
+
+                    <h3 style="font-size: 1.5rem; margin-top: 2rem; margin-bottom: 1rem;"><strong>Step 1: Create the Consent Logic Tag</strong></h3>
+
+                    <p style="margin-bottom: 1.5rem;">This script handles the banner display, saving user choices, and telling Google’s servers whether they are allowed to track data.</p>
+
+                    <ol style="margin-bottom: 1.5rem; padding-left: 1.5rem;">
+                        <li>Go to <strong>Tags</strong> &gt; <strong>New</strong>.</li>
+                        <li>Click <strong>Tag Configuration</strong> and select <strong>Custom HTML</strong>.</li>
+                        <li>Name the tag: <code>CMP - Consent Banner &amp; Logic</code>.</li>
+                        <li>Copy and paste the code below into the HTML box.</li>
+                    </ol>
+
+<pre style="background: #f4f4f4; padding: 15px; border-radius: 8px; overflow-x: auto; margin-bottom: 1.5rem;"><code>&lt;script&gt;
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+
+  // 1. SET DEFAULTS (Deny all except security)
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'functionality_storage': 'denied',
+    'personalization_storage': 'denied',
+    'security_storage': 'granted', 
+    'wait_for_update': 500
+  });
+
+  // 2. UI ELEMENTS (Banner + Sticky Button)
+  
+  // A. Main Banner HTML
+  var bannerHTML = 
+    '&lt;div id="simple-cookie-banner"&gt;' +
+      '&lt;div&gt;' +
+        '&lt;div&gt;' +
+          '&lt;strong&gt;I respect your privacy.&lt;/strong&gt;&lt;br&gt;' +
+          'I use cookies to analyze website traffic and improve your experience. Is that okay with you? ' +
+          '&lt;a href="/privacy-policy" target="_blank"&gt;Read more&lt;/a&gt;' +
+        '&lt;/div&gt;' +
+        '&lt;div class="button-container"&gt;' +
+           '&lt;button id="btn-deny"&gt;Reject&lt;/button&gt;' +
+           '&lt;button id="btn-accept"&gt;Accept&lt;/button&gt;' +
+        '&lt;/div&gt;' +
+      '&lt;/div&gt;' +
+    '&lt;/div&gt;';
+
+  // B. Sticky "Reopen" Button HTML
+  var reopenBtnHTML =
+    '&lt;div id="btn-reopen-settings" style="display: none; position: fixed; bottom: 20px; left: 20px; z-index: 99998; cursor: pointer; background: #fff; padding: 10px 15px; border-radius: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.2); font-family: sans-serif; font-size: 13px; border: 1px solid #ccc; display: flex; align-items: center; gap: 8px;"&gt;' +
+      '&lt;svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"&gt;&lt;path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5"&gt;&lt;/path&gt;&lt;path d="M8.5 8.5v.01"&gt;&lt;/path&gt;&lt;path d="M16 15.5v.01"&gt;&lt;/path&gt;&lt;path d="M12 12v.01"&gt;&lt;/path&gt;&lt;path d="M11 17v.01"&gt;&lt;/path&gt;&lt;path d="M7 14v.01"&gt;&lt;/path&gt;&lt;/svg&gt;' +
+      'Cookie Settings' +
+    '&lt;/div&gt;';
+
+  // 3. LOGIC
+  (function() {
+    // Inject HTML
+    var divBanner = document.createElement('div');
+    divBanner.innerHTML = bannerHTML;
+    document.body.appendChild(divBanner);
+
+    var divBtn = document.createElement('div');
+    divBtn.innerHTML = reopenBtnHTML;
+    document.body.appendChild(divBtn);
+
+    var bannerEl = document.getElementById('simple-cookie-banner');
+    var reopenEl = document.getElementById('btn-reopen-settings');
+
+    // Helper: Show Banner / Hide Button
+    function showBannerUI() {
+      bannerEl.style.display = 'block';
+      reopenEl.style.display = 'none';
+    }
+
+    // Helper: Hide Banner / Show Button
+    function hideBannerUI() {
+      bannerEl.style.display = 'none';
+      reopenEl.style.display = 'flex';
+    }
+
+    // Check saved consent
+    var consentChoice = localStorage.getItem('cookie_consent_status');
+
+    if (consentChoice === 'granted') {
+      gtag('consent', 'update', {
+        'ad_storage': 'granted',
+        'ad_user_data': 'granted',
+        'ad_personalization': 'granted',
+        'analytics_storage': 'granted',
+        'functionality_storage': 'granted',
+        'personalization_storage': 'granted',
+        'security_storage': 'granted'
+      });
+      window.dataLayer.push({'event': 'cookie_consent_update'}); 
+      hideBannerUI(); // Show the sticky button
+      
+    } else if (consentChoice === 'denied') {
+      // Defaults apply, just hide banner and show button
+      hideBannerUI(); 
+    } else {
+      // New user: Show Banner, hide sticky button
+      showBannerUI();
+    }
+
+    // --- EVENT LISTENERS ---
+
+    // 1. Click "Cookie Settings" (Re-open)
+    reopenEl.addEventListener('click', function() {
+      showBannerUI();
+    });
+
+    // 2. Click "Accept"
+    document.addEventListener('click', function(e) {
+      if(e.target &amp;&amp; e.target.id === 'btn-accept'){
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted',
+          'functionality_storage': 'granted',
+          'personalization_storage': 'granted',
+          'security_storage': 'granted'
+        });
+        localStorage.setItem('cookie_consent_status', 'granted');
+        window.dataLayer.push({'event': 'cookie_consent_update'});
+        hideBannerUI();
+      }
+    });
+
+    // 3. Click "Reject"
+    document.addEventListener('click', function(e) {
+      if(e.target &amp;&amp; e.target.id === 'btn-deny'){
+        // Explicitly set to denied (in case they are switching from Granted -&gt; Denied)
+        gtag('consent', 'update', {
+          'ad_storage': 'denied',
+          'ad_user_data': 'denied',
+          'ad_personalization': 'denied',
+          'analytics_storage': 'denied',
+          'functionality_storage': 'denied',
+          'personalization_storage': 'denied',
+          'security_storage': 'granted' // keep security granted
+        });
+        localStorage.setItem('cookie_consent_status', 'denied');
+        hideBannerUI();
+      }
+    });
+
+  })();
+&lt;/script&gt;</code></pre>
+
+                    <ol start="5" style="margin-bottom: 1.5rem; padding-left: 1.5rem;">
+                        <li><strong>Triggering:</strong> Click the trigger box and select <strong>Consent Initialization – All Pages</strong>.
+                            <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                                <li><em>Note: This is critical. It ensures the defaults are set before anything else loads.</em></li>
+                            </ul>
+                        </li>
+                        <li>Click <strong>Save</strong>.</li>
+                    </ol>
+
+                    <h3 style="font-size: 1.5rem; margin-top: 2rem; margin-bottom: 1rem;"><strong>Step 2: Create the “Gatekeeper” Trigger</strong></h3>
+
+                    <p style="margin-bottom: 1.5rem;">We need a special trigger that only fires <strong>after</strong> consent is confirmed.</p>
+
+                    <ol style="margin-bottom: 1.5rem; padding-left: 1.5rem;">
+                        <li>Go to <strong>Triggers</strong> &gt; <strong>New</strong>.</li>
+                        <li>Click <strong>Trigger Configuration</strong>.</li>
+                        <li>Select <strong>Custom Event</strong>.</li>
+                        <li><strong>Event Name: </strong><code>cookie_consent_update</code>
+                            <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                                <li><em>Note: Must match exactly (case sensitive).</em></li>
+                            </ul>
+                        </li>
+                        <li><strong>Trigger Name:</strong> <code>Custom Event - Cookie Consent Update</code>.</li>
+                        <li>Click <strong>Save</strong>.</li>
+                    </ol>
+
+                    <h3 style="font-size: 1.5rem; margin-top: 2rem; margin-bottom: 1rem;"><strong>Step 3: Connect Your Tags to the Trigger</strong></h3>
+
+                    <p style="margin-bottom: 1.5rem;">Now we must tell GA4 and other page-load tags to wait for the trigger we just created.</p>
+
+                    <ol style="margin-bottom: 1.5rem; padding-left: 1.5rem;">
+                        <li>Open your <strong>Google Tag</strong> (your main GA4 configuration).</li>
+                        <li>Scroll to <strong>Triggering</strong>.</li>
+                        <li><strong>Remove:</strong> <code>Initialization - All Pages</code> (or <code>All Pages</code>).</li>
+                        <li><strong>Add:</strong> <code>Custom Event - Cookie Consent Update</code>.</li>
+                        <li>Click <strong>Save</strong>.</li>
+                    </ol>
+
+                    <p style="margin-bottom: 1.5rem;"><strong>Repeat this for any other tag that fires on page load</strong> (t.ex. if you also have a tag like “GA4 event all pages initialization” tag).</p>
+
+                    <ul style="margin-bottom: 1.5rem; padding-left: 1.5rem;">
+                        <li><em>Do NOT change event-based tags like “Add to Cart” or “Button Click”. Those are fine as they are.</em></li>
+                    </ul>
+
+                    <h3 style="font-size: 1.5rem; margin-top: 2rem; margin-bottom: 1rem;"><strong>Step 3 (Part 2): Add an Extra Layer of Security (Native Consent Checks)</strong></h3>
+
+                    <p style="margin-bottom: 1.5rem;">While changing the trigger (Step 3) tells the tag <em>when</em> to fire, GTM has a built-in “fail-safe” feature that checks <em>if</em> the user has actually given permission for that specific type of tracking.</p>
+
+                    <p style="margin-bottom: 1.5rem;">(This prevents a situation where a tag might accidentally fire due to a trigger mix-up. It ensures that a Marketing tag <strong>never</strong> fires if the user only consented to Analytics. This is good to have in place in case you decide to upgrade the cookie banner in the future to have more settings.)</p>
+
+                    <ol style="margin-bottom: 1.5rem; padding-left: 1.5rem;">
+                        <li>Open your <strong>Google Tag</strong> (or any other tracking tag like Facebook Pixel/Google Ads).</li>
+                        <li>Click on <strong>Advanced Settings</strong> to expand it.</li>
+                        <li>Scroll down to <strong>Consent Settings</strong>.</li>
+                        <li>Select <strong>Require additional consent for tag to fire</strong>.</li>
+                        <li>In the field that appears, type the Consent Type that matches the tag’s purpose.</li>
+                    </ol>
+
+                    <p style="margin-bottom: 1.5rem;"><strong>Common Mappings:</strong></p>
+
+                    <ul style="margin-bottom: 1.5rem; padding-left: 1.5rem;">
+                        <li><strong>Google Analytics (GA4):</strong> Type <code>analytics_storage</code></li>
+                        <li><strong>Google Ads / Remarketing:</strong> Type <code>ad_storage</code> (and often <code>ad_personalization</code>)</li>
+                        <li><strong>Chat Widgets / UX Tools:</strong> Type <code>functionality_storage</code></li>
+                        <li><strong>Personalization Tools:</strong> Type <code>personalization_storage</code></li>
+                    </ul>
+
+                    <p style="margin-bottom: 1.5rem;"><strong>For your GA4 Tag:</strong> Enter <code>analytics_storage</code>. Now, even if the trigger says “Go,” GTM will block the tag if the user hasn’t accepted “Analytics” cookies.</p>
+
+                    <h3 style="font-size: 1.5rem; margin-top: 2rem; margin-bottom: 1rem;"><strong>Step 4: Verify with Preview Mode</strong></h3>
+
+                    <ol style="margin-bottom: 1.5rem; padding-left: 1.5rem;">
+                        <li>Click <strong>Preview</strong> in the top right of GTM.</li>
+                        <li>Enter your website URL and click <strong>Connect</strong>.</li>
+                        <li><strong>Scenario A (New User):</strong>
+                            <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                                <li>The Banner should appear at the bottom.</li>
+                                <li>In the GTM Debugger, your “Google Tag” should <strong>NOT</strong> have fired yet.</li>
+                                <li>Click <strong>Accept</strong>.</li>
+                                <li>The Banner disappears.</li>
+                                <li>In the GTM Debugger, your “Google Tag” should now <strong>Fire</strong> on the event <code>cookie_consent_update</code>.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Scenario B (Returning User):</strong>
+                            <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                                <li>Reload the page.</li>
+                                <li>The Banner should remain hidden.</li>
+                                <li>A small “Cookie Settings” button should appear in the bottom left.</li>
+                                <li>Your “Google Tag” should fire automatically because the script remembered your choice.</li>
+                            </ul>
+                        </li>
+                    </ol>
+
+                    <h3 style="font-size: 1.5rem; margin-top: 2rem; margin-bottom: 1rem;"><strong>Step 5: Publish</strong></h3>
+
+                    <p style="margin-bottom: 1.5rem;">If the preview works correctly:</p>
+
+                    <ol style="margin-bottom: 1.5rem; padding-left: 1.5rem;">
+                        <li>Click <strong>Submit</strong> in the top right corner.</li>
+                        <li>Add a version name (e.g., “Added Custom Cookie Banner”).</li>
+                        <li>Click <strong>Publish</strong>.</li>
+                    </ol>
+
+                    <p style="margin-bottom: 1.5rem;">We are now live and compliant!</p>
+
+                    <h2 style="font-size: 1.8rem; margin-top: 2rem; margin-bottom: 1rem;"><strong>OPTIONAL: The Bow on Top</strong></h2>
+
+                    <p style="margin-bottom: 1.5rem;">This is the part where we style the cookie banner to match our website better.</p>
+
+                    <h3 style="font-size: 1.5rem; margin-top: 2rem; margin-bottom: 1rem;"><strong>The Clean Method: Dedicated CSS Tag</strong></h3>
+
+                    <p style="margin-bottom: 1.5rem;">We will create a new tag that injects a <code>&lt;style&gt;</code> block into your website’s <code>&lt;head&gt;</code> section.</p>
+
+                    <h4 style="font-size: 1.25rem; margin-top: 2rem; margin-bottom: 1rem;"><strong>Step 1: Create the Dedicated CSS Tag</strong></h4>
+
+                    <ol style="margin-bottom: 1.5rem; padding-left: 1.5rem;">
+                        <li>Go to <strong>Tags</strong> &gt; <strong>New</strong>.</li>
+                        <li><strong>Tag Configuration:</strong> Select <strong>Custom HTML</strong>.</li>
+                        <li><strong>Name the tag:</strong> <code>Style - Custom Cookie Banner CSS</code>.</li>
+                        <li>Paste the following CSS into the HTML box (and edit the CSS styling to your liking):</li>
+                    </ol>
+
+<pre style="background: #f4f4f4; padding: 15px; border-radius: 8px; overflow-x: auto; margin-bottom: 1.5rem;"><code>&lt;style&gt;
+  /* Base Banner Container */
+  #simple-cookie-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #f0f0f0; /* Light Gray Background */
+    border-top: 5px solid #0090ff; /* Blue accent border */
+    padding: 20px;
+    box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.1);
+    z-index: 99999;
+    font-family: Arial, sans-serif;
+    font-size: 15px;
+    color: #333;
+  }
+
+  /* Inner Content Alignment */
+  #simple-cookie-banner &gt; div {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  /* Text Area */
+  #simple-cookie-banner strong {
+    color: #000;
+  }
+
+  /* Button Container */
+  #simple-cookie-banner div[style*="display: flex;"] {
+    display: flex;
+    gap: 15px;
+  }
+
+  /* --- Button Styling --- */
+  #simple-cookie-banner button {
+    padding: 12px 25px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    font-size: 14px;
+    min-width: 120px;
+  }
+
+  /* Reject Button (Secondary) */
+  #btn-deny {
+    border: 2px solid #555;
+    background: #f0f0f0;
+    color: #555;
+  }
+
+  #btn-deny:hover {
+    background: #ddd;
+  }
+
+  /* Accept Button (Primary) */
+  #btn-accept {
+    border: none;
+    background: #0090ff; /* Primary Blue Color */
+    color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  #btn-accept:hover {
+    background: #0077e6; /* Darker Blue on Hover */
+  }
+
+  /* --- Sticky Settings Button --- */
+  #btn-reopen-settings {
+    position: fixed;
+    bottom: 25px !important; /* Higher specificity override */
+    left: 25px !important;
+    z-index: 99998;
+    cursor: pointer;
+    background: #fff;
+    padding: 10px 18px;
+    border-radius: 25px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+  }
+  
+  #btn-reopen-settings:hover {
+    background: #f5f5f5;
+  }
+  
+  /* Media query for mobile responsiveness */
+  @media (max-width: 768px) {
+    #simple-cookie-banner &gt; div {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    #simple-cookie-banner div[style*="display: flex;"] {
+        flex-direction: column;
+        gap: 10px;
+    }
+    #simple-cookie-banner button {
+        width: 100%;
+        min-width: unset;
+    }
+  }
+
+&lt;/style&gt;</code></pre>
+
+                    <ol start="5" style="margin-bottom: 1.5rem; padding-left: 1.5rem;">
+                        <li><strong>Triggering:</strong> Click the trigger box and select <strong>Initialization – All Pages</strong>.
+                            <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                                <li><em>Why Initialization?</em> CSS should load as early as possible so the banner doesn’t appear unstyled (FOUC). This tag has no tracking function, so it’s safe to fire early.</li>
+                            </ul>
+                        </li>
+                        <li>Click <strong>Save</strong>.</li>
+                    </ol>
+
+                    <h4 style="font-size: 1.25rem; margin-top: 2rem; margin-bottom: 1rem;"><strong>Step 2: Update the Consent Logic Tag</strong></h4>
+
+                    <p style="margin-bottom: 1.5rem;">Now you need to remove <strong>ALL</strong> the inline <code>style="..."</code> attributes from the <code>CMP - Consent Banner &amp; Logic</code> tag.</p>
+
+                    <ol style="margin-bottom: 1.5rem; padding-left: 1.5rem;">
+                        <li>Open the <strong><code>CMP - Consent Banner &amp; Logic</code></strong> Custom HTML Tag.</li>
+                        <li>Find the <code>bannerHTML</code> and <code>reopenBtnHTML</code> variables.</li>
+                        <li><strong>Delete every <code>style="..."</code> attribute</strong> from the HTML strings, leaving only the structural HTML and IDs.</li>
+                    </ol>
+
+                    <p style="margin-bottom: 1.5rem;"><strong>The resulting <code>CMP - Consent Banner &amp; Logic</code> code should look like this:</strong></p>
+
+<pre style="background: #f4f4f4; padding: 15px; border-radius: 8px; overflow-x: auto; margin-bottom: 1.5rem;"><code>&lt;script&gt;
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+
+  // 1. SET DEFAULTS
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'functionality_storage': 'denied',
+    'personalization_storage': 'denied',
+    'security_storage': 'granted', 
+    'wait_for_update': 500
+  });
+
+  // 2. UI ELEMENTS
+  var bannerHTML = 
+    '&lt;div id="simple-cookie-banner"&gt;' +
+      '&lt;div&gt;' +
+        '&lt;div&gt;' +
+          '&lt;strong&gt;I respect your privacy.&lt;/strong&gt;&lt;br&gt;' +
+          'I use cookies to analyze website traffic and improve your experience. Is that okay with you? ' +
+          '&lt;a href="/privacy-policy" target="_blank"&gt;Read more&lt;/a&gt;' +
+        '&lt;/div&gt;' +
+        '&lt;div class="button-container"&gt;' +
+           '&lt;button id="btn-deny"&gt;Reject&lt;/button&gt;' +
+           '&lt;button id="btn-accept"&gt;Accept&lt;/button&gt;' +
+        '&lt;/div&gt;' +
+      '&lt;/div&gt;' +
+    '&lt;/div&gt;';
+
+  var reopenBtnHTML =
+    '&lt;div id="btn-reopen-settings"&gt;' +
+      '&lt;svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"&gt;&lt;path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5"&gt;&lt;/path&gt;&lt;path d="M8.5 8.5v.01"&gt;&lt;/path&gt;&lt;path d="M16 15.5v.01"&gt;&lt;/path&gt;&lt;path d="M12 12v.01"&gt;&lt;/path&gt;&lt;path d="M11 17v.01"&gt;&lt;/path&gt;&lt;path d="M7 14v.01"&gt;&lt;/path&gt;&lt;/svg&gt;' +
+      'Cookie Settings' +
+    '&lt;/div&gt;';
+
+  // 3. LOGIC (No changes to logic needed)
+  (function() {
+    var divBanner = document.createElement('div');
+    divBanner.innerHTML = bannerHTML;
+    document.body.appendChild(divBanner);
+
+    var divBtn = document.createElement('div');
+    divBtn.innerHTML = reopenBtnHTML;
+    document.body.appendChild(divBtn);
+
+    var bannerEl = document.getElementById('simple-cookie-banner');
+    var reopenEl = document.getElementById('btn-reopen-settings');
+
+    function showBannerUI() {
+      bannerEl.style.display = 'block';
+      reopenEl.style.display = 'none';
+    }
+
+    function hideBannerUI() {
+      bannerEl.style.display = 'none';
+      reopenEl.style.display = 'flex';
+    }
+
+    var consentChoice = localStorage.getItem('cookie_consent_status');
+
+    if (consentChoice === 'granted') {
+      gtag('consent', 'update', {
+        'ad_storage': 'granted',
+        'ad_user_data': 'granted',
+        'ad_personalization': 'granted',
+        'analytics_storage': 'granted',
+        'functionality_storage': 'granted',
+        'personalization_storage': 'granted',
+        'security_storage': 'granted'
+      });
+      window.dataLayer.push({'event': 'cookie_consent_update'}); 
+      hideBannerUI();
+      
+    } else if (consentChoice === 'denied') {
+      hideBannerUI(); 
+    } else {
+      showBannerUI();
+    }
+
+    reopenEl.addEventListener('click', function() {
+      showBannerUI();
+    });
+
+    document.addEventListener('click', function(e) {
+      if(e.target &amp;&amp; e.target.id === 'btn-accept'){
+        gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted',
+          'functionality_storage': 'granted',
+          'personalization_storage': 'granted',
+          'security_storage': 'granted'
+        });
+        localStorage.setItem('cookie_consent_status', 'granted');
+        window.dataLayer.push({'event': 'cookie_consent_update'});
+        hideBannerUI();
+      }
+    });
+
+    document.addEventListener('click', function(e) {
+      if(e.target &amp;&amp; e.target.id === 'btn-deny'){
+        gtag('consent', 'update', {
+          'ad_storage': 'denied',
+          'ad_user_data': 'denied',
+          'ad_personalization': 'denied',
+          'analytics_storage': 'denied',
+          'functionality_storage': 'denied',
+          'personalization_storage': 'denied',
+          'security_storage': 'granted'
+        });
+        localStorage.setItem('cookie_consent_status', 'denied');
+        hideBannerUI();
+      }
+    });
+  })();
+&lt;/script&gt;</code></pre>
+
+                    <p style="margin-bottom: 1.5rem;">You can now adjust any color, font, or layout by editing <em>only</em> the <code>Style - Custom Cookie Banner CSS</code> tag.</p>
+
+                    <h2 style="font-size: 1.8rem; margin-top: 2rem; margin-bottom: 1rem;">Check out my custom cookie banner live on my [<a href="https://hotel.yunasportfolio.com/" target="_blank" rel="noreferrer noopener">Project Hotel</a>] website!</h2>
+
+                    <p style="margin-bottom: 1.5rem;">Update 2025-12-18:<br>It’s now also live on both my portfolio websites, with some small upgrades and visual changes. Check the look on my [<a href="https://yunadata.github.io/" target="_blank" rel="noreferrer noopener">GitHub Page</a>].</p>
+
+                </div>
+                
+                <div style="text-align: center; margin-top: 4rem; padding-top: 2rem; border-top: 1px solid rgba(0,0,0,0.05);">
+                    <a href="../blog" class="btn-small">← Back to Blog</a>
+                </div>
+            </article>
+        </section>
+    </main>
+
+    <footer>
+        <p>Made with 💖 by Yuna An Vu.</p>
+        <p>
+            &copy; <span id="copyright-year">2026</span> | <a href="../privacy-policy.html" style="font-weight: 600;">Privacy Policy</a>
+        </p>
+    </footer>
+
+    <script src="../script.js"></script>
+</body>
+</html>
