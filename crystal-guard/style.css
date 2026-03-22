@@ -197,6 +197,8 @@ canvas {
     transition: 0.2s;
     position: relative;
     overflow: hidden;
+    /* Added this line to force the button to use the body's VT323 font */
+    font-family: inherit; 
 }
 
 .tower-btn:hover { 
