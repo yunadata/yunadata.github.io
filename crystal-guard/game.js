@@ -660,9 +660,9 @@ function endGame() {
     document.getElementById('overlay').classList.add('mode-game-over');
     document.getElementById('overlay').classList.remove('hidden');
     
-    document.getElementById('overlay-title').innerText = "SYSTEM FAILURE";
+    document.getElementById('overlay-title').innerText = "GAME OVER";
     document.getElementById('overlay-desc').innerText = "The Crystal has shattered.";
-    document.getElementById('start-btn').innerText = "REBOOT SYSTEM";
+    document.getElementById('start-btn').innerText = "REBOOT GAME";
     document.getElementById('start-btn').classList.remove('hidden');
     document.getElementById('submit-score-container').classList.remove('hidden');
     document.getElementById('final-score').innerText = gameState.score;
