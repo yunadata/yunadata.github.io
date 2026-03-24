@@ -765,18 +765,20 @@ async function submitScore() {
                 score: gameState.score,
                 timestamp: Date.now()
             });
-			// --- TRACKING CODE START ---
-            window.dataLayer = window.dataLayer || [];
-            window.dataLayer.push({
-                'event': 'score_submission', // Standard event name for both games
-                'game_score': gameState.score,
-                'game_name': 'Bubble Pop'
-            });
-            // --- TRACKING CODE END ---
             alert("Score Uploaded!");
         } else {
             alert("Score uploaded, but you didn't beat your high score!");
         }
+
+        // --- TRACKING CODE START ---
+        // Moved here: Now it tracks all successful submission attempts!
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+            'event': 'score_submission', 
+            'game_score': gameState.score,
+            'game_name': 'Bubble Pop'
+        });
+        // --- TRACKING CODE END ---
 
         document.getElementById('submit-score-container').classList.add('hidden');
         fetchLeaderboard();
