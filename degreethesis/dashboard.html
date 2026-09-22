@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creative Database - Growth Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            pink: '#ff99cc',
+                            cyan: '#b6e6e6',
+                            purple: '#ccc8f1',
+                            dark: '#3b3341',
+                            medium: '#4f4753',
+                            ivory: '#fffcf7'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gradient-to-br from-brand-pink to-brand-purple min-h-screen p-8 font-sans text-brand-dark">
+
+    <!-- Dashboard Container -->
+    <div class="max-w-5xl mx-auto space-y-10">
+        
+        <!-- ========================================== -->
+        <!-- PART 1: WIX TO APP USER JOURNEY (GA4)      -->
+        <!-- ========================================== -->
+        <div class="bg-brand-ivory rounded-xl shadow-lg border-[3px] border-brand-dark overflow-hidden">
+            <!-- Card Header -->
+            <div class="px-6 py-5 border-b-[3px] border-brand-dark flex justify-between items-center bg-brand-dark">
+                <div>
+                    <h2 class="text-xl font-black text-brand-pink tracking-tight uppercase">WIX TO APP USER JOURNEY</h2>
+                    <p class="text-sm text-brand-ivory mt-1 font-medium">Sourced from GA4 UTM Parameters</p>
+                </div>
+                <div class="text-right flex flex-col items-end">
+                    <span class="inline-flex items-center px-3 py-1 rounded-md bg-brand-cyan text-brand-dark text-xs font-bold border-2 border-brand-dark shadow-[2px_2px_0px_#4f4753]">
+                        Aug 22 - Sep 18, 2026
+                    </span>
+                    <p class="text-xs text-brand-ivory font-bold mt-2">Total Verified Sessions: 169</p>
+                </div>
+            </div>
+
+            <!-- Card Body -->
+            <div class="p-8">
+                <!-- Flow Visualization: 3 Columns -->
+                <div class="flex flex-col md:flex-row items-stretch justify-between gap-6">
+                    
+                    <!-- COLUMN 1: Wix Origin -->
+                    <div class="w-full md:w-1/3 flex flex-col justify-center space-y-4 relative">
+                        <h3 class="text-xs font-black text-brand-dark uppercase tracking-widest mb-2">Origin (Wix Site)</h3>
+                        
+                        <div class="bg-brand-ivory border-2 border-brand-dark p-3 rounded-lg shadow-[2px_2px_0px_#3b3341] relative z-10 hover:bg-brand-pink/20 transition-colors">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-sm font-bold text-brand-dark">Homepage</span>
+                                <span class="text-sm font-black text-brand-dark">53</span>
+                            </div>
+                            <span class="text-xs text-brand-dark font-medium bg-brand-cyan px-2 py-0.5 rounded border border-brand-dark">Nav Menu Link</span>
+                        </div>
+
+                        <div class="bg-brand-ivory border-2 border-brand-dark p-3 rounded-lg shadow-[2px_2px_0px_#3b3341] relative z-10 hover:bg-brand-pink/20 transition-colors">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-sm font-bold text-brand-dark">Homepage</span>
+                                <span class="text-sm font-black text-brand-dark">20</span>
+                            </div>
+                            <span class="text-xs text-brand-dark font-medium bg-brand-cyan px-2 py-0.5 rounded border border-brand-dark">Main CTA Button</span>
+                        </div>
+
+                        <div class="bg-brand-ivory border-2 border-brand-dark p-3 rounded-lg shadow-[2px_2px_0px_#3b3341] relative z-10">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-sm font-bold text-brand-dark">Internal / Social</span>
+                                <span class="text-sm font-black text-brand-dark">10</span>
+                            </div>
+                            <span class="text-xs text-brand-medium font-medium">Other Tagged Links</span>
+                        </div>
+
+                        <div class="bg-brand-ivory border-2 border-dashed border-brand-medium p-3 rounded-lg relative z-10 opacity-80">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-sm font-bold text-brand-medium">Untagged Links</span>
+                                <span class="text-sm font-black text-brand-medium">86</span>
+                            </div>
+                            <span class="text-xs text-brand-medium font-medium">No UTMs attached</span>
+                        </div>
+                    </div>
+
+                    <!-- COLUMN 2: Funnel Neck -->
+                    <div class="w-full md:w-1/4 flex flex-col justify-center items-center relative py-8">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <svg class="w-full h-full text-brand-dark opacity-20 absolute z-0" preserveAspectRatio="none" viewBox="0 0 100 100">
+                                <path d="M0,20 C50,20 50,50 100,50" fill="none" stroke="currentColor" stroke-width="3"/>
+                                <path d="M0,50 C50,50 50,50 100,50" fill="none" stroke="currentColor" stroke-width="3"/>
+                                <path d="M0,80 C50,80 50,50 100,50" fill="none" stroke="currentColor" stroke-width="3"/>
+                            </svg>
+                        </div>
+                        
+                        <div class="bg-brand-pink text-brand-dark rounded-full h-24 w-24 flex flex-col justify-center items-center shadow-[4px_4px_0px_#3b3341] relative z-10 border-[3px] border-brand-dark">
+                            <span class="text-2xl font-black">169</span>
+                            <span class="text-[10px] font-black uppercase tracking-widest mt-1">Sessions</span>
+                        </div>
+                    </div>
+
+                    <!-- COLUMN 3: App Destination -->
+                    <div class="w-full md:w-1/3 flex flex-col justify-center space-y-4 relative">
+                        <h3 class="text-xs font-black text-brand-dark uppercase tracking-widest mb-2">Destination (App)</h3>
+                        
+                        <div class="bg-brand-ivory border-2 border-brand-dark p-3 rounded-lg shadow-[2px_2px_0px_#3b3341] relative z-10">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-sm font-bold text-brand-dark truncate">/explore</span>
+                                <span class="text-sm font-black text-brand-dark">86</span>
+                            </div>
+                            <div class="w-full bg-brand-dark/10 rounded-full h-2 border border-brand-dark/20 overflow-hidden">
+                                <div class="bg-brand-pink h-full border-r border-brand-dark/20" style="width: 51%"></div>
+                            </div>
+                        </div>
+
+                        <div class="bg-brand-ivory border-2 border-brand-dark p-3 rounded-lg shadow-[2px_2px_0px_#3b3341] relative z-10">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-sm font-bold text-brand-dark truncate">/signup/*</span>
+                                <span class="text-sm font-black text-brand-dark">37</span>
+                            </div>
+                            <div class="w-full bg-brand-dark/10 rounded-full h-2 border border-brand-dark/20 overflow-hidden">
+                                <div class="bg-brand-cyan h-full border-r border-brand-dark/20" style="width: 22%"></div>
+                            </div>
+                        </div>
+
+                        <div class="bg-brand-ivory border-2 border-brand-dark p-3 rounded-lg shadow-[2px_2px_0px_#3b3341] relative z-10">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-sm font-bold text-brand-dark truncate">/search</span>
+                                <span class="text-sm font-black text-brand-dark">22</span>
+                            </div>
+                            <div class="w-full bg-brand-dark/10 rounded-full h-2 border border-brand-dark/20 overflow-hidden">
+                                <div class="bg-brand-purple h-full border-r border-brand-dark/20" style="width: 13%"></div>
+                            </div>
+                        </div>
+
+                        <div class="bg-brand-ivory border-2 border-brand-dark p-3 rounded-lg shadow-[2px_2px_0px_#3b3341] relative z-10">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-sm font-bold text-brand-medium truncate">Other Pages</span>
+                                <span class="text-sm font-black text-brand-medium">24</span>
+                            </div>
+                            <div class="w-full bg-brand-dark/10 rounded-full h-2 border border-brand-dark/20 overflow-hidden">
+                                <div class="bg-brand-medium h-full border-r border-brand-dark/20" style="width: 14%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analysis Note -->
+                <div class="mt-10 bg-brand-cyan/20 rounded-lg p-5 border-2 border-brand-dark flex items-start shadow-[4px_4px_0px_#3b3341]">
+                    <svg class="w-6 h-6 text-brand-dark mt-0.5 mr-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <div>
+                        <h4 class="text-sm font-black text-brand-dark uppercase tracking-wide">Data Insight</h4>
+                        <p class="text-sm text-brand-dark font-medium mt-1 leading-relaxed">
+                            Of the 169 sessions mapped, 83 had specific UTM tags. The Navigation Menu on the homepage drove the majority of the trackable intent (53 sessions), outperforming the Main CTA button (20 sessions). <br/><br/>
+                            <strong class="font-black bg-brand-pink/30 px-1 rounded">Recommendation:</strong> Ensure all links on the Wix site pointing to the app have UTM parameters attached (e.g., <code class="bg-brand-ivory border border-brand-dark px-1 rounded font-mono text-xs">?utm_source=website&utm_medium=pricing_page</code>) so the 86 "Untagged Links" can be properly identified in the future.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- PART 2: SEARCH INTENT COMPARISON           -->
+        <!-- ========================================== -->
+        <div class="bg-brand-ivory rounded-xl shadow-lg border-[3px] border-brand-dark overflow-hidden">
+            
+            <!-- Card Header -->
+            <div class="px-6 py-5 border-b-[3px] border-brand-dark flex justify-between items-center bg-brand-dark">
+                <div>
+                    <h2 class="text-xl font-black text-brand-pink tracking-tight uppercase">SEARCH INTENT COMPARISON</h2>
+                    <p class="text-sm text-brand-ivory mt-1 font-medium">Website (Wix) vs. Web App (GSC Data)</p>
+                </div>
+                <div class="text-right flex flex-col items-end">
+                    <span class="inline-flex items-center px-3 py-1 rounded-md bg-brand-cyan text-brand-dark text-xs font-bold border-2 border-brand-dark shadow-[2px_2px_0px_#4f4753]">
+                        Aug 22 - Sep 18, 2026
+                    </span>
+                    <p class="text-xs text-brand-ivory font-bold mt-2">Indexation Contrast</p>
+                </div>
+            </div>
+
+            <!-- KPI Comparison Banner -->
+            <div class="grid grid-cols-2 divide-x-[3px] divide-brand-dark border-b-[3px] border-brand-dark bg-brand-ivory">
+                <div class="px-6 py-6 flex flex-col items-center justify-center bg-brand-pink/10">
+                    <p class="text-xs font-black text-brand-dark uppercase tracking-widest bg-brand-pink px-3 py-1 rounded border-2 border-brand-dark">The Marketing Net (Wix)</p>
+                    <div class="flex items-baseline mt-4 gap-8">
+                        <div class="text-center">
+                            <p class="text-4xl font-black text-brand-dark drop-shadow-sm">15.2K</p>
+                            <p class="text-xs text-brand-medium font-bold uppercase mt-1">Impressions</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-4xl font-black text-brand-dark drop-shadow-sm">78</p>
+                            <p class="text-xs text-brand-medium font-bold uppercase mt-1">Clicks</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="px-6 py-6 flex flex-col items-center justify-center bg-brand-purple/10">
+                    <p class="text-xs font-black text-brand-dark uppercase tracking-widest bg-brand-purple px-3 py-1 rounded border-2 border-brand-dark">The Deep Content (App)</p>
+                    <div class="flex items-baseline mt-4 gap-8">
+                        <div class="text-center">
+                            <p class="text-4xl font-black text-brand-dark drop-shadow-sm">200</p>
+                            <p class="text-xs text-brand-medium font-bold uppercase mt-1">Impressions</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-4xl font-black text-brand-dark drop-shadow-sm">1</p>
+                            <p class="text-xs text-brand-medium font-bold uppercase mt-1">Clicks</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data Body -->
+            <div class="p-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+                
+                <!-- Table 1: Wix Queries -->
+                <div>
+                    <h3 class="text-sm font-black text-brand-dark mb-2 flex items-center uppercase tracking-wide">
+                        <span class="w-3 h-3 rounded-full bg-brand-pink border-2 border-brand-dark mr-2"></span>
+                        Wix: Broad Discovery & Branded
+                    </h3>
+                    <p class="text-xs text-brand-medium font-medium mb-4">Attracting general industry terms and direct brand lookups.</p>
+                    <div class="border-2 border-brand-dark rounded-lg overflow-hidden shadow-[2px_2px_0px_#3b3341]">
+                        <table class="min-w-full divide-y-2 divide-brand-dark text-sm">
+                            <thead class="bg-brand-pink/20">
+                                <tr>
+                                    <th class="px-4 py-3 text-left font-black text-brand-dark">Query</th>
+                                    <th class="px-4 py-3 text-right font-black text-brand-dark">Impr.</th>
+                                    <th class="px-4 py-3 text-right font-black text-brand-dark">Clicks</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-brand-ivory divide-y divide-brand-dark/20">
+                                <tr>
+                                    <td class="px-4 py-3 text-brand-dark font-bold">creative database <span class="text-[10px] bg-brand-dark text-brand-ivory px-1.5 py-0.5 rounded ml-1 uppercase">Brand</span></td>
+                                    <td class="px-4 py-3 text-right text-brand-medium font-medium">84</td>
+                                    <td class="px-4 py-3 text-right text-brand-dark font-black">49</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 text-brand-dark font-bold">marknadsplan mall</td>
+                                    <td class="px-4 py-3 text-right text-brand-medium font-medium">174</td>
+                                    <td class="px-4 py-3 text-right text-brand-dark font-black">4</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 text-brand-dark font-bold">kommunikationsplan</td>
+                                    <td class="px-4 py-3 text-right text-brand-medium font-medium">610</td>
+                                    <td class="px-4 py-3 text-right text-brand-dark font-black">3</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 text-brand-dark font-bold">kommunikationsplan mall</td>
+                                    <td class="px-4 py-3 text-right text-brand-medium font-medium">50</td>
+                                    <td class="px-4 py-3 text-right text-brand-dark font-black">3</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 text-brand-dark font-bold">kommunikationsplan exempel</td>
+                                    <td class="px-4 py-3 text-right text-brand-medium font-medium">45</td>
+                                    <td class="px-4 py-3 text-right text-brand-dark font-black">3</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Table 2: App Queries -->
+                <div>
+                    <h3 class="text-sm font-black text-brand-dark mb-2 flex items-center uppercase tracking-wide">
+                        <span class="w-3 h-3 rounded-full bg-brand-purple border-2 border-brand-dark mr-2"></span>
+                        App: Niche Profiles & Deep Search
+                    </h3>
+                    <p class="text-xs text-brand-medium font-medium mb-4">Google is crawling inside the app to index user profiles and skills.</p>
+                    <div class="border-2 border-brand-dark rounded-lg overflow-hidden shadow-[2px_2px_0px_#3b3341]">
+                        <table class="min-w-full divide-y-2 divide-brand-dark text-sm">
+                            <thead class="bg-brand-purple/30">
+                                <tr>
+                                    <th class="px-4 py-3 text-left font-black text-brand-dark">Query</th>
+                                    <th class="px-4 py-3 text-right font-black text-brand-dark">Impr.</th>
+                                    <th class="px-4 py-3 text-right font-black text-brand-dark">Clicks</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-brand-ivory divide-y divide-brand-dark/20">
+                                <tr>
+                                    <td class="px-4 py-3 text-brand-dark font-bold">copywriting luleå <span class="text-[10px] bg-brand-dark text-brand-ivory px-1.5 py-0.5 rounded ml-1 uppercase">Skill</span></td>
+                                    <td class="px-4 py-3 text-right text-brand-medium font-medium">28</td>
+                                    <td class="px-4 py-3 text-right text-brand-medium font-black">0</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 text-brand-dark font-bold">creative database</td>
+                                    <td class="px-4 py-3 text-right text-brand-medium font-medium">26</td>
+                                    <td class="px-4 py-3 text-right text-brand-dark font-black">1</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 text-brand-dark font-bold">genom mina ögon</td>
+                                    <td class="px-4 py-3 text-right text-brand-medium font-medium">12</td>
+                                    <td class="px-4 py-3 text-right text-brand-medium font-black">0</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 text-brand-dark font-bold">aria anayati <span class="text-[10px] bg-brand-dark text-brand-ivory px-1.5 py-0.5 rounded ml-1 uppercase">Name</span></td>
+                                    <td class="px-4 py-3 text-right text-brand-medium font-medium">11</td>
+                                    <td class="px-4 py-3 text-right text-brand-medium font-black">0</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 text-brand-dark font-bold">camera operator gothenburg</td>
+                                    <td class="px-4 py-3 text-right text-brand-medium font-medium">9</td>
+                                    <td class="px-4 py-3 text-right text-brand-medium font-black">0</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+            
+            <!-- SEO Insight -->
+            <div class="px-8 pb-8">
+                <div class="bg-brand-purple/20 rounded-lg p-5 border-2 border-brand-dark flex items-start shadow-[4px_4px_0px_#3b3341]">
+                    <svg class="w-6 h-6 text-brand-dark mt-0.5 mr-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                    <div>
+                        <h4 class="text-sm font-black text-brand-dark uppercase tracking-wide">Strategic Insight: Programmatic SEO</h4>
+                        <p class="text-sm text-brand-dark font-medium mt-1 leading-relaxed">
+                            Your ecosystem is serving two distinct search intents. The <strong>Wix website</strong> captures broad marketing queries (e.g., <em>"kommunikationsplan"</em>), acting as the primary discovery engine. Meanwhile, Google is indexing the <strong>Web App</strong> for highly specific creator names and geo-located skills (e.g., <em>"copywriting luleå"</em>). <br/><br/>
+                            <strong class="font-black bg-brand-cyan/40 px-1 rounded">Recommendation:</strong> Embrace this dual strategy. Optimize the Wix site's blog/landing pages for broad Swedish marketing terms to drive up that 78 click count. For the Web App, ensure public user profiles have clean metadata (Titles/Descriptions) to capitalize on the long-tail niche searches, turning your user base into a programmatic traffic engine.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ========================================== -->
+        <!-- PART 3: APP FRONTPAGE BEHAVIOR (GA4)       -->
+        <!-- ========================================== -->
+        <div class="bg-brand-ivory rounded-xl shadow-lg border-[3px] border-brand-dark overflow-hidden">
+            
+            <!-- Card Header -->
+            <div class="px-6 py-5 border-b-[3px] border-brand-dark flex justify-between items-center bg-brand-dark">
+                <div>
+                    <h2 class="text-xl font-black text-brand-pink tracking-tight uppercase">APP FRONTPAGE BEHAVIOR</h2>
+                    <p class="text-sm text-brand-ivory mt-1 font-medium">Sourced from GA4 Custom Event Tags (Scroll Depth, AI Search, Manual Browse)</p>
+                </div>
+                <div class="text-right flex flex-col items-end">
+                    <span class="inline-flex items-center px-3 py-1 rounded-md bg-brand-pink text-brand-dark text-xs font-bold border-2 border-brand-dark shadow-[2px_2px_0px_#4f4753]">
+                        Sep 7 - Sep 18, 2026
+                    </span>
+                    <p class="text-xs text-brand-ivory font-bold mt-2">Engagement Metrics</p>
+                </div>
+            </div>
+
+            <div class="p-8 grid grid-cols-1 md:grid-cols-2 gap-10">
+                
+                <!-- Section A: Scroll Depth Funnel -->
+                <div>
+                    <h3 class="text-sm font-black text-brand-dark mb-4 flex items-center uppercase tracking-wide">
+                        <svg class="w-5 h-5 text-brand-dark mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+                        Scroll Depth Drop-off
+                    </h3>
+                    
+                    <div class="space-y-5">
+                        <!-- 25% -->
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="font-bold text-brand-dark">25% Scrolled</span>
+                                <span class="font-black text-brand-dark">23 Users</span>
+                            </div>
+                            <div class="w-full bg-brand-dark/10 rounded-full h-3 border border-brand-dark/20 overflow-hidden">
+                                <div class="bg-brand-pink h-full border-r border-brand-dark/20" style="width: 100%"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- 50% -->
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="font-bold text-brand-dark">50% Scrolled</span>
+                                <span class="font-black text-brand-dark">20 Users <span class="text-brand-medium font-bold text-[10px] ml-1 bg-brand-medium/10 px-1 rounded uppercase">(87% Retention)</span></span>
+                            </div>
+                            <div class="w-full bg-brand-dark/10 rounded-full h-3 border border-brand-dark/20 overflow-hidden">
+                                <div class="bg-brand-pink/80 h-full border-r border-brand-dark/20" style="width: 87%"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- 75% -->
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="font-bold text-brand-dark">75% Scrolled</span>
+                                <span class="font-black text-brand-dark">10 Users <span class="text-brand-ivory bg-brand-dark font-bold text-[10px] ml-1 px-1 rounded uppercase">(-50% Drop!)</span></span>
+                            </div>
+                            <div class="w-full bg-brand-dark/10 rounded-full h-3 border border-brand-dark/20 overflow-hidden">
+                                <div class="bg-brand-pink/60 h-full border-r border-brand-dark/20" style="width: 43%"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- 90% -->
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="font-bold text-brand-dark">90%+ Scrolled</span>
+                                <span class="font-black text-brand-dark">9 Users</span>
+                            </div>
+                            <div class="w-full bg-brand-dark/10 rounded-full h-3 border border-brand-dark/20 overflow-hidden">
+                                <div class="bg-brand-pink/40 h-full border-r border-brand-dark/20" style="width: 39%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section B: Discovery Methods -->
+                <div>
+                    <h3 class="text-sm font-black text-brand-dark mb-4 flex items-center uppercase tracking-wide">
+                        <svg class="w-5 h-5 text-brand-dark mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                        Discovery (AI vs. Manual)
+                    </h3>
+                    
+                    <div class="grid grid-cols-2 gap-4 h-[calc(100%-2.5rem)]">
+                        
+                        <!-- AI Search -->
+                        <div class="border-2 border-brand-dark rounded-lg p-4 bg-brand-cyan/10 flex flex-col justify-center items-center text-center relative overflow-hidden shadow-[2px_2px_0px_#3b3341]">
+                            <div class="absolute top-0 left-0 w-full h-1.5 bg-brand-cyan border-b-2 border-brand-dark"></div>
+                            <span class="text-xs font-black text-brand-dark uppercase tracking-widest mb-2 mt-2">AI Search</span>
+                            <span class="text-4xl font-black text-brand-dark drop-shadow-sm">13</span>
+                            <span class="text-xs text-brand-medium font-bold mt-1 uppercase">Unique Users</span>
+                            <div class="mt-4 pt-3 border-t-2 border-brand-dark/20 w-full">
+                                <span class="block text-sm font-black text-brand-dark">18 Events</span>
+                                <span class="block text-xs text-brand-medium font-medium mt-0.5">1.38 events / user</span>
+                            </div>
+                        </div>
+
+                        <!-- Manual Browse -->
+                        <div class="border-2 border-brand-dark rounded-lg p-4 bg-brand-purple/10 flex flex-col justify-center items-center text-center relative overflow-hidden shadow-[2px_2px_0px_#3b3341]">
+                            <div class="absolute top-0 left-0 w-full h-1.5 bg-brand-purple border-b-2 border-brand-dark"></div>
+                            <span class="text-xs font-black text-brand-dark uppercase tracking-widest mb-2 mt-2">Manual Browse</span>
+                            <span class="text-4xl font-black text-brand-dark drop-shadow-sm">8</span>
+                            <span class="text-xs text-brand-medium font-bold mt-1 uppercase">Unique Users</span>
+                            <div class="mt-4 pt-3 border-t-2 border-brand-dark/20 w-full">
+                                <span class="block text-sm font-black text-brand-dark">20 Events</span>
+                                <span class="block text-xs text-brand-medium font-medium mt-0.5">2.50 events / user</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Insight Box -->
+            <div class="px-8 pb-8">
+                <div class="bg-brand-pink/20 rounded-lg p-5 border-2 border-brand-dark flex items-start shadow-[4px_4px_0px_#3b3341]">
+                    <svg class="w-6 h-6 text-brand-dark mt-0.5 mr-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                    </svg>
+                    <div>
+                        <h4 class="text-sm font-black text-brand-dark uppercase tracking-wide">Behavioral Insight</h4>
+                        <p class="text-sm text-brand-dark font-medium mt-1 leading-relaxed">
+                            More users prefer to start their journey using <strong>AI Search (13 users)</strong> rather than <strong>Manual Browse (8 users)</strong>. However, users who browse manually tend to engage significantly deeper, triggering an average of 2.50 browse events compared to 1.38 searches. <br/><br/>
+                            <strong class="font-black bg-brand-cyan/40 px-1 rounded">Recommendation:</strong> Pay close attention to the scroll drop-off between 50% and 75%. Half of your engaged scrollers abandon the page there. Review the content in that specific middle section of the front page—it might need stronger calls-to-action or better visual hooks to keep them moving down to the 90% mark.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ========================================== -->
+        <!-- FOOTER                                     -->
+        <!-- ========================================== -->
+        <div class="bg-brand-ivory rounded-xl shadow-lg border-[3px] border-brand-dark p-6 text-center shadow-[4px_4px_0px_#3b3341]">
+            <p class="text-sm font-bold text-brand-dark">
+                By Yuna An Vu & Daria Zvereva &nbsp;|&nbsp; Static Dashboard for Degree Thesis in Digital Analytics &nbsp;|&nbsp; Medieinstitutet &nbsp;|&nbsp; 2026-09-29
+            </p>
+        </div>
+
+    </div>
+</body>
+</html>
